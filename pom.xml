@@ -34,6 +34,10 @@
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
+  <modules>
+    <module>core</module>
+  </modules>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
