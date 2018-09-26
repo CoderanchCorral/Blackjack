@@ -1,1 +1,1 @@
-# Blackjack
+# Blackjack [![Build Status](https://travis-ci.org/CodeRanchCorral/Blackjack.svg?branch=master)](https://travis-ci.org/CodeRanchCorral/Blackjack)
