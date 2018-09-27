@@ -29,11 +29,11 @@ public final class CardTest {
   
   @Theory
   public void rank_neverReturnsNull(Card card) {
-    assertThat(card.rank(), is(notNullValue()));
+    assertThat(card.getRank(), is(notNullValue()));
   }
   
   @Theory
   public void suit_neverReturnsNull(Card card) {
-    assertThat(card.suit(), is(notNullValue()));
+    assertThat(card.getSuit(), is(notNullValue()));
   }
 }
