@@ -16,7 +16,6 @@ public final class Card {
   enum Suit {SPADES, HEARTS, CLUBS, DIAMONDS};
   
   // smcdonald4812 - value of the rank, secondary value for the ace, Rank, and Suit
-  private int rankValue, secondaryValue;
   private Rank rank;
   private Suit suit;
   //smcdonald4812 - could add a String ID here as well with UUID if wanted.
@@ -25,8 +24,6 @@ public final class Card {
   
   public Card() {
     super();
-    this.rankValue = 1;
-    this.secondaryValue = 1;
     this.rank = Rank.ONE;
     this.suit = Suit.SPADES;
   }
@@ -36,16 +33,6 @@ public final class Card {
   public Card(Rank rank) {
     this();
     this.rank = rank;
-    this.rankValue += rank.ordinal();
-    this.secondaryValue += rank.ordinal();
-    if(rankValue > 10 && rankValue < 14) {
-      this.rankValue = 10;
-      this.secondaryValue = this.rankValue;
-    }
-    if(rankValue == 14) {
-      this.rankValue = 11;
-      this.secondaryValue = 1;
-    }
   }
   
   /*
@@ -65,22 +52,10 @@ public final class Card {
    */
    
    public Rank getRank() {
-	   return this.rank;
+    return this.rank;
    }
    
    public Suit getSuit() {
     return this.suit;
-  }
-  
-  //smcdonald4812 - allows callers to get the card's rankValue. Non-null in this().
-  
-  public int getValue() {
-    return this.rankValue;
-  }
-  
-  //smcdonald4812 - allows callers to get ace's secondary value, and if mistakenly used on other cards it gets their value.
-  
-  public int getSecondaryValue() {
-    return this.secondaryValue;
   }
 }
