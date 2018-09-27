@@ -10,18 +10,9 @@ package com.coderanch.blackjack;
 /**
  * A playing card used in a game of Blackjack.
  */
-final class Card {
-  
-  /**
-   * The rank of a {@link Card}.
-   * smcdonald4812 - filled in enum, created constructors, added an int rankValue, 
-   */
-  enum Rank {ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE};
+public final class Card {
 
-  /**
-   * The suit of a {@link Card}.
-   * smcdonald4812 - filled in enum
-   */
+  enum Rank {ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE};
   enum Suit {SPADES, HEARTS, CLUBS, DIAMONDS};
   
   // smcdonald4812 - value of the rank, secondary value for the ace, Rank, and Suit
@@ -32,9 +23,8 @@ final class Card {
   
   //smcdonald4812 - default constructor, non-null assignment.
   
-  Public Card() {
+  public Card() {
     super();
-    this.isAce = false;
     this.rankValue = 1;
     this.secondaryValue = 1;
     this.rank = Rank.ONE;
@@ -43,7 +33,7 @@ final class Card {
   
   //smcdonald4812 - Rank constructor must call this() as one has been provided.  .ordinal() is zerobased enum indexing.
   
-  Public Card(Rank rank) {
+  public Card(Rank rank) {
     this();
     this.rank = rank;
     this.rankValue += rank.ordinal();
@@ -62,8 +52,8 @@ final class Card {
   * smcdonald4812 - Suit, Rank constructor.
   */
   
-  Public Card(Rank rank, Suit suit) {
-    this(Rank rank);
+  public Card(Rank rank, Suit suit) {
+    this(rank);
     this.suit = suit;
   }
   
@@ -73,25 +63,19 @@ final class Card {
    * @return the rank of this card; never {@literal null}
    * smcdonald4812 - non-null in this(). There are no setters as Card shouldn't be changed once it is created.
    */
-  public Rank getRank() {
-    return this.rank;
-  }
-  
-  /**
-   * Gets the suit of this card.
-   * 
-   * @return the suit of this card; never {@literal null}
-   * smcdonald4812 - non-null in this().
-   */
-  
-  public Suit getSuit() {
+   
+   public Rank getRank() {
+	   return this.rank;
+   }
+   
+   public Suit getSuit() {
     return this.suit;
   }
   
   //smcdonald4812 - allows callers to get the card's rankValue. Non-null in this().
   
   public int getValue() {
-    return this.value;
+    return this.rankValue;
   }
   
   //smcdonald4812 - allows callers to get ace's secondary value, and if mistakenly used on other cards it gets their value.
