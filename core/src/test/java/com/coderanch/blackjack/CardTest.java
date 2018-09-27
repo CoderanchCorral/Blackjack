@@ -36,14 +36,4 @@ public final class CardTest {
   public void suit_neverReturnsNull(Card card) {
     assertThat(card.getSuit(), is(notNullValue()));
   }
-  
-  @Theory
-  public void rankValue_neverReturnsNull(Card card) {
-    assertThat(card.getValue(), is(notNullValue()));
-  }
-  
-  @Theory
-  public void secondaryValue_neverReturnsNull(Card card) {
-    assertThat(card.getSecondaryValue(), is(notNullValue()));
-  }
 }
