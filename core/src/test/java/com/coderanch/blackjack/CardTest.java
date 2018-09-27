@@ -39,7 +39,7 @@ public final class CardTest {
   
   @Theory
   public void rankValue_neverReturnsNull(Card card) {
-    assertThat(card.getRankValue(), is(notNullValue()));
+    assertThat(card.getValue(), is(notNullValue()));
   }
   
   @Theory
