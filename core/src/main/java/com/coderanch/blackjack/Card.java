@@ -10,51 +10,67 @@ package com.coderanch.blackjack;
 /**
  * A playing card used in a game of Blackjack.
  */
-public final class Card {
-
-  enum Rank {ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE};
-  enum Suit {SPADES, HEARTS, CLUBS, DIAMONDS};
+final class Card {
   
-  // smcdonald4812 - value of the rank, secondary value for the ace, Rank, and Suit
-  private Rank rank;
-  private Suit suit;
-  //smcdonald4812 - could add a String ID here as well with UUID if wanted.
+  enum Rank { ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING };
+  enum Suit { SPADES, HEARTS, CLUBS, DIAMONDS };
   
-  //smcdonald4812 - default constructor, non-null assignment.
+  private final Rank rank;
+  private final Suit suit;
   
-  public Card() {
-    super();
-    this.rank = Rank.ONE;
-    this.suit = Suit.SPADES;
-  }
-  
-  //smcdonald4812 - Rank constructor must call this() as one has been provided.  .ordinal() is zerobased enum indexing.
-  
-  public Card(Rank rank) {
-    this();
-    this.rank = rank;
-  }
-  
-  /*
-  * smcdonald4812 - Suit, Rank constructor.
+  /**
+  * Constructor.
+  *
+  * @param rank (required) Rank value. Must have value of enum Rank. 
+  * @param suit (required) Suit value. Must have value of enum Suit.
   */
   
   public Card(Rank rank, Suit suit) {
-    this(rank);
-    this.suit = suit;
+    this.rank = getConstRank(rank);
+    this.suit = getConstSuit(suit);
+  }
+  
+  /*
+  * Oracle states that private methods should not have a JavaDoc, 
+  * also that assertions should not be used for runtime exceptions.
+  * I have implemented these getters as I;ve been told logic should not be placed
+  * in the constructor itself. I'm not sure if it is okay to do it this way? 
+  * Any feedback would be geat. Also, suit not being of Suit is an error (cannot find symbol).
+  * How is this supposed to be checked for without surrounding constructor in try catch?
+   */
+  
+  private Suit getConstSuit(Suit suit) {
+    if(suit == null) {
+      return Suit.SPADES;
+    }
+    return suit;
+  }
+  
+  private Rank getConstRank(Rank rank) {
+    if(rank == null) {
+      return Rank.TWO;
+    }
+    return rank;
   }
   
   /**
    * Gets the rank of this card.
    * 
    * @return the rank of this card; never {@literal null}
-   * smcdonald4812 - non-null in this(). There are no setters as Card shouldn't be changed once it is created.
+   * 
    */
    
    public Rank getRank() {
     return this.rank;
    }
    
+  /**
+   * Gets the suit of this card.
+   * 
+   * @return the suit of this card; never {@literal null}
+   * 
+   */
+  
    public Suit getSuit() {
     return this.suit;
   }
