@@ -17,6 +17,7 @@ import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
+import com.coderanch.ObjectTest;
 import com.coderanch.blackjack.Card.Rank;
 import com.coderanch.blackjack.Card.Suit;
 
@@ -34,7 +35,7 @@ import static org.junit.Assume.assumeThat;
  * Tests the {@link Card} class.
  */
 @RunWith(Theories.class)
-public final class CardTest {
+public final class CardTest extends ObjectTest {
 
   /**
    * Ranks to test cards with.
@@ -51,7 +52,7 @@ public final class CardTest {
   /**
    * Cards to test.
    */
-  @DataPoints
+  @DataPoints("objects")
   public static final Set<Card> CARDS = Cards.getStandardDeck();
 
   /**
