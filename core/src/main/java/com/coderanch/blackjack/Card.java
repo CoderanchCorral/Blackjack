@@ -7,6 +7,8 @@
  */
 package com.coderanch.blackjack;
 
+import static java.util.Objects.hash;
+
 /**
  * A playing card used in a game of Blackjack.
  */
@@ -15,12 +17,38 @@ final class Card {
   /**
    * The rank of a {@link Card}.
    */
-  enum Rank {}
+  enum Rank {
+    ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING
+  }
 
   /**
    * The suit of a {@link Card}.
    */
-  enum Suit {}
+  enum Suit {
+    CLUBS, DIAMONDS, HEARTS, SPADES
+  }
+  
+  private final Rank rank;
+  
+  private final Suit suit;
+
+  /**
+   * Constructs a new card with the specified rank and suit.
+   *
+   * @param rank the rank of the new card.
+   * @param suit the suit of the new card.
+   */
+  private Card(Rank rank, Suit suit) {
+    this.rank = rank;
+    this.suit = suit;
+  }
+
+  static Card of(Rank rank, Suit suit) {
+    if (rank == null || suit == null)
+      throw new IllegalArgumentException();
+
+    return new Card(rank, suit);
+  }
   
   /**
    * Gets the rank of this card.
@@ -28,7 +56,7 @@ final class Card {
    * @return the rank of this card; never {@literal null}
    */
   Rank rank() {
-    return null;
+    return rank;
   }
   
   /**
@@ -37,6 +65,27 @@ final class Card {
    * @return the suit of this card; never {@literal null}
    */
   Suit suit() {
-    return null;
+    return suit;
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (!(object instanceof Card))
+      return false;
+
+    Card other = (Card) object;
+
+    return this.rank == other.rank
+        && this.suit == other.suit;
+  }
+
+  @Override
+  public int hashCode() {
+    return hash(rank, suit);
+  }
+
+  @Override
+  public String toString() {
+    return String.format("%s of %s", rank, suit);
   }
 }
