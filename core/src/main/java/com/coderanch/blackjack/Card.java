@@ -7,6 +7,8 @@
  */
 package com.coderanch.blackjack;
 
+import java.util.Objects;
+
 /**
  * A playing card used in a game of Blackjack.
  */
@@ -56,8 +58,23 @@ final class Card {
    public Suit getSuit() {
     return this.suit;
   }
-    
-    @Override
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Card card = (Card) o;
+    return rank == card.rank &&
+            suit == card.suit;
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(rank, suit);
+  }
+
+  @Override
     public String toString() {
         return rank + " of " + suit;
         
