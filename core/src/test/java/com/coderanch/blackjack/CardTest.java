@@ -69,7 +69,7 @@ public final class CardTest {
   public void newCard_withNullRank_throwsException(Suit suit) {
     assumeNotNull(suit);
 
-    thrown.expect(IllegalArgumentException.class);
+    thrown.expect(NullPointerException.class);
 
     Card card = new Card(null, suit);
   }
@@ -83,7 +83,7 @@ public final class CardTest {
   public void newCard_withNullSuit_throwsException(Rank rank) {
     assumeNotNull(rank);
 
-    thrown.expect(IllegalArgumentException.class);
+    thrown.expect(NullPointerException.class);
 
     Card card = new Card(rank, null);
   }
