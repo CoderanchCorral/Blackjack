@@ -34,94 +34,94 @@ import static org.junit.Assert.assertThat;
 @RunWith(Theories.class)
 public final class CardsTest {
 
-  /**
-   * A rule that states the kind of exception that is expected to be thrown by a test.
-   */
-  @Rule
-  public final ExpectedException thrown = ExpectedException.none();
+    /**
+     * A rule that states the kind of exception that is expected to be thrown by a test.
+     */
+    @Rule
+    public final ExpectedException thrown = ExpectedException.none();
 
-  /**
-   * Tests that {@link Cards#getAllRanks()} returns a set that doesn't contain {@code null}.
-   */
-  @Theory
-  public void getAllRanks_returnsSetWithoutNull() {
-    assertThat(Cards.getAllRanks(), not(contains(nullValue())));
-  }
+    /**
+     * Tests that {@link Cards#getAllRanks()} returns a set that doesn't contain {@code null}.
+     */
+    @Theory
+    public void getAllRanks_returnsSetWithoutNull() {
+        assertThat(Cards.getAllRanks(), not(contains(nullValue())));
+    }
 
-  /**
-   * Tests that {@link Cards#getAllRanks()} returns an unmodifiable set.
-   */
-  @Theory
-  public void getAllRanks_returnsUnmodifiableSet() {
-    Set<Rank> allRanks = Cards.getAllRanks();
+    /**
+     * Tests that {@link Cards#getAllRanks()} returns an unmodifiable set.
+     */
+    @Theory
+    public void getAllRanks_returnsUnmodifiableSet() {
+        Set<Rank> allRanks = Cards.getAllRanks();
 
-    thrown.expect(UnsupportedOperationException.class);
+        thrown.expect(UnsupportedOperationException.class);
 
-    allRanks.add(Rank.values()[0]);
-  }
+        allRanks.add(Rank.values()[0]);
+    }
 
-  /**
-   * Tests that {@link Cards#getAllRanks()} returns a set that contains all values defined in {@link Rank}.
-   */
-  @Theory
-  public void getAllRanks_returnsAllRanks() {
-    assertThat(Cards.getAllRanks(), containsInAnyOrder(Rank.values()));
-  }
+    /**
+     * Tests that {@link Cards#getAllRanks()} returns a set that contains all values defined in {@link Rank}.
+     */
+    @Theory
+    public void getAllRanks_returnsAllRanks() {
+        assertThat(Cards.getAllRanks(), containsInAnyOrder(Rank.values()));
+    }
 
-  /**
-   * Tests that {@link Cards#getAllSuits()} returns a set that doesn't contain {@code null}.
-   */
-  @Theory
-  public void getAllSuits_returnsSetWithoutNull() {
-    assertThat(Cards.getAllSuits(), not(contains(nullValue())));
-  }
+    /**
+     * Tests that {@link Cards#getAllSuits()} returns a set that doesn't contain {@code null}.
+     */
+    @Theory
+    public void getAllSuits_returnsSetWithoutNull() {
+        assertThat(Cards.getAllSuits(), not(contains(nullValue())));
+    }
 
-  /**
-   * Tests that {@link Cards#getAllSuits()} returns an unmodifiable set.
-   */
-  @Theory
-  public void getAllSuits_returnsUnmodifiableSet() {
-    Set<Suit> allSuits = Cards.getAllSuits();
+    /**
+     * Tests that {@link Cards#getAllSuits()} returns an unmodifiable set.
+     */
+    @Theory
+    public void getAllSuits_returnsUnmodifiableSet() {
+        Set<Suit> allSuits = Cards.getAllSuits();
 
-    thrown.expect(UnsupportedOperationException.class);
+        thrown.expect(UnsupportedOperationException.class);
 
-    allSuits.add(Suit.values()[0]);
-  }
+        allSuits.add(Suit.values()[0]);
+    }
 
-  /**
-   * Tests that {@link Cards#getAllSuits()} returns a set that contains all values defined in {@link Suit}.
-   */
-  @Theory
-  public void getAllSuits_returnsAllSuits() {
-    assertThat(Cards.getAllSuits(), containsInAnyOrder(Suit.values()));
-  }
+    /**
+     * Tests that {@link Cards#getAllSuits()} returns a set that contains all values defined in {@link Suit}.
+     */
+    @Theory
+    public void getAllSuits_returnsAllSuits() {
+        assertThat(Cards.getAllSuits(), containsInAnyOrder(Suit.values()));
+    }
 
-  /**
-   * Tests that {@link Cards#getStandardDeck()} returns a set that doesn't contain {@code null}.
-   */
-  @Theory
-  public void getStandardDeck_returnsSetWithoutNull() {
-    assertThat(Cards.getStandardDeck(), not(contains(nullValue())));
-  }
+    /**
+     * Tests that {@link Cards#getStandardDeck()} returns a set that doesn't contain {@code null}.
+     */
+    @Theory
+    public void getStandardDeck_returnsSetWithoutNull() {
+        assertThat(Cards.getStandardDeck(), not(contains(nullValue())));
+    }
 
-  /**
-   * Tests that {@link Cards#getStandardDeck()} returns an unmodifiable set.
-   */
-  @Theory
-  public void getStandardDeck_returnsUnmodifiableSet() {
-    Set<Card> standardDeck = Cards.getStandardDeck();
+    /**
+     * Tests that {@link Cards#getStandardDeck()} returns an unmodifiable set.
+     */
+    @Theory
+    public void getStandardDeck_returnsUnmodifiableSet() {
+        Set<Card> standardDeck = Cards.getStandardDeck();
 
-    thrown.expect(UnsupportedOperationException.class);
+        thrown.expect(UnsupportedOperationException.class);
 
-    standardDeck.add(new Card(Rank.values()[0], Suit.values()[0]));
-  }
+        standardDeck.add(new Card(Rank.values()[0], Suit.values()[0]));
+    }
 
-  /**
-   * Tests that {@link Cards#getStandardDeck()} returns a set that contains all possible
-   * distinct cards that can be made using a combination of a {@link Rank} and a {@link Suit}.
-   */
-  @Theory
-  public void getStandardDeck_returnsAllCombinationsOfRankAndSuit() {
-    assertThat(Cards.getStandardDeck().size(), is(equalTo(Rank.values().length * Suit.values().length)));
-  }
+    /**
+     * Tests that {@link Cards#getStandardDeck()} returns a set that contains all possible distinct cards that can be
+     * made using a combination of a {@link Rank} and a {@link Suit}.
+     */
+    @Theory
+    public void getStandardDeck_returnsAllCombinationsOfRankAndSuit() {
+        assertThat(Cards.getStandardDeck().size(), is(equalTo(Rank.values().length * Suit.values().length)));
+    }
 }

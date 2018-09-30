@@ -20,47 +20,48 @@ import static java.util.stream.Collectors.toCollection;
  * Utility class containing useful operations related to playing cards.
  */
 final class Cards {
-  
-  private static final Set<Rank> RANKS = unmodifiableSet(new LinkedHashSet<>(asList(Rank.values())));
-  
-  private static final Set<Suit> SUITS = unmodifiableSet(new LinkedHashSet<>(asList(Suit.values())));
-  
-  private static final Set<Card> STANDARD_DECK = unmodifiableSet(
-    RANKS.stream().flatMap(
-      rank -> SUITS.stream().map(
-        suit -> new Card(rank, suit)
-      )
-    ).collect(toCollection(() -> new LinkedHashSet<>(RANKS.size() * SUITS.size())))
-  );
 
-  // Utility classes must not have a visible constructor.
-  private Cards() {}
+    private static final Set<Rank> RANKS = unmodifiableSet(new LinkedHashSet<>(asList(Rank.values())));
 
-  /**
-   * Gets all possible ranks a card can have.
-   *
-   * @return an unmodifiable set containing all {@link Rank#values()}.
-   */
-  static Set<Rank> getAllRanks() {
-    return RANKS;
-  }
+    private static final Set<Suit> SUITS = unmodifiableSet(new LinkedHashSet<>(asList(Suit.values())));
 
-  /**
-   * Gets all possible suits a card can be of.
-   *
-   * @return an unmodifiable set containing all {@link Suit#values()}.
-   */
-  static Set<Suit> getAllSuits() {
-    return SUITS;
-  }
+    private static final Set<Card> STANDARD_DECK = unmodifiableSet(
+      RANKS.stream().flatMap(
+        rank -> SUITS.stream().map(
+          suit -> new Card(rank, suit)
+        )
+      ).collect(toCollection(() -> new LinkedHashSet<>(RANKS.size() * SUITS.size())))
+    );
 
-  /**
-   * Gets a standard deck of cards.
-   *
-   * @return an unmodifiable set containing all distinct cards that can be made using
-   * a combination of a {@link Rank} and a {@link Suit}.
-   */
-  static Set<Card> getStandardDeck() {
-    return STANDARD_DECK;
-  }
+    // Utility classes must not have a visible constructor.
+    private Cards() {
+    }
+
+    /**
+     * Gets all possible ranks a card can have.
+     *
+     * @return an unmodifiable set containing all {@link Rank#values()}.
+     */
+    static Set<Rank> getAllRanks() {
+        return RANKS;
+    }
+
+    /**
+     * Gets all possible suits a card can be of.
+     *
+     * @return an unmodifiable set containing all {@link Suit#values()}.
+     */
+    static Set<Suit> getAllSuits() {
+        return SUITS;
+    }
+
+    /**
+     * Gets a standard deck of cards.
+     *
+     * @return an unmodifiable set containing all distinct cards that can be made using a combination of a {@link Rank}
+     * and a {@link Suit}.
+     */
+    static Set<Card> getStandardDeck() {
+        return STANDARD_DECK;
+    }
 }
