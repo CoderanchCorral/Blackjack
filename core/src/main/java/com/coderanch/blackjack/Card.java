@@ -12,7 +12,14 @@ package com.coderanch.blackjack;
  */
 final class Card {
   
+  /**
+  * The rank of {@link} card
+  **/
   enum Rank { ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING };
+  
+  /**
+  * The suit of {@link} card.
+  **/
   enum Suit { SPADES, HEARTS, CLUBS, DIAMONDS };
   
   private final Rank rank;
@@ -20,44 +27,18 @@ final class Card {
   
   /**
   * Constructor.
-  *
   * @param rank (required) Rank value. Must have value of enum Rank. 
   * @param suit (required) Suit value. Must have value of enum Suit.
   */
   
   public Card(Rank rank, Suit suit) {
-    this.rank = getConstRank(rank);
-    this.suit = getConstSuit(suit);
-  }
-  
-  /*
-  * Oracle states that private methods should not have a JavaDoc, 
-  * also that assertions should not be used for runtime exceptions.
-  * I have implemented these getters as I;ve been told logic should not be placed
-  * in the constructor itself. I'm not sure if it is okay to do it this way? 
-  * Any feedback would be geat. Also, suit not being of Suit is an error (cannot find symbol).
-  * How is this supposed to be checked for without surrounding constructor in try catch?
-   */
-  
-  private Suit getConstSuit(Suit suit) {
-    if(suit == null) {
-      return Suit.SPADES;
-    }
-    return suit;
-  }
-  
-  private Rank getConstRank(Rank rank) {
-    if(rank == null) {
-      return Rank.TWO;
-    }
-    return rank;
+    this.rank = rank;
+    this.suit = suit;
   }
   
   /**
    * Gets the rank of this card.
-   * 
    * @return the rank of this card; never {@literal null}
-   * 
    */
    
    public Rank getRank() {
@@ -66,9 +47,7 @@ final class Card {
    
   /**
    * Gets the suit of this card.
-   * 
    * @return the suit of this card; never {@literal null}
-   * 
    */
   
    public Suit getSuit() {
