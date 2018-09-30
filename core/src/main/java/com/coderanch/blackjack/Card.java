@@ -13,48 +13,46 @@ import java.util.Objects;
  * A playing card used in a game of Blackjack.
  */
 final class Card {
-  
+
   /**
-  * The rank of {@link} card
-  **/
-  enum Rank { ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING };
-  
+   * The rank of {@link} card.
+   */
+  enum Rank { ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING }
+
+
   /**
-  * The suit of {@link} card.
-  **/
-  enum Suit { SPADES, HEARTS, CLUBS, DIAMONDS };
-  
+   * The suit of {@link} card.
+   */
+  enum Suit { SPADES, HEARTS, CLUBS, DIAMONDS }
+
   private final Rank rank;
   private final Suit suit;
-  
+
   /**
-  * Constructor.
-  * @param rank (required) Rank value. Must have value of enum Rank.
-  * @param suit (required) Suit value. Must have value of enum Suit.
-  */
-  
+   * Constructor.
+   *
+   * @param rank (required) Rank value. Must have value of enum Rank.
+   * @param suit (required) Suit value. Must have value of enum Suit.
+   */
   public Card(Rank rank, Suit suit) {
-    if (rank == null || suit == null) {
-      throw new IllegalArgumentException("Rank and suit should not be null");
-    }
-    this.rank = rank;
-    this.suit = suit;
+    this.rank = Objects.requireNonNull(rank, "Rank should not be null");
+    this.suit = Objects.requireNonNull(suit, "Suit should not be null");
   }
-  
+
   /**
    * Gets the rank of this card.
+   *
    * @return the rank of this card; never {@literal null}
    */
-   
    public Rank getRank() {
     return this.rank;
    }
-   
+
   /**
    * Gets the suit of this card.
+   *
    * @return the suit of this card; never {@literal null}
    */
-  
    public Suit getSuit() {
     return this.suit;
   }
@@ -70,13 +68,11 @@ final class Card {
 
   @Override
   public int hashCode() {
-
     return Objects.hash(rank, suit);
   }
 
   @Override
-    public String toString() {
-        return rank + " of " + suit;
-        
-    }
+  public String toString() {
+    return rank + " of " + suit;
+  }
 }
