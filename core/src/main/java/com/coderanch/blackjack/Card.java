@@ -27,11 +27,14 @@ final class Card {
   
   /**
   * Constructor.
-  * @param rank (required) Rank value. Must have value of enum Rank. 
+  * @param rank (required) Rank value. Must have value of enum Rank.
   * @param suit (required) Suit value. Must have value of enum Suit.
   */
   
   public Card(Rank rank, Suit suit) {
+    if (rank == null || suit == null) {
+      throw new IllegalArgumentException("Rank and suit should not be null");
+    }
     this.rank = rank;
     this.suit = suit;
   }
