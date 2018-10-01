@@ -1,4 +1,8 @@
 language: java
+branches:
+  only:
+  - master
+  - /^releases[/].+$/
 addons:
   sonarcloud:
     organization: "coderanch-corral"
