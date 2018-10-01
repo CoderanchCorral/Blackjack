@@ -6,6 +6,8 @@ This is an educational project with the goal of learning how to write profession
 The final product of the project is a game of Blackjack.
 ## Status
 Currently the project consists of a Maven module with a few basic classes and unit tests for the core model of a game of Blackjack.
+## Building and testing
+Download [Maven](https://maven.apache.org/download.cgi) and run `mvn package` inside the root folder of the repository. 
 ## Contributing
 Please contribute by expanding the backlog of issues and adding new features.
 See [`CONTRIBUTING`](https://github.com/CoderanchCorral/Blackjack/blob/master/CONTRIBUTING.md) for details.
