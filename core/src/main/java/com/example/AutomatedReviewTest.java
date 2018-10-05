@@ -7,10 +7,10 @@
  */
 package com.example;
 
+import java.awt.event.*;
 import java.util.*;
-import java.util.logging.*;
 
-import java.lang.*;
+import javax.swing.*;
 
 import java.time.*;
 
@@ -18,48 +18,41 @@ import java.time.*;
  * The goal of this code is to find out if code analysis will automatically add
  * commentary to a pull request when it finds problems with the code.
  */
-public final class AutomatedReviewTest {
-    
-    private static final Logger LOGGER = Logger.getLogger(AutomatedReviewTest.class.getName());
-    
-    private static final long ONE   = 1L;
-    private static final long TWO   = 2L;
-    private static final long THREE = 3L;
-    private static final long FOUR  = 4L;
-    
-    private static Object lazy;
-    
-    private AutomatedReviewTest() {
-        canBeStatic();
+final class AutomatedReviewTest extends JFrame implements ActionListener {
+  
+  private static final Logger LOGGER = Logger.getLogger(AutomatedReviewTest.class.getName());
+  
+  private static Object lazy;
+  
+  AutomatedReviewTest() {
+    pack(); // should spawn new thread
+    setVisible(true);
+  }
+  
+  static Object getLazy() {
+    if (lazy == null) {
+      lazy = new Object();
     }
     
-    /**
-     * Method description without description of parameters or return value.
-     *
-     * @return blabla
-     */
-    public boolean hello() {
-        long x = THREE;
-        
-        if (x + TWO - ONE == FOUR) {
-            LOGGER.info(() -> "Yay!".toUpperCase(Locale.ENGLISH));
-        }
-        
-        return true;
+    return lazy;
+  }
+  
+  synchronized boolean getIsTest(String s) {
+    try {
+      return s.matches("Test");
+    } catch (Exception ex) {
+      throw new RuntimeException();
     }
-    
-    static void canBeStatic() {
-        throw new UnsupportedOperationException();
-    }
-    
-    /**
-     * Gets an object lazily.
-     */
-    public static Object getLazily() {
-        if (lazy == null) {
-            lazy = new Object();
-        }
-        
-        return lazy;
-    }
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public void actionPerformed(ActionEvent event) {
+    boolean test;
+    getIsTest("Test");
+    test = event.hashCode() % 2 == 01;
+  }
+  
+  final class SerializableInner implements Serializable {}
 }
