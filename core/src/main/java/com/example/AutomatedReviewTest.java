@@ -10,6 +10,10 @@ package com.example;
 import java.util.*;
 import java.util.logging.*;
 
+import java.lang.*;
+
+import java.time.*;
+
 /**
  * The goal of this code is to find out if code analysis will automatically add
  * commentary to a pull request when it finds problems with the code.
@@ -18,10 +22,12 @@ public final class AutomatedReviewTest {
     
     private static final Logger LOGGER = Logger.getLogger(AutomatedReviewTest.class.getName());
     
-    private static final long one   = 1l;
-    private static final long two   = 2L;
-    private static final long three = 3L;
-    private static final long four  = 4L;
+    private static final long ONE   = 1L;
+    private static final long TWO   = 2L;
+    private static final long THREE = 3L;
+    private static final long FOUR  = 4L;
+    
+    private static Object lazy;
     
     private AutomatedReviewTest() {
         canBeStatic();
@@ -42,12 +48,9 @@ public final class AutomatedReviewTest {
         return true;
     }
     
-    protected static void canBeStatic() { }
-}
-
-final class SomeException extends Exception {
-    
-    private static Object lazy;
+    static void canBeStatic() {
+        throw new UnsupportedOperationException();
+    }
     
     /**
      * Gets an object lazily.
