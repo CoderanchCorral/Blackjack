@@ -1,7 +1,7 @@
 package com.example;
 
-import java.logging.*;
 import java.util.*;
+import java.util.logging.*;
 
 /**
  * The goal of this code is to find out if code analysis will automatically add
