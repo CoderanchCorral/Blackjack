@@ -39,9 +39,9 @@ public final class AutomatedReviewTest {
      * @return blabla
      */
     public boolean hello() {
-        long x = three;
+        long x = THREE;
         
-        if (x + two - one == four) {
+        if (x + TWO - ONE == FOUR) {
             LOGGER.info(() -> "Yay!".toUpperCase(Locale.ENGLISH));
         }
         
