@@ -9,7 +9,7 @@ import java.util.logging.*;
  */
 public final class AutomatedReviewTest {
     
-    private Logger LOGGER = Logger.getLogger(AutomatedReviewTest.class);
+    private Logger LOGGER = Logger.getLogger(AutomatedReviewTest.class.getName());
     
     protected double one   = 1.0d;
     protected double two   = 2.0d;
