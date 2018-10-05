@@ -1,36 +1,53 @@
 package com.example;
 
+import java.logging.*;
 import java.util.*;
 
-// The goal of this code is to find out if code analysis will automatically add
-// commentary to a pull request when it finds problems with the code.
-
-public abstract class AutomatedReviewTest extends Object {
-
-  public boolean hello(Optional unusedRaw)
-  {
-    float x = 3.0f;
-    if (x + 2.0f * 1.0f == 5.0f)
-      System.out.println("Yay\u0021".toUpperCase());
-      
-    return true;
-  }
-
-  private AutomatedReviewTest() { hello(Optional.of(this)); }
-  
-  public static void main(String... args) throws SomeError {
-  	}
+/**
+ * The goal of this code is to find out if code analysis will automatically add
+ * commentary to a pull request when it finds problems with the code.
+ */
+public final class AutomatedReviewTest {
+    
+    private Logger LOGGER = Logger.getLogger(AutomatedReviewTest.class);
+    
+    protected double one   = 1.0d;
+    protected double two   = 2.0d;
+    protected double three = 5.0d;
+    protected double four  = 4.0d;
+    
+    private AutomatedReviewTest() {
+        canBeStatic();
+    }
+    
+    /**
+     * Method description without description of parameters or return value.
+     */
+    public boolean hello() {
+        double x = three;
+        
+        if (x + two - one == four) {
+            LOGGER.info("Yay!".toUpperCase(Locale.ENGLISH));
+        }
+        
+        return true;
+    }
+    
+    private void canBeStatic() { }
 }
 
-final class SomeError extends Error {
-
-	public static java.util.Collection<Object> collection = null;
-	
-	protected Collection getCollectionLazily() {
-		if (collection == null) {
-			collection = new ArrayList<Object>();
-		}
-		
-		return collection;
-	}
+final class SomeException extends Exception {
+    
+    private static java.util.Collection<Object> collection;
+    
+    /**
+     * Gets a collection lazily, without defensive copying.
+     */
+    public static Collection<Object> getCollectionLazily() {
+        if (collection == null) {
+            collection = new ArrayList<>();
+        }
+        
+        return collection;
+    }
 }
