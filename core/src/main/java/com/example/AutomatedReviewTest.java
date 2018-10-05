@@ -8,6 +8,7 @@
 package com.example;
 
 import java.awt.event.*;
+import java.io.*;
 import java.util.*;
 
 import javax.swing.*;
@@ -19,8 +20,6 @@ import java.time.*;
  * commentary to a pull request when it finds problems with the code.
  */
 final class AutomatedReviewTest extends JFrame implements ActionListener {
-  
-  private static final Logger LOGGER = Logger.getLogger(AutomatedReviewTest.class.getName());
   
   private static Object lazy;
   
