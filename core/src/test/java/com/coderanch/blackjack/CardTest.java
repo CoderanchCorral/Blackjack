@@ -9,20 +9,22 @@ package com.coderanch.blackjack;
 
 import java.util.*;
 
+import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
 import com.coderanch.blackjack.Card.Rank;
 import com.coderanch.blackjack.Card.Suit;
 
+import com.coderanch.test.ConsistentComparableTest;
+
 import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
@@ -34,7 +36,16 @@ import static org.junit.Assume.assumeThat;
  * Tests the {@link Card} class.
  */
 @RunWith(Theories.class)
-public final class CardTest {
+public final class CardTest extends ConsistentComparableTest {
+  
+    @DataPoint
+    public static final Rank NULL_RANK = null;
+
+    @DataPoint
+    public static final Suit NULL_SUIT = null;
+    
+    @DataPoint("objects")
+    public static final Card NULL_CARD = null;
 
     /**
      * Ranks to test cards with.
@@ -51,14 +62,8 @@ public final class CardTest {
     /**
      * Cards to test.
      */
-    @DataPoints
+    @DataPoints("objects")
     public static final Set<Card> CARDS = Cards.getStandardDeck();
-
-    /**
-     * A rule that states the kind of exception that is expected to be thrown by a test.
-     */
-    @Rule
-    public final ExpectedException thrown = ExpectedException.none();
 
     /**
      * Tests that passing {@code null} for {@code rank} when constructing a new card causes an exception to be thrown.
@@ -69,9 +74,9 @@ public final class CardTest {
     public void newCard_withNullRank_throwsException(Suit suit) {
         assumeNotNull(suit);
 
-        thrown.expect(NullPointerException.class);
+        thrown.expect(IllegalArgumentException.class);
 
-        Card card = new Card(null, suit);
+        new Card(null, suit);
     }
 
     /**
@@ -83,9 +88,9 @@ public final class CardTest {
     public void newCard_withNullSuit_throwsException(Rank rank) {
         assumeNotNull(rank);
 
-        thrown.expect(NullPointerException.class);
+        thrown.expect(IllegalArgumentException.class);
 
-        Card card = new Card(rank, null);
+        new Card(rank, null);
     }
 
     /**
@@ -101,8 +106,8 @@ public final class CardTest {
 
         Card card = new Card(rank, suit);
 
-        assertThat(card.getRank(), is(rank));
-        assertThat(card.getSuit(), is(suit));
+        assertThat(card.rank(), is(rank));
+        assertThat(card.suit(), is(suit));
     }
 
     /**
@@ -115,7 +120,7 @@ public final class CardTest {
     public void cards_withSameRankAndSuit_areEqual(Rank rank, Suit suit) {
         assumeNotNull(rank, suit);
 
-        Card firstCard = new Card(rank, suit);
+        Card firstCard  = new Card(rank, suit);
         Card secondCard = new Card(rank, suit);
 
         assertThat(firstCard, is(equalTo(secondCard)));
@@ -124,16 +129,16 @@ public final class CardTest {
     /**
      * Tests that two cards constructed with different ranks are not equal.
      *
-     * @param firstRank the rank to construct the first card with.
+     * @param firstRank  the rank to construct the first card with.
      * @param secondRank the rank to construct the second card with.
-     * @param suit the suit to construct both cards with.
+     * @param suit       the suit to construct both cards with.
      */
     @Theory
     public void cards_withDifferentRanks_areNotEqual(Rank firstRank, Rank secondRank, Suit suit) {
         assumeNotNull(firstRank, secondRank, suit);
         assumeThat(firstRank, is(not(equalTo(secondRank))));
 
-        Card firstCard = new Card(firstRank, suit);
+        Card firstCard  = new Card(firstRank, suit);
         Card secondCard = new Card(secondRank, suit);
 
         assertThat(firstCard, is(not(equalTo(secondCard))));
@@ -142,8 +147,8 @@ public final class CardTest {
     /**
      * Tests that two cards constructed with different suits are not equal.
      *
-     * @param rank the rank to construct both cards with.
-     * @param firstSuit the suit to construct the first card with.
+     * @param rank       the rank to construct both cards with.
+     * @param firstSuit  the suit to construct the first card with.
      * @param secondSuit the suit to construct the second card with.
      */
     @Theory
@@ -151,7 +156,7 @@ public final class CardTest {
         assumeNotNull(rank, firstSuit, secondSuit);
         assumeThat(firstSuit, is(not(equalTo(secondSuit))));
 
-        Card firstCard = new Card(rank, firstSuit);
+        Card firstCard  = new Card(rank, firstSuit);
         Card secondCard = new Card(rank, secondSuit);
 
         assertThat(firstCard, is(not(equalTo(secondCard))));
@@ -166,9 +171,9 @@ public final class CardTest {
     public void toString_containsRankAndSuit(Card card) {
         assumeNotNull(card);
 
-        assertThat(card.toString(), both(
-          containsString(card.getRank().toString())).and(
-          containsString(card.getSuit().toString()))
-        );
+        assertThat(card, hasToString(both(
+          containsString(card.rank().toString())).and(
+          containsString(card.suit().toString()))
+        ));
     }
 }

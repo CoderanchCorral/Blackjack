@@ -33,9 +33,7 @@ final class Cards {
       ).collect(toCollection(() -> new LinkedHashSet<>(RANKS.size() * SUITS.size())))
     );
 
-    // Utility classes must not have a visible constructor.
-    private Cards() {
-    }
+    private Cards() {}
 
     /**
      * Gets all possible ranks a card can have.
