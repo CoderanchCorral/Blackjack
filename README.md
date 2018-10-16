@@ -1,6 +1,6 @@
 # Blackjack
 [![Build Status](https://travis-ci.org/CoderanchCorral/Blackjack.svg?branch=master)](https://travis-ci.org/CoderanchCorral/Blackjack)
-[![Build Status](https://sonarcloud.io/api/project_badges/measure?project=com.coderanch%3Ablackjack&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.coderanch%3Ablackjack)
+[![Build Status](https://sonarcloud.io/api/project_badges/measure?project=com.coderanch%3Ablackjack-parent&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.coderanch%3Ablackjack-parent)
 
 This is an educational project with the goal of learning how to write professional code in a team.
 The final product of the project is a game of Blackjack.
