@@ -11,10 +11,10 @@ import java.util.*;
 
 import static java.util.Comparator.comparing;
 
+import static com.coderanch.util.require.Require.requireThat;
+
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-
-import static com.coderanch.util.require.Require.requireThat;
 
 /**
  * A playing card used in a game of Blackjack.

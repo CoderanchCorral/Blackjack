@@ -19,13 +19,13 @@
 
     <dependencies>
         <dependency>
-          <groupId>com.coderanch</groupId>
-          <artifactId>test</artifactId>
+            <groupId>com.coderanch</groupId>
+            <artifactId>test</artifactId>
         </dependency>
 
         <dependency>
-          <groupId>com.coderanch</groupId>
-          <artifactId>util</artifactId>
+            <groupId>com.coderanch</groupId>
+            <artifactId>util</artifactId>
         </dependency>
         
         <dependency>

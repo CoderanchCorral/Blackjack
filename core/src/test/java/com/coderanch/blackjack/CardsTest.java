@@ -9,15 +9,14 @@ package com.coderanch.blackjack;
 
 import java.util.*;
 
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-
 import com.coderanch.blackjack.Card.Rank;
 import com.coderanch.blackjack.Card.Suit;
+
+import org.junit.Rule;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
 
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;

@@ -21,66 +21,66 @@ import static org.junit.Assume.assumeNoException;
 import static org.junit.Assume.assumeNotNull;
 import static org.junit.Assume.assumeThat;
 
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class ComparableTest extends ObjectTest {
 
-  @Theory
-  public final void compareTo_isReflexive(
-    @FromDataPoints("objects") Comparable x
-  ) {
-    assumeNotNull(x);
-    assertThat(x, comparesEqualTo(x));
-  }
-
-  @Theory
-  public final void compareTo_isSymmetric(
-    @FromDataPoints("objects") Comparable x,
-    @FromDataPoints("objects") Comparable y
-  ) {
-    assumeNotNull(x, y);
-
-    try {
-      int comparison = signum(x.compareTo(y));
-      assertThat(comparison, is(equalTo(-signum(y.compareTo(x)))));
+    @Theory
+    public final void compareTo_isReflexive(
+        @FromDataPoints("objects") Comparable x
+    ) {
+        assumeNotNull(x);
+        assertThat(x, comparesEqualTo(x));
     }
 
-    catch (Exception ex) {
-      assumeNoException(ex);
-    }
-  }
+    @Theory
+    public final void compareTo_isSymmetric(
+        @FromDataPoints("objects") Comparable x,
+        @FromDataPoints("objects") Comparable y
+    ) {
+        assumeNotNull(x, y);
 
-  @Theory
-  public final void compareTo_throwingException_isSymmetric(
-    @FromDataPoints("objects") Comparable x,
-    @FromDataPoints("objects") Comparable y
-  ) {
-    try {
-      x.compareTo(y);
-    }
+        try {
+            int comparison = signum(x.compareTo(y));
+            assertThat(comparison, is(equalTo(-signum(y.compareTo(x)))));
+        }
 
-    catch (Exception ex) {
-      thrown.expect(ex.getClass());
-      y.compareTo(x);
-    }
-  }
-
-  @Theory
-  public final void compareTo_isTransitive(
-    @FromDataPoints("objects") Comparable x,
-    @FromDataPoints("objects") Comparable y,
-    @FromDataPoints("objects") Comparable z
-  ) {
-    assumeNotNull(x, y, z);
-
-    try {
-      int comparison = signum(x.compareTo(y));
-
-      assumeThat(comparison, is(equalTo(signum(y.compareTo(z)))));
-      assertThat(comparison, is(equalTo(signum(x.compareTo(z)))));
+        catch (Exception ex) {
+            assumeNoException(ex);
+        }
     }
 
-    catch (Exception ex) {
-      assumeNoException(ex);
+    @Theory
+    public final void compareTo_throwingException_isSymmetric(
+        @FromDataPoints("objects") Comparable x,
+        @FromDataPoints("objects") Comparable y
+    ) {
+        try {
+            x.compareTo(y);
+        }
+
+        catch (Exception ex) {
+            thrown.expect(ex.getClass());
+            y.compareTo(x);
+        }
     }
-  }
+
+    @Theory
+    public final void compareTo_isTransitive(
+        @FromDataPoints("objects") Comparable x,
+        @FromDataPoints("objects") Comparable y,
+        @FromDataPoints("objects") Comparable z
+    ) {
+        assumeNotNull(x, y, z);
+
+        try {
+            int comparison = signum(x.compareTo(y));
+
+            assumeThat(comparison, is(equalTo(signum(y.compareTo(z)))));
+            assertThat(comparison, is(equalTo(signum(x.compareTo(z)))));
+        }
+
+        catch (Exception ex) {
+            assumeNoException(ex);
+        }
+    }
 }

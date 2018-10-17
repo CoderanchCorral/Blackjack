@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project-shared-configuration>
     <!--
       This file contains additional configuration written by modules in the NetBeans IDE.
@@ -15,5 +14,25 @@
           Any value defined here will override the pom.xml file value but is only applicable to the current project.
         -->
         <netbeans.hint.licensePath>${project.basedir}/nb-license-header.txt</netbeans.hint.licensePath>
+        <org-netbeans-modules-editor-indent.CodeStyle.project.text-line-wrap>none</org-netbeans-modules-editor-indent.CodeStyle.project.text-line-wrap>
+        <org-netbeans-modules-editor-indent.CodeStyle.project.indent-shift-width>4</org-netbeans-modules-editor-indent.CodeStyle.project.indent-shift-width>
+        <org-netbeans-modules-editor-indent.CodeStyle.project.spaces-per-tab>4</org-netbeans-modules-editor-indent.CodeStyle.project.spaces-per-tab>
+        <org-netbeans-modules-editor-indent.CodeStyle.project.tab-size>8</org-netbeans-modules-editor-indent.CodeStyle.project.tab-size>
+        <org-netbeans-modules-editor-indent.CodeStyle.project.text-limit-width>120</org-netbeans-modules-editor-indent.CodeStyle.project.text-limit-width>
+        <org-netbeans-modules-editor-indent.CodeStyle.project.expand-tabs>true</org-netbeans-modules-editor-indent.CodeStyle.project.expand-tabs>
+        <org-netbeans-modules-editor-indent.CodeStyle.usedProfile>project</org-netbeans-modules-editor-indent.CodeStyle.usedProfile>
+        <org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.importGroupsOrder>java;com;org;*;static java;static com;static org;static org.hamcrest;static org.junit;static *</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.importGroupsOrder>
+        <org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.placeElseOnNewLine>true</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.placeElseOnNewLine>
+        <org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.separateStaticImports>true</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.separateStaticImports>
+        <org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.blankLineAfterJavadocReturnTag>true</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.blankLineAfterJavadocReturnTag>
+        <org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.placeCatchOnNewLine>true</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.placeCatchOnNewLine>
+        <org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.spaceWithinBraces>true</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.spaceWithinBraces>
+        <org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.alignJavadocReturnDescription>true</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.alignJavadocReturnDescription>
+        <org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.blankLineAfterJavadocParameterDescriptions>true</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.blankLineAfterJavadocParameterDescriptions>
+        <org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.spaceBeforeArrayInitLeftBrace>true</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.spaceBeforeArrayInitLeftBrace>
+        <org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.alignJavadocParameterDescriptions>true</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.alignJavadocParameterDescriptions>
+        <org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.packagesForStarImport>java.*</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.packagesForStarImport>
+        <org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.placeFinallyOnNewLine>true</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.placeFinallyOnNewLine>
+        <org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.continuationIndentSize>4</org-netbeans-modules-editor-indent.text.x-java.CodeStyle.project.continuationIndentSize>
     </properties>
 </project-shared-configuration>

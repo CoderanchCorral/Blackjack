@@ -9,17 +9,15 @@ package com.coderanch.blackjack;
 
 import java.util.*;
 
+import com.coderanch.blackjack.Card.Rank;
+import com.coderanch.blackjack.Card.Suit;
+import com.coderanch.test.ConsistentComparableTest;
+
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
-
 import org.junit.runner.RunWith;
-
-import com.coderanch.blackjack.Card.Rank;
-import com.coderanch.blackjack.Card.Suit;
-
-import com.coderanch.test.ConsistentComparableTest;
 
 import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.containsString;

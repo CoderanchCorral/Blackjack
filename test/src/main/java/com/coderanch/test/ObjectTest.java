@@ -7,10 +7,9 @@
  */
 package com.coderanch.test;
 
+import org.junit.Rule;
 import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theory;
-
-import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -33,77 +32,77 @@ public abstract class ObjectTest {
      */
     @Rule
     public final ExpectedException thrown = ExpectedException.none();
-  
-  /**
-   * Tests that an object is never equal to null.
-   */
-  @Theory
-  public final void equals_withNull_returnsFalse(
-    @FromDataPoints("objects") Object x
-  ) {
-    assumeNotNull(x);
-    assertThat(x, is(not(equalTo(null))));
-  }
 
-  /**
-   * Tests that an object is always equal to itself.
-   */
-  @Theory
-  public final void equals_isReflexive(
-    @FromDataPoints("objects") Object x
-  ) {
-    assertThat(x, is(equalTo(x)));
-  }
+    /**
+     * Tests that an object is never equal to null.
+     */
+    @Theory
+    public final void equals_withNull_returnsFalse(
+        @FromDataPoints("objects") Object x
+    ) {
+        assumeNotNull(x);
+        assertThat(x, is(not(equalTo(null))));
+    }
 
-  /**
-   * Tests that two objects agree with each other on whether they're equal.
-   */
-  @Theory
-  public final void equals_isSymmetric(
-    @FromDataPoints("objects") Object x,
-    @FromDataPoints("objects") Object y
-  ) {
-    assumeNotNull(x, y);
-    assertThat(x.equals(y), is(equalTo(y.equals(x))));
-  }
+    /**
+     * Tests that an object is always equal to itself.
+     */
+    @Theory
+    public final void equals_isReflexive(
+        @FromDataPoints("objects") Object x
+    ) {
+        assertThat(x, is(equalTo(x)));
+    }
 
-  /**
-   * Tests that three objects agree with each other on whether they're equal.
-   */
-  @Theory
-  public final void equals_isTransitive(
-    @FromDataPoints("objects") Object x,
-    @FromDataPoints("objects") Object y,
-    @FromDataPoints("objects") Object z
-  ) {
-    assumeNotNull(x, y, z);
+    /**
+     * Tests that two objects agree with each other on whether they're equal.
+     */
+    @Theory
+    public final void equals_isSymmetric(
+        @FromDataPoints("objects") Object x,
+        @FromDataPoints("objects") Object y
+    ) {
+        assumeNotNull(x, y);
+        assertThat(x.equals(y), is(equalTo(y.equals(x))));
+    }
 
-    assumeThat(x, is(equalTo(y)));
-    assumeThat(y, is(equalTo(z)));
-    assertThat(x, is(equalTo(z)));
-  }
+    /**
+     * Tests that three objects agree with each other on whether they're equal.
+     */
+    @Theory
+    public final void equals_isTransitive(
+        @FromDataPoints("objects") Object x,
+        @FromDataPoints("objects") Object y,
+        @FromDataPoints("objects") Object z
+    ) {
+        assumeNotNull(x, y, z);
 
-  /**
-   * Tests that if two objects are equal, they must have the same hash code.
-   */
-  @Theory
-  public final void hashCode_withEqualObjects_returnsEqualResult(
-    @FromDataPoints("objects") Object x,
-    @FromDataPoints("objects") Object y
-  ) {
-    assumeNotNull(x, y);
-    assumeThat(x, is(equalTo(y)));
-    assertThat(x.hashCode(), is(equalTo(y.hashCode())));
-  }
+        assumeThat(x, is(equalTo(y)));
+        assumeThat(y, is(equalTo(z)));
+        assertThat(x, is(equalTo(z)));
+    }
 
-  /**
-   * Tests that an object never has a {@code null} string representation.
-   */
-  @Theory
-  public final void toString_neverReturnsNull(
-    @FromDataPoints("objects") Object x
-  ) {
-    assumeNotNull(x);
-    assertThat(x, hasToString(notNullValue()));
-  }
+    /**
+     * Tests that if two objects are equal, they must have the same hash code.
+     */
+    @Theory
+    public final void hashCode_withEqualObjects_returnsEqualResult(
+        @FromDataPoints("objects") Object x,
+        @FromDataPoints("objects") Object y
+    ) {
+        assumeNotNull(x, y);
+        assumeThat(x, is(equalTo(y)));
+        assertThat(x.hashCode(), is(equalTo(y.hashCode())));
+    }
+
+    /**
+     * Tests that an object never has a {@code null} string representation.
+     */
+    @Theory
+    public final void toString_neverReturnsNull(
+        @FromDataPoints("objects") Object x
+    ) {
+        assumeNotNull(x);
+        assertThat(x, hasToString(notNullValue()));
+    }
 }
