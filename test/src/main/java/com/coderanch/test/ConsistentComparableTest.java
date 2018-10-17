@@ -61,7 +61,7 @@ public class ConsistentComparableTest extends ComparableTest {
             assertThat(x.compareTo(y), is(not(equalTo(0))));
         }
 
-        catch (Exception ex) {
+        catch (RuntimeException ex) {
             assumeNoException(ex);
         }
     }

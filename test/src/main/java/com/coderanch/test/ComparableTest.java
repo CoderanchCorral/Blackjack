@@ -58,7 +58,7 @@ public class ComparableTest extends ObjectTest {
             assertThat(comparison, is(equalTo(-signum(y.compareTo(x)))));
         }
 
-        catch (Exception ex) {
+        catch (RuntimeException ex) {
             assumeNoException(ex);
         }
     }
@@ -78,9 +78,10 @@ public class ComparableTest extends ObjectTest {
             x.compareTo(y);
         }
 
-        catch (Exception ex) {
+        catch (RuntimeException ex) {
             thrown.expect(ex.getClass());
             y.compareTo(x);
+            throw new AssertionError(ex);
         }
     }
 

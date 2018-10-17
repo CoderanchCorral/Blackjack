@@ -37,7 +37,7 @@ public final class Matchers {
      * @param predicate   a predicate that will be applied to the argument when it is matched.
      *
      * @return a matcher with the given {@code description} that will successfully match an argument
-	 *         if the {@code predicate} on that argument returns {@code true}.
+     *         if the {@code predicate} on that argument returns {@code true}.
      */
     public static <T> Matcher<T> createTypeSafeMatcher(String description, Predicate<? super T> predicate) {
         return new CustomTypeSafeMatcher<T>(description) {
@@ -52,7 +52,7 @@ public final class Matchers {
      * Returns a matcher that matches when the examined string is trimmed.
      *
      * @return a matcher that returns {@code true} when the examined string doesn't
-	 *         start or end with whitespace characters.
+     *         start or end with whitespace characters.
      */
     public static Matcher<String> trimmedString() {
         return TRIMMED_STRING_MATCHER;
@@ -62,7 +62,7 @@ public final class Matchers {
      * Returns a matcher that matches when the examined string is trimmed and non-empty.
      *
      * @return a matcher that returns {@code true} when the examined string doesn't
-	 *         start or end with whitespace characters, and also isn't empty.
+     *         start or end with whitespace characters, and also isn't empty.
      */
     public static Matcher<String> nonEmptyTrimmedString() {
         return both(trimmedString()).and(not(isEmptyString()));
