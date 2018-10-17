@@ -19,9 +19,19 @@ import static org.junit.Assume.assumeNoException;
 import static org.junit.Assume.assumeNotNull;
 import static org.junit.Assume.assumeThat;
 
+/**
+ * Tests whether objects implementing the {@link Comparable} interface are consistent-with-equals.
+ */
 @SuppressWarnings({ "rawtypes", "unchecked", "squid:S00100" })
 public class ConsistentComparableTest extends ComparableTest {
 
+    /**
+     * Tests that objects that are equal according to the {@link Object#equals(java.lang.Object)} method
+     * are also equal according to the {@link Comparable#compareTo(java.lang.Object)} method.
+     *
+     * @param x the object under test.
+     * @param y the object to compare to {@code x}.
+     */
     @Theory
     public final void compareTo_withEqualObjects_returnsZero(
         @FromDataPoints("objects") Comparable x,
@@ -32,6 +42,13 @@ public class ConsistentComparableTest extends ComparableTest {
         assertThat(x.compareTo(y), is(equalTo(0)));
     }
 
+    /**
+     * Tests that objects that are unequal according to the {@link Object#equals(java.lang.Object)} method
+     * are also unequal according to the {@link Comparable#compareTo(java.lang.Object)} method.
+     *
+     * @param x the object under test.
+     * @param y the object to compare to {@code x}.
+     */
     @Theory
     public final void compareTo_withUnequalObjects_neverReturnsZero(
         @FromDataPoints("objects") Comparable x,

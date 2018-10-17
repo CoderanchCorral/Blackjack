@@ -36,6 +36,8 @@ public class ObjectTest {
 
     /**
      * Tests that an object is never equal to null.
+     *
+     * @param x the object under test.
      */
     @Theory
     public final void equals_withNull_returnsFalse(
@@ -47,6 +49,8 @@ public class ObjectTest {
 
     /**
      * Tests that an object is always equal to itself.
+     *
+     * @param x the object under test.
      */
     @Theory
     public final void equals_isReflexive(
@@ -57,6 +61,9 @@ public class ObjectTest {
 
     /**
      * Tests that two objects agree with each other on whether they're equal.
+     *
+     * @param x the object under test.
+     * @param y the object to compare to {@code x}.
      */
     @Theory
     public final void equals_isSymmetric(
@@ -69,6 +76,10 @@ public class ObjectTest {
 
     /**
      * Tests that three objects agree with each other on whether they're equal.
+     *
+     * @param x the object under test.
+     * @param y the object to compare to {@code x}.
+     * @param z the object to compare to {@code x} and {@code y}.
      */
     @Theory
     public final void equals_isTransitive(
@@ -85,6 +96,9 @@ public class ObjectTest {
 
     /**
      * Tests that if two objects are equal, they must have the same hash code.
+     *
+     * @param x the object under test.
+     * @param y the object to compare to {@code x}.
      */
     @Theory
     public final void hashCode_withEqualObjects_returnsEqualResult(
@@ -98,6 +112,8 @@ public class ObjectTest {
 
     /**
      * Tests that an object never has a {@code null} string representation.
+     *
+     * @param x the object under test.
      */
     @Theory
     public final void toString_neverReturnsNull(

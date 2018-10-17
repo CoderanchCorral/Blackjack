@@ -30,7 +30,7 @@ public final class Require {
      * @param argument         the argument that was passed to the parameter with name {@code parameterName}.
      * @param matcher          the condition that {@code argument} must match.
      * @param exceptionFactory a function that creates the exception to throw when {@code matcher} fails.
-	 *                         The function will be passed the exception message to create the exception with.
+     *                         The function will be passed the exception message to create the exception with.
      *
      * @return {@code argument}.
      *
@@ -59,10 +59,7 @@ public final class Require {
      * Requires that the specified argument that was passed to a method matches a certain condition.
      *
      * Calling this method is is equivalent to calling
-	 * {@link
-     *     #requireThat(java.lang.String, java.lang.Object, org.hamcrest.Matcher, java.util.function.Function)
-     *     requireThat(parameterName, argument, matcher, IllegalArgumentException::new)
-     * }.
+     * {@code requireThat(parameterName, argument, matcher, IllegalArgumentException::new)}.
      *
      * @param <T>           the type of the method parameter.
      *
@@ -82,10 +79,7 @@ public final class Require {
      * Requires that the specified index that was passed to a method matches a certain condition.
      *
      * Calling this method is is equivalent to calling
-	 * {@link
-     *     #requireThat(java.lang.String, java.lang.Object, org.hamcrest.Matcher, java.util.function.Function)
-     *     requireThat(parameterName, index, matcher, IndexOutOfBoundsException::new)
-     * }.
+     * {@code requireThat(parameterName, index, matcher, IndexOutOfBoundsException::new)}.
      *
      * @param <T>           the type of the method parameter.
      *

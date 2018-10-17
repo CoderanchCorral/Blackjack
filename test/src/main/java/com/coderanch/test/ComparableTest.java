@@ -21,9 +21,17 @@ import static org.junit.Assume.assumeNoException;
 import static org.junit.Assume.assumeNotNull;
 import static org.junit.Assume.assumeThat;
 
+/**
+ * Tests objects implementing the {@link Comparable} interface.
+ */
 @SuppressWarnings({ "rawtypes", "unchecked", "squid:S00100" })
 public class ComparableTest extends ObjectTest {
 
+    /**
+     * Tests that an object is always equal to itself.
+     *
+     * @param x the object under test.
+     */
     @Theory
     public final void compareTo_isReflexive(
         @FromDataPoints("objects") Comparable x
@@ -32,6 +40,12 @@ public class ComparableTest extends ObjectTest {
         assertThat(x, comparesEqualTo(x));
     }
 
+    /**
+     * Tests that two objects agree with each other on which of them is greater, or whether they're equal.
+     *
+     * @param x the object under test.
+     * @param y the object to compare to {@code x}.
+     */
     @Theory
     public final void compareTo_isSymmetric(
         @FromDataPoints("objects") Comparable x,
@@ -49,6 +63,12 @@ public class ComparableTest extends ObjectTest {
         }
     }
 
+    /**
+     * Tests that two objects throw the same exception if they can't be compared to each other.
+     *
+     * @param x the object under test.
+     * @param y the object to compare to {@code x}.
+     */
     @Theory
     public final void compareTo_throwingException_isSymmetric(
         @FromDataPoints("objects") Comparable x,
@@ -64,6 +84,13 @@ public class ComparableTest extends ObjectTest {
         }
     }
 
+    /**
+     * Tests that three objects agree with each other on which of them is greater, or whether they're equal.
+     *
+     * @param x the object under test.
+     * @param y the object to compare to {@code x}.
+     * @param z the object to compare to {@code x} and {@code y}.
+     */
     @Theory
     public final void compareTo_isTransitive(
         @FromDataPoints("objects") Comparable x,
