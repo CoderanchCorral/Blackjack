@@ -21,8 +21,8 @@ import static org.junit.Assume.assumeNoException;
 import static org.junit.Assume.assumeNotNull;
 import static org.junit.Assume.assumeThat;
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
-public abstract class ComparableTest extends ObjectTest {
+@SuppressWarnings({ "rawtypes", "unchecked", "squid:S00100" })
+public class ComparableTest extends ObjectTest {
 
     @Theory
     public final void compareTo_isReflexive(

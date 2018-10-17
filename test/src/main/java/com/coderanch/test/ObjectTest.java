@@ -25,7 +25,8 @@ import static org.junit.Assume.assumeThat;
 /**
  * Tests the common methods of all objects.
  */
-public abstract class ObjectTest {
+@SuppressWarnings("squid:S00100")
+public class ObjectTest {
 
     /**
      * A rule that states the kind of exception that is expected to be thrown by a test.

@@ -56,7 +56,7 @@ final class Cards {
      * Gets a standard deck of cards.
      *
      * @return an unmodifiable set containing all distinct cards that can be made
-	 *         using a combination of a {@link Rank} and a {@link Suit}.
+     *         using a combination of a {@link Rank} and a {@link Suit}.
      */
     static Set<Card> getStandardDeck() {
         return STANDARD_DECK;

@@ -19,8 +19,8 @@ import static org.junit.Assume.assumeNoException;
 import static org.junit.Assume.assumeNotNull;
 import static org.junit.Assume.assumeThat;
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
-public abstract class ConsistentComparableTest extends ComparableTest {
+@SuppressWarnings({ "rawtypes", "unchecked", "squid:S00100" })
+public class ConsistentComparableTest extends ComparableTest {
 
     @Theory
     public final void compareTo_withEqualObjects_returnsZero(

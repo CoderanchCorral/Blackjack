@@ -31,6 +31,7 @@ import static org.junit.Assert.assertThat;
  * Tests the {@link Cards} class.
  */
 @RunWith(Theories.class)
+@SuppressWarnings("squid:S00100")
 public final class CardsTest {
 
     /**
