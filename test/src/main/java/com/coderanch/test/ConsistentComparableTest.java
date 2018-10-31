@@ -16,7 +16,6 @@ import static org.hamcrest.Matchers.not;
 
 import static org.junit.Assert.assertThat;
 import static org.junit.Assume.assumeNoException;
-import static org.junit.Assume.assumeNotNull;
 import static org.junit.Assume.assumeThat;
 
 /**
@@ -32,12 +31,11 @@ public class ConsistentComparableTest extends ComparableTest {
      * @param x the object under test.
      * @param y the object to compare to {@code x}.
      */
-    @Theory
+    @Theory(nullsAccepted = false)
     public final void compareTo_withEqualObjects_returnsZero(
         @FromDataPoints("objects") Comparable x,
         @FromDataPoints("objects") Comparable y
     ) {
-        assumeNotNull(x, y);
         assumeThat(x, is(equalTo(y)));
         assertThat(x.compareTo(y), is(equalTo(0)));
     }
@@ -49,12 +47,11 @@ public class ConsistentComparableTest extends ComparableTest {
      * @param x the object under test.
      * @param y the object to compare to {@code x}.
      */
-    @Theory
+    @Theory(nullsAccepted = false)
     public final void compareTo_withUnequalObjects_neverReturnsZero(
         @FromDataPoints("objects") Comparable x,
         @FromDataPoints("objects") Comparable y
     ) {
-        assumeNotNull(x, y);
         assumeThat(x, is(not(equalTo(y))));
 
         try {

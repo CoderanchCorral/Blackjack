@@ -19,7 +19,6 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 
 import static org.junit.Assert.assertThat;
-import static org.junit.Assume.assumeNotNull;
 import static org.junit.Assume.assumeThat;
 
 /**
@@ -39,11 +38,10 @@ public class ObjectTest {
      *
      * @param x the object under test.
      */
-    @Theory
+    @Theory(nullsAccepted = false)
     public final void equals_withNull_returnsFalse(
         @FromDataPoints("objects") Object x
     ) {
-        assumeNotNull(x);
         assertThat(x, is(not(equalTo(null))));
     }
 
@@ -65,12 +63,11 @@ public class ObjectTest {
      * @param x the object under test.
      * @param y the object to compare to {@code x}.
      */
-    @Theory
+    @Theory(nullsAccepted = false)
     public final void equals_isSymmetric(
         @FromDataPoints("objects") Object x,
         @FromDataPoints("objects") Object y
     ) {
-        assumeNotNull(x, y);
         assertThat(x.equals(y), is(equalTo(y.equals(x))));
     }
 
@@ -81,14 +78,12 @@ public class ObjectTest {
      * @param y the object to compare to {@code x}.
      * @param z the object to compare to {@code x} and {@code y}.
      */
-    @Theory
+    @Theory(nullsAccepted = false)
     public final void equals_isTransitive(
         @FromDataPoints("objects") Object x,
         @FromDataPoints("objects") Object y,
         @FromDataPoints("objects") Object z
     ) {
-        assumeNotNull(x, y, z);
-
         assumeThat(x, is(equalTo(y)));
         assumeThat(y, is(equalTo(z)));
         assertThat(x, is(equalTo(z)));
@@ -100,12 +95,11 @@ public class ObjectTest {
      * @param x the object under test.
      * @param y the object to compare to {@code x}.
      */
-    @Theory
+    @Theory(nullsAccepted = false)
     public final void hashCode_withEqualObjects_returnsEqualResult(
         @FromDataPoints("objects") Object x,
         @FromDataPoints("objects") Object y
     ) {
-        assumeNotNull(x, y);
         assumeThat(x, is(equalTo(y)));
         assertThat(x.hashCode(), is(equalTo(y.hashCode())));
     }
@@ -115,11 +109,10 @@ public class ObjectTest {
      *
      * @param x the object under test.
      */
-    @Theory
+    @Theory(nullsAccepted = false)
     public final void toString_neverReturnsNull(
         @FromDataPoints("objects") Object x
     ) {
-        assumeNotNull(x);
         assertThat(x, hasToString(notNullValue()));
     }
 }

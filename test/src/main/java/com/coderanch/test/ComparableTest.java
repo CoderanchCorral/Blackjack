@@ -18,7 +18,6 @@ import static org.hamcrest.Matchers.is;
 
 import static org.junit.Assert.assertThat;
 import static org.junit.Assume.assumeNoException;
-import static org.junit.Assume.assumeNotNull;
 import static org.junit.Assume.assumeThat;
 
 /**
@@ -32,11 +31,10 @@ public class ComparableTest extends ObjectTest {
      *
      * @param x the object under test.
      */
-    @Theory
+    @Theory(nullsAccepted = false)
     public final void compareTo_isReflexive(
         @FromDataPoints("objects") Comparable x
     ) {
-        assumeNotNull(x);
         assertThat(x, comparesEqualTo(x));
     }
 
@@ -46,16 +44,13 @@ public class ComparableTest extends ObjectTest {
      * @param x the object under test.
      * @param y the object to compare to {@code x}.
      */
-    @Theory
+    @Theory(nullsAccepted = false)
     public final void compareTo_isSymmetric(
         @FromDataPoints("objects") Comparable x,
         @FromDataPoints("objects") Comparable y
     ) {
-        assumeNotNull(x, y);
-
         try {
-            int comparison = signum(x.compareTo(y));
-            assertThat(comparison, is(equalTo(-signum(y.compareTo(x)))));
+            assertThat(signum(x.compareTo(y)), is(equalTo(-signum(y.compareTo(x)))));
         }
 
         catch (RuntimeException ex) {
@@ -81,6 +76,10 @@ public class ComparableTest extends ObjectTest {
         catch (RuntimeException ex) {
             thrown.expect(ex.getClass());
             y.compareTo(x);
+
+            // The previous comparison MUST throw the same exception as the one caught.
+            // If it does not, that indicates a failed test.
+            // Instead of calling Assert.fail(), we wrap and rethrow the original exception to preserve the stack trace.
             throw new AssertionError(ex);
         }
     }
@@ -92,14 +91,12 @@ public class ComparableTest extends ObjectTest {
      * @param y the object to compare to {@code x}.
      * @param z the object to compare to {@code x} and {@code y}.
      */
-    @Theory
+    @Theory(nullsAccepted = false)
     public final void compareTo_isTransitive(
         @FromDataPoints("objects") Comparable x,
         @FromDataPoints("objects") Comparable y,
         @FromDataPoints("objects") Comparable z
     ) {
-        assumeNotNull(x, y, z);
-
         try {
             int comparison = signum(x.compareTo(y));
 
@@ -107,7 +104,7 @@ public class ComparableTest extends ObjectTest {
             assertThat(comparison, is(equalTo(signum(x.compareTo(z)))));
         }
 
-        catch (Exception ex) {
+        catch (RuntimeException ex) {
             assumeNoException(ex);
         }
     }
