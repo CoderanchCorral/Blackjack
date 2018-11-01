@@ -7,12 +7,19 @@
  */
 package com.coderanch.blackjack;
 
-import java.util.Objects;
+import java.util.*;
+
+import static java.util.Comparator.comparing;
+
+import static com.coderanch.util.require.Require.requireThat;
+
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 /**
  * A playing card used in a game of Blackjack.
  */
-final class Card {
+final class Card implements Comparable<Card> {
 
     /**
      * The rank of a card.
@@ -32,51 +39,75 @@ final class Card {
     private final Suit suit;
 
     /**
-     * Constructor.
+     * Constructs a card with a specified rank and suit.
      *
-     * @param rank (required) Rank value. Must have value of enum Rank.
-     * @param suit (required) Suit value. Must have value of enum Suit.
+     * @param rank the rank of the new card.
+     * @param suit the suit of the new card.
+     *
+     * @throws IllegalArgumentException if either {@code rank} or {@code suit} is {@code null}.
      */
-    public Card(Rank rank, Suit suit) {
-        this.rank = Objects.requireNonNull(rank, "Rank should not be null");
-        this.suit = Objects.requireNonNull(suit, "Suit should not be null");
+    Card(Rank rank, Suit suit) {
+        this.rank = requireThat("rank", rank, is(notNullValue()));
+        this.suit = requireThat("suit", suit, is(notNullValue()));
     }
 
     /**
      * Gets the rank of this card.
      *
-     * @return the rank of this card; never {@code null}
+     * @return the rank of this card; never {@code null}.
      */
-    public Rank getRank() {
+    Rank rank() {
         return this.rank;
     }
 
     /**
      * Gets the suit of this card.
      *
-     * @return the suit of this card; never {@code null}
+     * @return the suit of this card; never {@code null}.
      */
-    public Suit getSuit() {
+    Suit suit() {
         return this.suit;
     }
 
+    /**
+     * Compares this card to another card.
+     *
+     * Cards are first compared by rank, then by suit.
+     *
+     * @param other {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
     @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Card)) {
-            return false;
-        }
-
-        Card card = (Card) o;
-
-        return rank == card.rank
-            && suit == card.suit;
+    public int compareTo(Card other) {
+        return comparing(Card::rank).thenComparing(Card::suit).compare(this, other);
     }
 
+    /**
+     * Compares this card to another object for equality.
+     *
+     * Cards are considered equal if they have the same rank and suit.
+     *
+     * @param object {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object object) {
+        return object instanceof Card && this.compareTo((Card) object) == 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Objects.hash(rank, suit);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return rank + " of " + suit;
