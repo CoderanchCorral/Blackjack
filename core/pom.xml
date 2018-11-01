@@ -19,9 +19,18 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.coderanch</groupId>
+            <artifactId>test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.coderanch</groupId>
+            <artifactId>util</artifactId>
+        </dependency>
+        
+        <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <dependency>

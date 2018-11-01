@@ -12,7 +12,6 @@ import java.util.*;
 import com.coderanch.blackjack.Card.Rank;
 import com.coderanch.blackjack.Card.Suit;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.stream.Collectors.toCollection;
 
@@ -21,21 +20,19 @@ import static java.util.stream.Collectors.toCollection;
  */
 final class Cards {
 
-    private static final Set<Rank> RANKS = unmodifiableSet(new LinkedHashSet<>(asList(Rank.values())));
+    private static final Set<Rank> RANKS = unmodifiableSet(EnumSet.allOf(Rank.class));
 
-    private static final Set<Suit> SUITS = unmodifiableSet(new LinkedHashSet<>(asList(Suit.values())));
+    private static final Set<Suit> SUITS = unmodifiableSet(EnumSet.allOf(Suit.class));
 
     private static final Set<Card> STANDARD_DECK = unmodifiableSet(
-      RANKS.stream().flatMap(
-        rank -> SUITS.stream().map(
-          suit -> new Card(rank, suit)
-        )
-      ).collect(toCollection(() -> new LinkedHashSet<>(RANKS.size() * SUITS.size())))
+        RANKS.stream().flatMap(
+            rank -> SUITS.stream().map(
+                suit -> new Card(rank, suit)
+            )
+        ).collect(toCollection(() -> new LinkedHashSet<>(RANKS.size() * SUITS.size())))
     );
 
-    // Utility classes must not have a visible constructor.
-    private Cards() {
-    }
+    private Cards() {}
 
     /**
      * Gets all possible ranks a card can have.
@@ -58,8 +55,8 @@ final class Cards {
     /**
      * Gets a standard deck of cards.
      *
-     * @return an unmodifiable set containing all distinct cards that can be made using a combination of a {@link Rank}
-     * and a {@link Suit}.
+     * @return an unmodifiable set containing all distinct cards that can be made
+     *         using a combination of a {@link Rank} and a {@link Suit}.
      */
     static Set<Card> getStandardDeck() {
         return STANDARD_DECK;
