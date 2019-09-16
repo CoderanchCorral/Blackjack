@@ -3,6 +3,7 @@ branches:
   only:
   - master
   - /^releases[/].+$/
+  - test-multi-module-code-coverage
 addons:
   sonarcloud:
     organization: "coderanch-corral"
