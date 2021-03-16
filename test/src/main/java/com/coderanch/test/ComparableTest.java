@@ -23,7 +23,7 @@ import static org.junit.Assume.assumeThat;
 /**
  * Tests objects implementing the {@link Comparable} interface.
  */
-@SuppressWarnings({ "rawtypes", "unchecked", "squid:S00100" })
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class ComparableTest extends ObjectTest {
 
     /**
