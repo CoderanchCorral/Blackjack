@@ -8,6 +8,7 @@
 package com.coderanch.blackjack;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.coderanch.blackjack.Card.Rank;
 import com.coderanch.blackjack.Card.Suit;
@@ -19,6 +20,8 @@ import static java.util.stream.Collectors.toCollection;
  * Utility class containing useful operations related to playing cards.
  */
 final class Cards {
+
+    private static final Random RANDOM = new Random();
 
     private static final Set<Rank> RANKS = unmodifiableSet(EnumSet.allOf(Rank.class));
 
@@ -60,5 +63,23 @@ final class Cards {
      */
     static Set<Card> getStandardDeck() {
         return STANDARD_DECK;
+    }
+
+    static Stack<Card> getShuffledStandardDeck(){
+        return getStandardDeck().stream()
+                .map(c -> new CardPair(RANDOM.nextInt(10_000_000), c))
+                .sorted((o1, o2) -> Integer.compare(o1.position, o2.position))
+                .map(cp -> cp.card)
+                .collect(Collectors.toCollection(Stack::new));
+    }
+
+    private static class CardPair{
+        public final int position;
+        public final Card card;
+
+        private CardPair(int position, Card card) {
+            this.position = position;
+            this.card = card;
+        }
     }
 }
