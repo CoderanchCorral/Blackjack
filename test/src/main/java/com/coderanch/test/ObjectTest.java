@@ -24,7 +24,6 @@ import static org.junit.Assume.assumeThat;
 /**
  * Tests the common methods of all objects.
  */
-@SuppressWarnings("squid:S00100")
 public class ObjectTest {
 
     /**
