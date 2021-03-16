@@ -21,8 +21,6 @@ import static java.util.stream.Collectors.toCollection;
  */
 final class Cards {
 
-    private static final Random RANDOM = new Random();
-
     private static final Set<Rank> RANKS = unmodifiableSet(EnumSet.allOf(Rank.class));
 
     private static final Set<Suit> SUITS = unmodifiableSet(EnumSet.allOf(Suit.class));
@@ -56,7 +54,7 @@ final class Cards {
     }
 
     /**
-     * Gets a standard deck of cards.
+     * Gets a standard deck of cards. A standard deck contains all combinations of rank and suit
      *
      * @return an unmodifiable set containing all distinct cards that can be made
      *         using a combination of a {@link Rank} and a {@link Suit}.
@@ -65,21 +63,9 @@ final class Cards {
         return STANDARD_DECK;
     }
 
-    static Stack<Card> getShuffledStandardDeck(){
-        return getStandardDeck().stream()
-                .map(c -> new CardPair(RANDOM.nextInt(10_000_000), c))
-                .sorted((o1, o2) -> Integer.compare(o1.position, o2.position))
-                .map(cp -> cp.card)
-                .collect(Collectors.toCollection(Stack::new));
-    }
-
-    private static class CardPair{
-        public final int position;
-        public final Card card;
-
-        private CardPair(int position, Card card) {
-            this.position = position;
-            this.card = card;
-        }
+    static Set<Card> getShuffledStandardDeck(Random generator) {
+        List<Card> cards = new ArrayList<>(getStandardDeck());
+        Collections.shuffle(cards, generator);
+        return new LinkedHashSet<>(cards);
     }
 }

@@ -126,11 +126,11 @@ public final class CardsTest {
     }
 
     /**
-     * Tests that {@link Cards#getShuffledStandardDeck()} returns a set that contains all possible distinct cards that can be
+     * Tests that {@link Cards#getShuffledStandardDeck(Random)} returns a set that contains all possible distinct cards that can be
      * made using a combination of a {@link Rank} and a {@link Suit}.
      */
     @Theory
     public void getShuffledStandardDeck_returnsAllCombinationsOfRankAndSuit() {
-        assertThat(Cards.getShuffledStandardDeck().size(), is(equalTo(Rank.values().length * Suit.values().length)));
+        assertThat(Cards.getShuffledStandardDeck(new Random()).size(), is(equalTo(Rank.values().length * Suit.values().length)));
     }
 }
