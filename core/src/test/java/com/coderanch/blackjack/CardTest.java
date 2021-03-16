@@ -33,7 +33,6 @@ import static org.junit.Assume.assumeThat;
  * Tests the {@link Card} class.
  */
 @RunWith(Theories.class)
-@SuppressWarnings("squid:S00100")
 public final class CardTest extends ConsistentComparableTest {
 
     /**

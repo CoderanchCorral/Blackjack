@@ -21,7 +21,7 @@ import static org.junit.Assume.assumeThat;
 /**
  * Tests whether objects implementing the {@link Comparable} interface are consistent-with-equals.
  */
-@SuppressWarnings({ "rawtypes", "unchecked", "squid:S00100" })
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class ConsistentComparableTest extends ComparableTest {
 
     /**
