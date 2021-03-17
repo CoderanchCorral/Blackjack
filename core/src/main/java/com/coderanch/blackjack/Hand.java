@@ -6,6 +6,10 @@ import java.util.*;
  * A hand in a game of Blackjack.
  */
 public class Hand {
+
+    private static final int HIGHEST_SCORE = 21;
+    private static final int MAX_SCORE_COUNT = 2^4;
+
     private List<Card> cards = new ArrayList<>();
     private boolean isStopped;
     private Set<Integer> possibleScores;
@@ -30,13 +34,13 @@ public class Hand {
                 .filter(c -> c.values().length == 1)
                 .flatMapToInt(c -> Arrays.stream(c.values()))
                 .sum();
-        var scores = new ArrayDeque<Integer>(2^4);
+        var scores = new ArrayDeque<Integer>(MAX_SCORE_COUNT);
         scores.add(startingScore);
 
         cards.stream()
                 .filter(c -> c.values().length > 1)
-                .map(c -> c.values())
-                .forEach(nums ->{
+                .map(Card::values)
+                .forEach((int[] nums) ->{
                     var initialSize = scores.size();
                     for (int i = 0; i < initialSize; i++) {
                         var currentNum = scores.pop();
@@ -51,7 +55,7 @@ public class Hand {
     private int calculateBestScore() {
         return this.possibleScores.stream()
                 .sorted((o1, o2) -> Integer.compare(o2, o1))
-                .filter(i -> i <= 21)
+                .filter(i -> i <= HIGHEST_SCORE)
                 .findFirst()
                 .orElse(0);
     }
