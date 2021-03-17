@@ -63,7 +63,7 @@ public final class HandTest {
     public void stop_blocksNewCards() {
         var hand = new Hand();
         hand.stop();
-        assertThrows("Can't put new cards after stopping", RuntimeException.class,
+        assertThrows("Can't put new cards after stopping", IllegalArgumentException.class,
                 () -> hand.addCard(new Card(Rank.ACE, Suit.CLUBS)));
     }
 }

@@ -16,6 +16,7 @@ public class Hand {
 
     private static final int HIGHEST_SCORE = 21;
     private static final int MAX_SCORE_COUNT = 2^4;
+    private static final int HAND_SPLIT_CARD_MAX = 2;
 
     private List<Card> cards = new ArrayList<>();
     private boolean isStopped;
@@ -93,10 +94,10 @@ public class Hand {
      * @return whether the hand can be split or not.
      */
     public boolean canSplit() {
-        if(cards.size() != 2) {
+        if(cards.size() != HAND_SPLIT_CARD_MAX) {
             return false;
         }
-        return cards.get(0).rank().equals(cards.get(1).rank());
+        return cards.get(0).rank() == cards.get(1).rank();
     }
 
     /**
@@ -106,11 +107,21 @@ public class Hand {
      */
     public Hand split() {
         if(!this.canSplit()) {
-            throw new RuntimeException("This hand cannot be split.");
+            throw new IllegalHandSplitException("This hand cannot be split.");
         }
         var newHand = new Hand();
         newHand.addCard(this.cards.remove(1));
         this.refreshScore();
         return newHand;
+    }
+
+    /**
+     * When a hand that cannot split tries to split.
+     */
+    public static class IllegalHandSplitException extends RuntimeException {
+
+        public IllegalHandSplitException(String message) {
+            super(message);
+        }
     }
 }
