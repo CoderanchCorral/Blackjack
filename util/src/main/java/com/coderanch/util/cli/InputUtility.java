@@ -76,7 +76,7 @@ public class InputUtility {
             while(true) {
               var line = br.readLine();
                 try {
-                    var num = Integer.getInteger(line);
+                    var num = Integer.parseInt(line);
                     if(intPredicate.test(num)) {
                         return num;
                     }
@@ -128,7 +128,7 @@ public class InputUtility {
      * @throws IOException
      */
     public boolean nextYesNo(String prompt, Predicate<String> stringPredicate) throws IOException {
-        var result = this.nextString(prompt, yesOrNo()).toLowerCase();
+        var result = this.nextString(prompt, stringPredicate).trim().toLowerCase();
         if(YES.contains(result)) {
             return true;
         }
@@ -164,10 +164,10 @@ public class InputUtility {
     public static Predicate<String> yesOrNo() {
         return s -> {
             var cleanedString = s.trim().toLowerCase();
-            if(YES.contains(s)) {
+            if(YES.contains(cleanedString)) {
                 return true;
             }
-            else if(NO.contains(s)) {
+            else if(NO.contains(cleanedString)) {
                 return true;
             }
             return false;
