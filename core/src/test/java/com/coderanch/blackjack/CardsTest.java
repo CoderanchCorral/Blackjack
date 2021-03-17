@@ -131,7 +131,11 @@ public final class CardsTest {
     @Theory
     public void getShuffledStandardDeck_returnsAllCombinationsOfRankAndSuit() {
         var random = new FixedRandom(List.of(5,4,2,1,3));
-        assertThat("Check that the card count is correct after shuffling", Cards.getShuffledStandardDeck(random).size(), is(equalTo(Rank.values().length * Suit.values().length)));
+        assertThat(
+            "Standard deck must contain expected number of distinct cards.",
+            Cards.getShuffledStandardDeck(random).size(),
+            is(equalTo(Rank.values().length * Suit.values().length))
+        );
     }
 
     private static class FixedRandom extends Random {
