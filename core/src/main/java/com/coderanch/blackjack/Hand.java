@@ -32,6 +32,10 @@ public class Hand {
             throw new IllegalArgumentException("Hand is already stopped");
         }
         cards.add(card);
+        refreshScore();
+    }
+
+    private void refreshScore() {
         this.possibleScores = calculateScores();
         this.bestScore = calculateBestScore();
     }
@@ -81,5 +85,32 @@ public class Hand {
      */
     public void stop() {
         this.isStopped = true;
+    }
+
+    /**
+     * Gets whether whether the hand can be split or not.
+     *
+     * @return whether the hand can be split or not.
+     */
+    public boolean canSplit() {
+        if(cards.size() != 2) {
+            return false;
+        }
+        return cards.get(0).rank().equals(cards.get(1).rank());
+    }
+
+    /**
+     * Split the hand.
+     *
+     * @return the hand with the second card.
+     */
+    public Hand split() {
+        if(!this.canSplit()) {
+            throw new RuntimeException("This hand cannot be split.");
+        }
+        var newHand = new Hand();
+        newHand.addCard(this.cards.remove(1));
+        this.refreshScore();
+        return newHand;
     }
 }

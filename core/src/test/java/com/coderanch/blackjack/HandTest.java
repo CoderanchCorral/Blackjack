@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
 
 
 /**
@@ -19,7 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public final class HandTest {
 
     /**
-     * Tests that {@link Hand#addCard(Card)} ()} maintains the correct score
+     * Tests that {@link Hand#addCard(Card)} maintains the correct score
      */
     @Theory
     public void addCard_maintainsCorrectScore() {
@@ -40,4 +41,29 @@ public final class HandTest {
         assertThat(hand.bestScore(), is(equalTo(21)));
     }
 
+    /**
+     * Tests that {@link Hand#split()} splits correctly
+     */
+    @Theory
+    public void split_splitsCorrectly() {
+        var hand = new Hand();
+        hand.addCard(new Card(Rank.ACE, Suit.CLUBS));
+        hand.addCard(new Card(Rank.ACE, Suit.HEARTS));
+
+        var splitHand = hand.split();
+
+        assertThat("Contains only 1 ace", hand.bestScore(), is(equalTo(11)));
+        assertThat("Contains only 1 ace", splitHand.bestScore(), is(equalTo(11)));
+    }
+
+    /**
+     * Tests that {@link Hand#stop()} blocks new cards
+     */
+    @Theory
+    public void stop_blocksNewCards() {
+        var hand = new Hand();
+        hand.stop();
+        assertThrows("Can't put new cards after stopping", RuntimeException.class,
+                () -> hand.addCard(new Card(Rank.ACE, Suit.CLUBS)));
+    }
 }
