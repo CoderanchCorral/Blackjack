@@ -77,7 +77,9 @@ final class Card implements Comparable<Card> {
         return this.suit;
     }
 
-    int[] values() { return this.rank.points; }
+    int[] values() {
+        return this.rank.points;
+    }
 
     /**
      * Compares this card to another card.

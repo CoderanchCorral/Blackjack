@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2018 Coderanch.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 package com.coderanch.blackjack;
 
 import java.util.*;
@@ -65,7 +72,9 @@ public class Hand {
      *
      * @return the current best score.
      */
-    public int bestScore() { return this.bestScore; }
+    public int bestScore() {
+        return this.bestScore;
+    }
 
     /**
      * Stops the hand.  Cannot receive more cards.
