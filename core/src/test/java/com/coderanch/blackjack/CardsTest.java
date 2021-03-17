@@ -130,6 +130,28 @@ public final class CardsTest {
      */
     @Theory
     public void getShuffledStandardDeck_returnsAllCombinationsOfRankAndSuit() {
-        assertThat(Cards.getShuffledStandardDeck(new Random()).size(), is(equalTo(Rank.values().length * Suit.values().length)));
+        var random = new FixedRandom(List.of(5,4,2,1,3));
+        assertThat("Check that the card count is correct after shuffling", Cards.getShuffledStandardDeck(random).size(), is(equalTo(Rank.values().length * Suit.values().length)));
+    }
+
+    private static class FixedRandom extends Random {
+
+        private List<Integer> numbers;
+        private int layer = 1;
+        private int place = 0;
+
+        public FixedRandom(List<Integer> numbers) {
+            this.numbers = numbers;
+        }
+
+        @Override
+        public int nextInt(int bound) {
+            var next = numbers.get(place++) * layer;
+            if(place > numbers.size() - 1){
+                layer++;
+                place = 0;
+            }
+            return next % bound;
+        }
     }
 }

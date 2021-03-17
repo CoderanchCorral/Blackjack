@@ -8,7 +8,6 @@
 package com.coderanch.blackjack;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import com.coderanch.blackjack.Card.Rank;
 import com.coderanch.blackjack.Card.Suit;
@@ -54,7 +53,7 @@ final class Cards {
     }
 
     /**
-     * Gets a standard deck of cards. A standard deck contains all combinations of rank and suit
+     * Gets a standard deck of cards.
      *
      * @return an unmodifiable set containing all distinct cards that can be made
      *         using a combination of a {@link Rank} and a {@link Suit}.
@@ -63,6 +62,12 @@ final class Cards {
         return STANDARD_DECK;
     }
 
+    /**
+     * Gets a shuffled standard deck of cards.
+     *
+     * @param generator Random number generator
+     * @return a shuffled standard deck {@link Cards#getStandardDeck()}.
+     */
     static Set<Card> getShuffledStandardDeck(Random generator) {
         List<Card> cards = new ArrayList<>(getStandardDeck());
         Collections.shuffle(cards, generator);
