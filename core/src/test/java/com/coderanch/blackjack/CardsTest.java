@@ -125,22 +125,22 @@ public final class CardsTest {
     }
 
     /**
-     * Tests that {@link Cards#getShuffledStandardDeck(Random)} returns a set that contains all possible distinct cards that can be
-     * made using a combination of a {@link Rank} and a {@link Suit}.
+     * Tests that {@link Cards#getShuffledStandardDeck(Random)} returns a set that
+     * contains all possible distinct cards that can be made using a combination of a {@link Rank} and a {@link Suit}.
      */
     @Theory
     public void getShuffledStandardDeck_returnsAllCombinationsOfRankAndSuit() {
-        var random = new FixedRandom(List.of(5,4,2,1,3));
+        var random = new FixedRandom(List.of(5, 4, 2, 1, 3));
         assertThat(
-            "Standard deck must contain expected number of distinct cards.",
-            Cards.getShuffledStandardDeck(random).size(),
-            is(equalTo(Rank.values().length * Suit.values().length))
+                "Standard deck must contain expected number of distinct cards.",
+                Cards.getShuffledStandardDeck(random).size(),
+                is(equalTo(Rank.values().length * Suit.values().length))
         );
     }
 
     private static class FixedRandom extends Random {
 
-        private List<Integer> numbers;
+        private final List<Integer> numbers;
         private int layer = 1;
         private int place = 0;
 
@@ -151,7 +151,7 @@ public final class CardsTest {
         @Override
         public int nextInt(int bound) {
             var next = numbers.get(place++) * layer;
-            if(place > numbers.size() - 1){
+            if (place > numbers.size() - 1) {
                 layer++;
                 place = 0;
             }
