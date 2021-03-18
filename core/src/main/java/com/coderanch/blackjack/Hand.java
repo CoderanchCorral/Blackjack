@@ -12,74 +12,89 @@ import java.util.*;
 /**
  * A hand in a game of Blackjack.
  */
-public class Hand {
+final class Hand {
 
-    private static final int HIGHEST_SCORE = 21;
-    private static final int MAX_SCORE_COUNT = 2^4;
+    /**
+     * Highest score in Blackjack.
+     */
+    private static final int MAX_LEGAL_SCORE = 21;
 
-    private List<Card> cards = new ArrayList<>();
-    private boolean isStopped;
-    private Set<Integer> possibleScores;
+    /**
+     * Max amount of aces
+     */
+    private static final int MAX_SCORE_COUNT = 4;
+
+
+    private List<Card> cards;
+    private List<Integer> possibleScores;
     private int bestScore;
 
     /**
-     * Adds a card to the hand.
+     * Creates a new hand.
      *
-     * @param card the card being added to the hand.
+     * @param card first card dealt.
+     * @param card2 second card dealt
      */
-    public void addCard(Card card) {
-        if(isStopped){
-            throw new IllegalArgumentException("Hand is already stopped");
-        }
-        cards.add(card);
+    public Hand(Card card, Card card2) {
+        this(List.of(card, card2));
+    }
+
+    private Hand(List<Card> cards) {
+        this.cards = cards;
         this.possibleScores = calculateScores();
         this.bestScore = calculateBestScore();
     }
 
-    private Set<Integer> calculateScores() {
+    /**
+     * Gets a new hand with the extra card.
+     *
+     * @param card the card being added to the hand.
+     * @return a new hand with the extra card.
+     */
+    public Hand withAdditionalCard(Card card) {
+        var newCards = new ArrayList<Card>(this.cards);
+        newCards.add(card);
+        return new Hand(newCards);
+    }
+
+    private List<Integer> calculateScores() {
         var startingScore = cards.stream()
-                .filter(c -> c.values().length == 1)
-                .flatMapToInt(c -> Arrays.stream(c.values()))
+                .filter(c -> c.rank() != Card.Rank.ACE)
+                .mapToInt(c -> c.points())
                 .sum();
-        var scores = new ArrayDeque<Integer>(MAX_SCORE_COUNT);
+
+        var scores = new ArrayList<Integer>(MAX_SCORE_COUNT);
         scores.add(startingScore);
 
         cards.stream()
-                .filter(c -> c.values().length > 1)
-                .map(Card::values)
-                .forEach((int[] nums) ->{
+                .filter(c -> c.rank() == Card.Rank.ACE)
+                .forEach(c ->{
                     var initialSize = scores.size();
                     for (int i = 0; i < initialSize; i++) {
-                        var currentNum = scores.pop();
-                        for (int j = 0; j < nums.length; j++) {
-                            scores.addLast(currentNum + nums[j]);
+                        var score = scores.get(i);
+                        scores.set(i, score + 1);
+                        if(i + 1 == initialSize){
+                            scores.add(score + c.points());
                         }
                     }
                 });
-        return new LinkedHashSet<>(scores);
+        return scores;
     }
 
     private int calculateBestScore() {
         return this.possibleScores.stream()
                 .sorted((o1, o2) -> Integer.compare(o2, o1))
-                .filter(i -> i <= HIGHEST_SCORE)
+                .filter(i -> i <= MAX_LEGAL_SCORE)
                 .findFirst()
                 .orElse(0);
     }
 
     /**
-     * Gets the current best score.
+     * Gets the best score.
      *
-     * @return the current best score.
+     * @return the best score.
      */
     public int bestScore() {
         return this.bestScore;
-    }
-
-    /**
-     * Stops the hand.  Cannot receive more cards.
-     */
-    public void stop() {
-        this.isStopped = true;
     }
 }

@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2018 Coderanch.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 package com.coderanch.blackjack;
 
 import com.coderanch.blackjack.Card.Rank;
@@ -19,25 +26,20 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public final class HandTest {
 
     /**
-     * Tests that {@link Hand#addCard(Card)} ()} maintains the correct score
+     * Tests that {@link Hand#withAdditionalCard(Card)}  maintains the correct score
      */
     @Theory
     public void addCard_maintainsCorrectScore() {
-        var hand = new Hand();
-        hand.addCard(new Card(Rank.ACE, Suit.CLUBS));
-        assertThat(hand.bestScore(), is(equalTo(11)));
-
-        hand.addCard(new Card(Rank.ACE, Suit.CLUBS));
+        var hand = new Hand(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.CLUBS));
         assertThat(hand.bestScore(), is(equalTo(12)));
 
-        hand.addCard(new Card(Rank.KING, Suit.CLUBS));
+        hand = hand.withAdditionalCard(new Card(Rank.KING, Suit.CLUBS));
         assertThat(hand.bestScore(), is(equalTo(12)));
 
-        hand.addCard(new Card(Rank.EIGHT, Suit.CLUBS));
+        hand = hand.withAdditionalCard(new Card(Rank.EIGHT, Suit.CLUBS));
         assertThat(hand.bestScore(), is(equalTo(20)));
 
-        hand.addCard(new Card(Rank.ACE, Suit.CLUBS));
+        hand = hand.withAdditionalCard(new Card(Rank.ACE, Suit.CLUBS));
         assertThat(hand.bestScore(), is(equalTo(21)));
     }
-
 }
