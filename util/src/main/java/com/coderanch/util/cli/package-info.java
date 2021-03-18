@@ -7,6 +7,6 @@
  */
 
 /**
- * Custom Hamcrest matchers to use in parameter checking or unit tests.
+ * Utilities for a cli.
  */
 package com.coderanch.util.cli;
