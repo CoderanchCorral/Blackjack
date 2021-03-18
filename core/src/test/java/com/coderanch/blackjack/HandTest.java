@@ -10,9 +10,12 @@ package com.coderanch.blackjack;
 import com.coderanch.blackjack.Card.Rank;
 import com.coderanch.blackjack.Card.Suit;
 
+import com.coderanch.test.ConsistentComparableTest;
+import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
@@ -22,6 +25,7 @@ import java.util.Set;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThrows;
 
 
 /**
@@ -35,37 +39,43 @@ public final class HandTest {
      */
     @DataPoints
     public static final List<HandTestArgument> HANDS =
-           List.of(
-                   new HandTestArgument(
-                           List.of(new Card(Rank.ACE, Suit.CLUBS),
-                                   new Card(Rank.ACE, Suit.CLUBS),
-                                   new Card(Rank.KING, Suit.CLUBS),
-                                   new Card(Rank.EIGHT, Suit.CLUBS),
-                                   new Card(Rank.ACE, Suit.CLUBS)),
-                           21
-                   ),
+            List.of(
+                    new HandTestArgument(
+                            List.of(new Card(Rank.ACE, Suit.CLUBS),
+                                    new Card(Rank.ACE, Suit.CLUBS),
+                                    new Card(Rank.KING, Suit.CLUBS),
+                                    new Card(Rank.EIGHT, Suit.CLUBS),
+                                    new Card(Rank.ACE, Suit.CLUBS)),
+                            21
+                    ),
 
-                   new HandTestArgument(
-                           List.of(new Card(Rank.QUEEN, Suit.CLUBS),
-                                   new Card(Rank.EIGHT, Suit.CLUBS)),
-                           18
-                   ),
+                    new HandTestArgument(
+                            List.of(new Card(Rank.QUEEN, Suit.CLUBS),
+                                    new Card(Rank.EIGHT, Suit.CLUBS)),
+                            18
+                    ),
 
-                   new HandTestArgument(
-                           List.of(new Card(Rank.QUEEN, Suit.CLUBS),
-                                   new Card(Rank.ACE, Suit.CLUBS)),
-                           21
-                   ),
+                    new HandTestArgument(
+                            List.of(new Card(Rank.QUEEN, Suit.CLUBS),
+                                    new Card(Rank.ACE, Suit.CLUBS)),
+                            21
+                    ),
 
-                   new HandTestArgument(
-                           List.of(new Card(Rank.KING, Suit.CLUBS),
-                                   new Card(Rank.KING, Suit.CLUBS),
-                                   new Card(Rank.KING, Suit.CLUBS),
-                                   new Card(Rank.KING, Suit.CLUBS),
-                                   new Card(Rank.KING, Suit.CLUBS)),
-                           0
-                   )
-           );
+                    new HandTestArgument(
+                            List.of(new Card(Rank.KING, Suit.CLUBS),
+                                    new Card(Rank.KING, Suit.CLUBS),
+                                    new Card(Rank.KING, Suit.CLUBS),
+                                    new Card(Rank.KING, Suit.CLUBS),
+                                    new Card(Rank.KING, Suit.CLUBS)),
+                            0
+                    )
+            );
+
+    /**
+     * Cards to test.
+     */
+    @DataPoints("objects")
+    public static final Set<Card> CARDS = Cards.getStandardDeck();
 
     /**
      * Tests that {@link Hand#withAdditionalCard(Card)} maintains the correct score
@@ -88,4 +98,41 @@ public final class HandTest {
             this.targetScore = targetScore;
         }
     }
+
+    /**
+     * Tests that passing {@code null} for {@code card} when constructing a new hand causes an exception to be thrown.
+     *
+     * @param card the card to construct the hand with.
+     */
+    @Theory(nullsAccepted = false)
+    public void newHand_withNullCard1_throwsException(Card card) {
+        assertThrows(NullPointerException.class, () -> {
+            new Hand(null, card);
+        });
+    }
+
+    /**
+     * Tests that passing {@code null} for {@code card} when constructing a new hand causes an exception to be thrown.
+     *
+     * @param card the card to construct the hand with.
+     */
+    @Theory(nullsAccepted = false)
+    public void newHand_withNullCard2_throwsException(Card card) {
+        assertThrows(NullPointerException.class, () -> {
+            new Hand(card, null);
+        });
+    }
+
+    /**
+     * Tests that passing {@code null} for {@code card} when adding a new card causes an exception to be thrown.
+     */
+    @Theory
+    public void addCard_withNullCard_throwsException() {
+        var hand = new Hand(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.CLUBS));
+        assertThrows(IllegalArgumentException.class, () -> {
+            hand.withAdditionalCard(null);
+        });
+    }
+
+
 }
