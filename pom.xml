@@ -48,6 +48,8 @@
         <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
         <sonar.organization>coderanch-corral</sonar.organization>
         <sonar.projectKey>com.coderanch:blackjack-parent</sonar.projectKey>
+        <sonar.pullrequest.provider>GitHub</sonar.pullrequest.provider>
+        <sonar.pullrequest.github.repository>CoderanchCorral/Blackjack</sonar.pullrequest.github.repository>
     </properties>
 
     <dependencyManagement>
