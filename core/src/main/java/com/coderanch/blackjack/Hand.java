@@ -23,12 +23,6 @@ final class Hand {
      */
     private static final int MAX_LEGAL_SCORE = 21;
 
-    /**
-     * Max amount of aces
-     */
-    private static final int MAX_SCORE_COUNT = 4;
-
-
     private final List<Card> cards;
     private List<Integer> possibleScores;
     private int bestScore;
@@ -71,7 +65,7 @@ final class Hand {
                 .mapToInt(Card::points)
                 .sum();
 
-        var scores = new ArrayList<Integer>(MAX_SCORE_COUNT);
+        var scores = new ArrayList<Integer>(Card.Suit.values().length);
         scores.add(startingScore);
 
         cards.stream()
