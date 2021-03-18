@@ -10,11 +10,11 @@ package com.coderanch.test;
 import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theory;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-import static org.junit.Assert.assertThat;
 import static org.junit.Assume.assumeNoException;
 import static org.junit.Assume.assumeThat;
 
@@ -32,6 +32,7 @@ public class ConsistentComparableTest extends ComparableTest {
      * @param y the object to compare to {@code x}.
      */
     @Theory(nullsAccepted = false)
+    @SuppressWarnings("checkstyle:methodname")
     public final void compareTo_withEqualObjects_returnsZero(
         @FromDataPoints("objects") Comparable x,
         @FromDataPoints("objects") Comparable y
@@ -48,6 +49,7 @@ public class ConsistentComparableTest extends ComparableTest {
      * @param y the object to compare to {@code x}.
      */
     @Theory(nullsAccepted = false)
+    @SuppressWarnings("checkstyle:methodname")
     public final void compareTo_withUnequalObjects_neverReturnsZero(
         @FromDataPoints("objects") Comparable x,
         @FromDataPoints("objects") Comparable y

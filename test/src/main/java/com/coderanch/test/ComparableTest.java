@@ -12,11 +12,12 @@ import org.junit.experimental.theories.Theory;
 
 import static java.lang.Integer.signum;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assume.assumeNoException;
 import static org.junit.Assume.assumeThat;
 
@@ -32,6 +33,7 @@ public class ComparableTest extends ObjectTest {
      * @param x the object under test.
      */
     @Theory(nullsAccepted = false)
+    @SuppressWarnings("checkstyle:methodname")
     public final void compareTo_isReflexive(
         @FromDataPoints("objects") Comparable x
     ) {
@@ -45,6 +47,7 @@ public class ComparableTest extends ObjectTest {
      * @param y the object to compare to {@code x}.
      */
     @Theory(nullsAccepted = false)
+    @SuppressWarnings("checkstyle:methodname")
     public final void compareTo_isSymmetric(
         @FromDataPoints("objects") Comparable x,
         @FromDataPoints("objects") Comparable y
@@ -65,6 +68,7 @@ public class ComparableTest extends ObjectTest {
      * @param y the object to compare to {@code x}.
      */
     @Theory
+    @SuppressWarnings("checkstyle:methodname")
     public final void compareTo_throwingException_isSymmetric(
         @FromDataPoints("objects") Comparable x,
         @FromDataPoints("objects") Comparable y
@@ -74,13 +78,7 @@ public class ComparableTest extends ObjectTest {
         }
 
         catch (RuntimeException ex) {
-            thrown.expect(ex.getClass());
-            y.compareTo(x);
-
-            // The previous comparison MUST throw the same exception as the one caught.
-            // If it does not, that indicates a failed test.
-            // Instead of calling Assert.fail(), we wrap and rethrow the original exception to preserve the stack trace.
-            throw new AssertionError(ex);
+            assertThrows(ex.getClass(), () -> y.compareTo(x));
         }
     }
 
@@ -92,6 +90,7 @@ public class ComparableTest extends ObjectTest {
      * @param z the object to compare to {@code x} and {@code y}.
      */
     @Theory(nullsAccepted = false)
+    @SuppressWarnings("checkstyle:methodname")
     public final void compareTo_isTransitive(
         @FromDataPoints("objects") Comparable x,
         @FromDataPoints("objects") Comparable y,

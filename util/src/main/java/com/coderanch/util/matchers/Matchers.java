@@ -27,7 +27,7 @@ import static org.hamcrest.Matchers.nullValue;
  */
 public final class Matchers {
 
-    private Matchers() {}
+    private Matchers() { }
 
     /**
      * Creates a type-safe matcher from a description and a predicate.
@@ -87,7 +87,7 @@ public final class Matchers {
      * Returns a matcher that matches when the examined array does not contain {@code null}.
      *
      * @param <E> the element type of the array that will be matched.
-     * 
+     *
      * @return a matcher that returns {@code true} when the examined array does not contain {@code null}.
      */
     public static <E> Matcher<E[]> arrayWithoutNull() {
