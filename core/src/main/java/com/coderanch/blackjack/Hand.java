@@ -29,7 +29,7 @@ final class Hand {
     private static final int MAX_SCORE_COUNT = 4;
 
 
-    private List<Card> cards;
+    private final List<Card> cards;
     private List<Integer> possibleScores;
     private int bestScore;
 
