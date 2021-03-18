@@ -170,8 +170,8 @@ public final class CardTest extends ConsistentComparableTest {
     @SuppressWarnings("checkstyle:methodname")
     public void toString_containsRankAndSuit(Card card) {
         assertThat(card, hasToString(both(
-          containsString(card.rank().toString())).and(
-          containsString(card.suit().toString()))
+            containsString(card.rank().toString())).and(
+            containsString(card.suit().toString()))
         ));
     }
 }

@@ -64,7 +64,7 @@ final class Card implements Comparable<Card> {
      * @return the rank of this card; never {@code null}.
      */
     Rank rank() {
-      return this.rank;
+        return this.rank;
     }
 
     /**
