@@ -182,13 +182,11 @@ public final class InputUtility {
      * @return a String predicate that takes two or more Strings and tests whether any one of them match the input.
      */
     public static Predicate<? super String> oneOfThese(String... these) {
-        return s -> {
-            var result = Arrays.stream(these)
-                    .filter(option -> option.equalsIgnoreCase(s))
-                    .findFirst()
-                    .orElse(null);
-            return result != null;
-        };
+        if (these.length < 2) {
+            throw new IllegalArgumentException("Must be two or more Strings.");
+        }
+        return s -> Arrays.stream(these)
+                .anyMatch(s::equalsIgnoreCase);
     }
 
     /**
@@ -199,6 +197,9 @@ public final class InputUtility {
      * @return an int predicate that tests whether the input is between the two limits.
      */
     public static Predicate<Integer> intRange(int lower, int upper) {
+        if (lower > upper) {
+            throw new IllegalArgumentException("Lower must be less than upper.");
+        }
         return i -> {
             if (i >= upper) {
                 return false;
@@ -215,6 +216,9 @@ public final class InputUtility {
      * @return a double predicate that tests whether the input is between the two limits.
      */
     public static Predicate<Double> doubleRange(double lower, double upper) {
+        if (lower > upper) {
+            throw new IllegalArgumentException("Lower must be less than upper.");
+        }
         return d -> {
             if (d >= upper) {
                 return false;
