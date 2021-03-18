@@ -60,7 +60,7 @@ final class Hand {
     private List<Integer> calculateScores() {
         var startingScore = cards.stream()
                 .filter(c -> c.rank() != Card.Rank.ACE)
-                .mapToInt(c -> c.points())
+                .mapToInt(Card::points)
                 .sum();
 
         var scores = new ArrayList<Integer>(MAX_SCORE_COUNT);
@@ -68,7 +68,7 @@ final class Hand {
 
         cards.stream()
                 .filter(c -> c.rank() == Card.Rank.ACE)
-                .forEach(c ->{
+                .forEach((Card c) ->{
                     var initialSize = scores.size();
                     for (int i = 0; i < initialSize; i++) {
                         var score = scores.get(i);
