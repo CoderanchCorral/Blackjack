@@ -7,8 +7,6 @@
  */
 package com.coderanch.blackjack;
 
-import java.util.*;
-
 import com.coderanch.blackjack.Card.Rank;
 import com.coderanch.blackjack.Card.Suit;
 
@@ -38,7 +36,7 @@ public final class CardsTest {
     @Theory
     @SuppressWarnings("checkstyle:methodname")
     public void getAllRanks_returnsSetWithoutNull() {
-        assertThat(Cards.getAllRanks(), not(contains(nullValue())));
+        assertThat("getAllRanks() may not contain null.", Cards.getAllRanks(), not(contains(nullValue())));
     }
 
     /**
@@ -47,10 +45,11 @@ public final class CardsTest {
     @Theory
     @SuppressWarnings("checkstyle:methodname")
     public void getAllRanks_returnsUnmodifiableSet() {
-        Set<Rank> allRanks = Cards.getAllRanks();
+        var allRanks = Cards.getAllRanks();
+        var rankToAdd = Rank.values()[0];
 
-        assertThrows(UnsupportedOperationException.class, () -> {
-            allRanks.add(Rank.values()[0]);
+        assertThrows("getAllRanks() must be unmodifiable.", UnsupportedOperationException.class, () -> {
+            allRanks.add(rankToAdd);
         });
     }
 
@@ -60,7 +59,7 @@ public final class CardsTest {
     @Theory
     @SuppressWarnings("checkstyle:methodname")
     public void getAllRanks_returnsAllRanks() {
-        assertThat(Cards.getAllRanks(), containsInAnyOrder(Rank.values()));
+        assertThat("getAllRanks() must contain all ranks.", Cards.getAllRanks(), containsInAnyOrder(Rank.values()));
     }
 
     /**
@@ -69,7 +68,7 @@ public final class CardsTest {
     @Theory
     @SuppressWarnings("checkstyle:methodname")
     public void getAllSuits_returnsSetWithoutNull() {
-        assertThat(Cards.getAllSuits(), not(contains(nullValue())));
+        assertThat("getAllSuits() may not contain null.", Cards.getAllSuits(), not(contains(nullValue())));
     }
 
     /**
@@ -78,10 +77,11 @@ public final class CardsTest {
     @Theory
     @SuppressWarnings("checkstyle:methodname")
     public void getAllSuits_returnsUnmodifiableSet() {
-        Set<Suit> allSuits = Cards.getAllSuits();
+        var allSuits = Cards.getAllSuits();
+        var suitToAdd = Suit.values()[0];
 
-        assertThrows(UnsupportedOperationException.class, () -> {
-            allSuits.add(Suit.values()[0]);
+        assertThrows("getAllSuits() must be unmodifiable.", UnsupportedOperationException.class, () -> {
+            allSuits.add(suitToAdd);
         });
     }
 
@@ -91,7 +91,7 @@ public final class CardsTest {
     @Theory
     @SuppressWarnings("checkstyle:methodname")
     public void getAllSuits_returnsAllSuits() {
-        assertThat(Cards.getAllSuits(), containsInAnyOrder(Suit.values()));
+        assertThat("getAllSuits() must contain all suits.", Cards.getAllSuits(), containsInAnyOrder(Suit.values()));
     }
 
     /**
@@ -100,7 +100,7 @@ public final class CardsTest {
     @Theory
     @SuppressWarnings("checkstyle:methodname")
     public void getStandardDeck_returnsSetWithoutNull() {
-        assertThat(Cards.getStandardDeck(), not(contains(nullValue())));
+        assertThat("getStandardDeck() may not contain null.", Cards.getStandardDeck(), not(contains(nullValue())));
     }
 
     /**
@@ -109,10 +109,11 @@ public final class CardsTest {
     @Theory
     @SuppressWarnings("checkstyle:methodname")
     public void getStandardDeck_returnsUnmodifiableSet() {
-        Set<Card> standardDeck = Cards.getStandardDeck();
+        var standardDeck = Cards.getStandardDeck();
+        var cardToAdd = new Card(Rank.values()[0], Suit.values()[0]);
 
-        assertThrows(UnsupportedOperationException.class, () -> {
-            standardDeck.add(new Card(Rank.values()[0], Suit.values()[0]));
+        assertThrows("getStandardDeck() must be unmodifiable.", UnsupportedOperationException.class, () -> {
+            standardDeck.add(cardToAdd);
         });
     }
 
@@ -123,6 +124,10 @@ public final class CardsTest {
     @Theory
     @SuppressWarnings("checkstyle:methodname")
     public void getStandardDeck_returnsAllCombinationsOfRankAndSuit() {
-        assertThat(Cards.getStandardDeck().size(), is(equalTo(Rank.values().length * Suit.values().length)));
+        assertThat(
+            "getStandardDeck() must contain all combinations of a rank and suit.",
+            Cards.getStandardDeck().size(),
+            is(equalTo(Rank.values().length * Suit.values().length))
+        );
     }
 }
