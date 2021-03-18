@@ -1,6 +1,5 @@
 package com.coderanch.util.cli;
 
-import junit.framework.TestCase;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -11,6 +10,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.function.Predicate;
 
 /**
  * Tests the {@link InputUtility} class.
@@ -20,84 +21,74 @@ public class InputUtilityTest {
 
 
     /**
-     * @throws IOException
+     * Tests that {@link InputUtility#nextString(String, Predicate)} returns the expected value.
      */
     @Theory()
     public void nextString_validatesCorrectInput() throws IOException {
-        var testCase = "input";
-        try (var s = new ByteArrayInputStream(testCase.getBytes())) {
-            var iu = new InputUtility(s);
-            var result = iu.nextString("prompt", s1 -> s1.equals(testCase));
-            assertThat("Matches testCase", testCase, is(equalTo(result)));
-        }
+        withInput("input", inputUtility -> {
+            var string = inputUtility.nextString("prompt", s -> true);
+            assertThat("Next string must match expected value.", string, is("input"));
+        });
     }
 
     /**
-     * @throws IOException
+     * Tests that {@link InputUtility#nextInt(String, Predicate)} returns the expected value.
      */
     @Theory()
     public void nextInt_validatesCorrectInput() throws IOException {
-        var testCase = "1";
-        try (var s = new ByteArrayInputStream(testCase.getBytes())) {
-            var iu = new InputUtility(s);
-            var result = iu.nextInt("prompt", n -> n == 1);
-            assertThat("Matches testCase", Integer.parseInt(testCase), is(equalTo(result)));
-        }
+        withInput("1", inputUtility -> {
+            var integer = inputUtility.nextInt("prompt", i -> true);
+            assertThat("Next int must match expected value.", integer, is(1));
+        });
     }
 
     /**
-     * @throws IOException
+     * Tests that {@link InputUtility#nextDouble(String, Predicate)} returns the expected value.
      */
     @Theory()
     public void nextDouble_validatesCorrectInput() throws IOException {
-        var testCase = "2.2";
-        try (var s = new ByteArrayInputStream(testCase.getBytes())) {
-            var iu = new InputUtility(s);
-            var result = iu.nextDouble("prompt", n -> n == 2.2d);
-            assertThat("Matches testCase", Double.parseDouble(testCase), is(equalTo(result)));
-        }
+        withInput("2.2", inputUtility -> {
+            var dble = inputUtility.nextDouble("prompt", d -> true);
+            assertThat("Next int must match expected value.", dble, is(2.2));
+        });
     }
 
     /**
-     * @throws IOException
+     * Tests that {@link InputUtility#nextYesNo(String, Predicate)} returns the expected value.
      */
     @Theory()
     public void nextYesNo_validatesYesCorrectly() throws IOException {
-        var testCase = " yEs ";
-        try (var s = new ByteArrayInputStream(testCase.getBytes())) {
-            var iu = new InputUtility(s);
-            var result = iu.nextYesNo("prompt", InputUtility.yesOrNo());
-            assertThat("Matches testCase", true, is(equalTo(result)));
-        }
+        withInput(" yEs ", inputUtility -> {
+            var bool = inputUtility.nextYesNo("prompt", InputUtility.yesOrNo());
+            assertThat("Next yesNo must match expected value.", bool, is(true));
+        });
     }
 
     /**
-     * @throws IOException
+     * Tests that {@link InputUtility#nextYesNo(String, Predicate)} returns the expected value.
      */
     @Theory()
     public void nextYesNo_validatesNoCorrectly() throws IOException {
-        var testCase = "NO";
-        try (var s = new ByteArrayInputStream(testCase.getBytes())) {
-            var iu = new InputUtility(s);
-            var result = iu.nextYesNo("prompt", InputUtility.yesOrNo());
-            assertThat("Matches testCase", false, is(equalTo(result)));
-        }
+        withInput("NO", inputUtility -> {
+            var bool = inputUtility.nextYesNo("prompt", InputUtility.yesOrNo());
+            assertThat("Next yesNo must match expected value.", bool, is(false));
+        });
     }
 
     /**
-     * @throws IOException
+     * Tests that {@link InputUtility#pause()} works.
      */
     @Theory()
     public void pause_validatesCorrectly() throws IOException {
         var testCase = ".";
         try (var s = new ByteArrayInputStream(testCase.getBytes())) {
-            var iu = new InputUtility(s);
+            var iu = new InputUtility(s, StandardCharsets.UTF_8);
             iu.pause();
         }
     }
 
     /**
-     * @throws IOException
+     * Tests that {@link InputUtility#yesOrNo()} returns the expected value.
      */
     @Theory()
     public void yesOrNo_validatesCorrectly() throws IOException {
@@ -114,13 +105,42 @@ public class InputUtilityTest {
         assertThat("Matches correctly", true, is(equalTo(result4)));
     }
 
+    /**
+     * Tests that {@link InputUtility#oneOfThese(String...)} returns the expected value.
+     */
+    @Theory()
+    public void oneOfThese_validatesCorrectly() throws IOException {
 
-    public void testOneOfThese() {
     }
 
-    public void testIntRange() {
+    /**
+     * Tests that {@link InputUtility#intRange(int, int)} returns the expected value.
+     */
+    @Theory()
+    public void intRange_validatesCorrectly() throws IOException {
     }
 
-    public void testDoubleRange() {
+    /**
+     * Tests that {@link InputUtility#doubleRange(double, double)} returns the expected value.
+     */
+    @Theory()
+    public void doubleRange_validatesCorrectly() throws IOException {
+    }
+
+    private static <X extends Throwable> void withInput(
+            String input,
+            ExceptionalConsumer<? super InputUtility, X> action
+    ) throws IOException, X {
+        try (var stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8))) {
+            var inputUtility = new InputUtility(stream, StandardCharsets.UTF_8);
+            action.accept(inputUtility);
+        }
+    }
+
+    @FunctionalInterface
+    private static interface ExceptionalConsumer<T, X extends Throwable> {
+
+        void accept(T argument) throws X;
+
     }
 }

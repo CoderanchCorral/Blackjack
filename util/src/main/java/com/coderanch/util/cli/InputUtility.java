@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,12 +24,13 @@ public final class InputUtility {
     private static final List<String> NO = Collections.unmodifiableList(List.of("n", "no"));
 
     private final InputStream inputStream;
+    private final Charset charset;
 
     /**
      * If no input stream is provided, System.in will be used.
      */
     public InputUtility() {
-        this(System.in);
+        this(System.in, StandardCharsets.UTF_8);
     }
 
     /**
@@ -35,8 +38,9 @@ public final class InputUtility {
      *
      * @param inputStream input stream to be used.
      */
-    public InputUtility(InputStream inputStream) {
+    public InputUtility(InputStream inputStream, Charset charset) {
         this.inputStream = inputStream;
+        this.charset = charset;
     }
 
     /**
@@ -45,11 +49,11 @@ public final class InputUtility {
      * @param prompt          the prompt to display to the user.
      * @param stringPredicate the predicate to use for validation.
      * @return a possibly validated String.
-     * @throws IOException
+     * @throws IOException when there's a problem with {@link InputStream}
      */
-    public String nextString(String prompt, Predicate<String> stringPredicate) throws IOException {
+    public String nextString(String prompt, Predicate<? super String> stringPredicate) throws IOException {
         System.out.println(prompt);
-        try (var br = new BufferedReader(new InputStreamReader(inputStream))) {
+        try (var br = new BufferedReader(new InputStreamReader(inputStream, charset))) {
             while (true) {
                 var line = br.readLine();
                 if (stringPredicate.test(line)) {
@@ -67,11 +71,11 @@ public final class InputUtility {
      * @param prompt       the prompt to display to the user.
      * @param intPredicate the predicate to use for validation.
      * @return a possibly validated integer.
-     * @throws IOException
+     * @throws IOException when there's a problem with {@link InputStream}
      */
     public int nextInt(String prompt, Predicate<Integer> intPredicate) throws IOException {
         System.out.println(prompt);
-        try (var br = new BufferedReader(new InputStreamReader(inputStream))) {
+        try (var br = new BufferedReader(new InputStreamReader(inputStream, charset))) {
             while (true) {
                 var line = br.readLine();
                 try {
@@ -94,11 +98,11 @@ public final class InputUtility {
      * @param prompt          the prompt to display to the user.
      * @param doublePredicate the predicate to use for validation.
      * @return a possibly validated real number.
-     * @throws IOException
+     * @throws IOException when there's a problem with {@link InputStream}
      */
     public double nextDouble(String prompt, Predicate<Double> doublePredicate) throws IOException {
         System.out.println(prompt);
-        try (var br = new BufferedReader(new InputStreamReader(inputStream))) {
+        try (var br = new BufferedReader(new InputStreamReader(inputStream, charset))) {
             while (true) {
                 var line = br.readLine();
                 try {
@@ -122,9 +126,9 @@ public final class InputUtility {
      * @param prompt          the prompt to display to the user.
      * @param stringPredicate the predicate to use for validation.
      * @return true for yes and false for no.
-     * @throws IOException
+     * @throws IOException when there's a problem with {@link InputStream}
      */
-    public boolean nextYesNo(String prompt, Predicate<String> stringPredicate) throws IOException {
+    public boolean nextYesNo(String prompt, Predicate<? super String> stringPredicate) throws IOException {
         var result = this.nextString(prompt, stringPredicate).trim().toLowerCase();
         return YES.contains(result);
     }
@@ -133,7 +137,7 @@ public final class InputUtility {
      * Calls {@link InputUtility#pause(String)}.
      * The prompt defaults to "Press when ready".
      *
-     * @throws IOException
+     * @throws IOException when there's a problem with {@link InputStream}
      */
     public void pause() throws IOException {
         pause("Press when ready");
@@ -144,7 +148,7 @@ public final class InputUtility {
      * Uses prompt entered and waits for the user to press ".".
      *
      * @param prompt the prompt to display to the user.
-     * @throws IOException
+     * @throws IOException when there's a problem with {@link InputStream}
      */
     public void pause(String prompt) throws IOException {
         this.nextString(prompt, s -> s.trim().equals("."));
@@ -155,7 +159,7 @@ public final class InputUtility {
      *
      * @return a String predicate that tests for (case insensitive) "y", "n", "yes", "no".
      */
-    public static Predicate<String> yesOrNo() {
+    public static Predicate<? super String> yesOrNo() {
         return s -> {
             var cleanedString = s.trim().toLowerCase();
             if (YES.contains(cleanedString)) {
@@ -170,7 +174,7 @@ public final class InputUtility {
      * @param these the strings for the input to match to.
      * @return a String predicate that takes two or more Strings and tests whether any one of them match the input.
      */
-    public static Predicate<String> oneOfThese(String... these) {
+    public static Predicate<? super String> oneOfThese(String... these) {
         return s -> {
             var result = Arrays.stream(these)
                     .filter(option -> option.equalsIgnoreCase(s))
