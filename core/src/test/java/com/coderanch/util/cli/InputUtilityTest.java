@@ -25,9 +25,9 @@ public class InputUtilityTest {
     @Theory()
     public void nextString_validatesCorrectInput() throws IOException {
         var testCase = "input";
-        try(var s = new ByteArrayInputStream(testCase.getBytes())) {
+        try (var s = new ByteArrayInputStream(testCase.getBytes())) {
             var iu = new InputUtility(s);
-            var result =  iu.nextString("prompt", s1 -> s1.equals(testCase));
+            var result = iu.nextString("prompt", s1 -> s1.equals(testCase));
             assertThat("Matches testCase", testCase, is(equalTo(result)));
         }
     }
@@ -38,9 +38,9 @@ public class InputUtilityTest {
     @Theory()
     public void nextInt_validatesCorrectInput() throws IOException {
         var testCase = "1";
-        try(var s = new ByteArrayInputStream(testCase.getBytes())) {
+        try (var s = new ByteArrayInputStream(testCase.getBytes())) {
             var iu = new InputUtility(s);
-            var result =  iu.nextInt("prompt", n -> n == 1);
+            var result = iu.nextInt("prompt", n -> n == 1);
             assertThat("Matches testCase", Integer.parseInt(testCase), is(equalTo(result)));
         }
     }
@@ -51,9 +51,9 @@ public class InputUtilityTest {
     @Theory()
     public void nextDouble_validatesCorrectInput() throws IOException {
         var testCase = "2.2";
-        try(var s = new ByteArrayInputStream(testCase.getBytes())) {
+        try (var s = new ByteArrayInputStream(testCase.getBytes())) {
             var iu = new InputUtility(s);
-            var result =  iu.nextDouble("prompt", n -> n == 2.2d);
+            var result = iu.nextDouble("prompt", n -> n == 2.2d);
             assertThat("Matches testCase", Double.parseDouble(testCase), is(equalTo(result)));
         }
     }
@@ -64,9 +64,9 @@ public class InputUtilityTest {
     @Theory()
     public void nextYesNo_validatesYesCorrectly() throws IOException {
         var testCase = " yEs ";
-        try(var s = new ByteArrayInputStream(testCase.getBytes())) {
+        try (var s = new ByteArrayInputStream(testCase.getBytes())) {
             var iu = new InputUtility(s);
-            var result =  iu.nextYesNo("prompt", InputUtility.yesOrNo());
+            var result = iu.nextYesNo("prompt", InputUtility.yesOrNo());
             assertThat("Matches testCase", true, is(equalTo(result)));
         }
     }
@@ -77,9 +77,9 @@ public class InputUtilityTest {
     @Theory()
     public void nextYesNo_validatesNoCorrectly() throws IOException {
         var testCase = "NO";
-        try(var s = new ByteArrayInputStream(testCase.getBytes())) {
+        try (var s = new ByteArrayInputStream(testCase.getBytes())) {
             var iu = new InputUtility(s);
-            var result =  iu.nextYesNo("prompt", InputUtility.yesOrNo());
+            var result = iu.nextYesNo("prompt", InputUtility.yesOrNo());
             assertThat("Matches testCase", false, is(equalTo(result)));
         }
     }
@@ -90,7 +90,7 @@ public class InputUtilityTest {
     @Theory()
     public void pause_validatesCorrectly() throws IOException {
         var testCase = ".";
-        try(var s = new ByteArrayInputStream(testCase.getBytes())) {
+        try (var s = new ByteArrayInputStream(testCase.getBytes())) {
             var iu = new InputUtility(s);
             iu.pause();
         }

@@ -16,12 +16,12 @@ import java.util.stream.Collector;
  * The user can pass a prompt and optional validation.
  * The utility will read the provided input stream and return a possibly validated String or primitive.
  */
-public class InputUtility {
+public final class InputUtility {
 
     private static final List<String> YES = Collections.unmodifiableList(List.of("y", "yes"));
-    private static final List<String> NO = Collections.unmodifiableList(List.of("n",  "no"));
+    private static final List<String> NO = Collections.unmodifiableList(List.of("n", "no"));
 
-    private InputStream inputStream;
+    private final InputStream inputStream;
 
     /**
      * If no input stream is provided, System.in will be used.
@@ -42,22 +42,21 @@ public class InputUtility {
     /**
      * Displays the prompt and reads the input stream, returning a possibly validated String.
      *
-     * @param prompt the prompt to display to the user.
+     * @param prompt          the prompt to display to the user.
      * @param stringPredicate the predicate to use for validation.
      * @return a possibly validated String.
      * @throws IOException
      */
     public String nextString(String prompt, Predicate<String> stringPredicate) throws IOException {
         System.out.println(prompt);
-        try(var br = new BufferedReader(new InputStreamReader(inputStream))){
-            while(true) {
-              var line = br.readLine();
-              if(stringPredicate.test(line)) {
-                  return line;
-              }
-              else {
-                  System.out.println("Invalid input.");
-              }
+        try (var br = new BufferedReader(new InputStreamReader(inputStream))) {
+            while (true) {
+                var line = br.readLine();
+                if (stringPredicate.test(line)) {
+                    return line;
+                } else {
+                    System.out.println("Invalid input.");
+                }
             }
         }
     }
@@ -65,22 +64,21 @@ public class InputUtility {
     /**
      * Displays the prompt and reads the input stream, returning a possibly validated integer.
      *
-     * @param prompt the prompt to display to the user.
+     * @param prompt       the prompt to display to the user.
      * @param intPredicate the predicate to use for validation.
      * @return a possibly validated integer.
      * @throws IOException
      */
     public int nextInt(String prompt, Predicate<Integer> intPredicate) throws IOException {
         System.out.println(prompt);
-        try(var br = new BufferedReader(new InputStreamReader(inputStream))){
-            while(true) {
-              var line = br.readLine();
+        try (var br = new BufferedReader(new InputStreamReader(inputStream))) {
+            while (true) {
+                var line = br.readLine();
                 try {
                     var num = Integer.parseInt(line);
-                    if(intPredicate.test(num)) {
+                    if (intPredicate.test(num)) {
                         return num;
-                    }
-                    else {
+                    } else {
                         System.out.println("Invalid input.");
                     }
                 } catch (Exception e) {
@@ -93,22 +91,21 @@ public class InputUtility {
     /**
      * Displays the prompt and reads the input stream, returning a possibly validated real number.
      *
-     * @param prompt the prompt to display to the user.
+     * @param prompt          the prompt to display to the user.
      * @param doublePredicate the predicate to use for validation.
      * @return a possibly validated real number.
      * @throws IOException
      */
     public double nextDouble(String prompt, Predicate<Double> doublePredicate) throws IOException {
         System.out.println(prompt);
-        try(var br = new BufferedReader(new InputStreamReader(inputStream))){
-            while(true) {
-              var line = br.readLine();
+        try (var br = new BufferedReader(new InputStreamReader(inputStream))) {
+            while (true) {
+                var line = br.readLine();
                 try {
                     var num = Double.parseDouble(line);
-                    if(doublePredicate.test(num)) {
+                    if (doublePredicate.test(num)) {
                         return num;
-                    }
-                    else {
+                    } else {
                         System.out.println("Invalid input.");
                     }
                 } catch (Exception e) {
@@ -121,18 +118,15 @@ public class InputUtility {
     /**
      * Calls {@link InputUtility#nextString(String, Predicate)}.
      * Passes the prompt and a predicate that validates "y", "n", "yes", "no".
-     * 
-     * @param prompt the prompt to display to the user.
+     *
+     * @param prompt          the prompt to display to the user.
      * @param stringPredicate the predicate to use for validation.
      * @return true for yes and false for no.
      * @throws IOException
      */
     public boolean nextYesNo(String prompt, Predicate<String> stringPredicate) throws IOException {
         var result = this.nextString(prompt, stringPredicate).trim().toLowerCase();
-        if(YES.contains(result)) {
-            return true;
-        }
-        else return false;
+        return YES.contains(result);
     }
 
     /**
@@ -159,18 +153,14 @@ public class InputUtility {
     /**
      * Get a String predicate that tests for (case insensitive) "y", "n", "yes", "no".
      *
-     * @return  a String predicate that tests for (case insensitive) "y", "n", "yes", "no".
+     * @return a String predicate that tests for (case insensitive) "y", "n", "yes", "no".
      */
     public static Predicate<String> yesOrNo() {
         return s -> {
             var cleanedString = s.trim().toLowerCase();
-            if(YES.contains(cleanedString)) {
+            if (YES.contains(cleanedString)) {
                 return true;
-            }
-            else if(NO.contains(cleanedString)) {
-                return true;
-            }
-            return false;
+            } else return NO.contains(cleanedString);
         };
     }
 
@@ -180,7 +170,7 @@ public class InputUtility {
      * @param these the strings for the input to match to.
      * @return a String predicate that takes two or more Strings and tests whether any one of them match the input.
      */
-    public static Predicate<String> oneOfThese(String...these){
+    public static Predicate<String> oneOfThese(String... these) {
         return s -> {
             var result = Arrays.stream(these)
                     .filter(option -> option.equalsIgnoreCase(s))
@@ -199,13 +189,10 @@ public class InputUtility {
      */
     public static Predicate<Integer> intRange(int lower, int upper) {
         return i -> {
-            if(i >= upper) {
+            if (i >= upper) {
                 return false;
             }
-            if(i < lower) {
-                return false;
-            }
-            return true;
+            return i >= lower;
         };
     }
 
@@ -218,13 +205,10 @@ public class InputUtility {
      */
     public static Predicate<Double> doubleRange(double lower, double upper) {
         return d -> {
-            if(d >= upper) {
+            if (d >= upper) {
                 return false;
             }
-            if(d < lower) {
-                return false;
-            }
-            return true;
+            return !(d < lower);
         };
     }
 }
