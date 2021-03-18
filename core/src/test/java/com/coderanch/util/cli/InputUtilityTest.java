@@ -23,7 +23,7 @@ public class InputUtilityTest {
     /**
      * Tests that {@link InputUtility#nextString(String, Predicate)} returns the expected value.
      */
-    @Theory()
+    @Theory
     public void nextString_validatesCorrectInput() throws IOException {
         withInput("input", inputUtility -> {
             var string = inputUtility.nextString("prompt", s -> true);
@@ -34,7 +34,7 @@ public class InputUtilityTest {
     /**
      * Tests that {@link InputUtility#nextInt(String, Predicate)} returns the expected value.
      */
-    @Theory()
+    @Theory
     public void nextInt_validatesCorrectInput() throws IOException {
         withInput("1", inputUtility -> {
             var integer = inputUtility.nextInt("prompt", i -> true);
@@ -45,7 +45,7 @@ public class InputUtilityTest {
     /**
      * Tests that {@link InputUtility#nextDouble(String, Predicate)} returns the expected value.
      */
-    @Theory()
+    @Theory
     public void nextDouble_validatesCorrectInput() throws IOException {
         withInput("2.2", inputUtility -> {
             var dble = inputUtility.nextDouble("prompt", d -> true);
@@ -56,7 +56,7 @@ public class InputUtilityTest {
     /**
      * Tests that {@link InputUtility#nextYesNo(String, Predicate)} returns the expected value.
      */
-    @Theory()
+    @Theory
     public void nextYesNo_validatesYesCorrectly() throws IOException {
         withInput(" yEs ", inputUtility -> {
             var bool = inputUtility.nextYesNo("prompt", InputUtility.yesOrNo());
@@ -67,7 +67,7 @@ public class InputUtilityTest {
     /**
      * Tests that {@link InputUtility#nextYesNo(String, Predicate)} returns the expected value.
      */
-    @Theory()
+    @Theory
     public void nextYesNo_validatesNoCorrectly() throws IOException {
         withInput("NO", inputUtility -> {
             var bool = inputUtility.nextYesNo("prompt", InputUtility.yesOrNo());
@@ -78,7 +78,7 @@ public class InputUtilityTest {
     /**
      * Tests that {@link InputUtility#pause()} works.
      */
-    @Theory()
+    @Theory
     public void pause_validatesCorrectly() throws IOException {
         var testCase = ".";
         try (var s = new ByteArrayInputStream(testCase.getBytes())) {
@@ -90,7 +90,7 @@ public class InputUtilityTest {
     /**
      * Tests that {@link InputUtility#yesOrNo()} returns the expected value.
      */
-    @Theory()
+    @Theory
     public void yesOrNo_validatesCorrectly() throws IOException {
         var result = InputUtility.yesOrNo().test("   YEs ");
         assertThat("Matches correctly", true, is(equalTo(result)));
@@ -108,7 +108,7 @@ public class InputUtilityTest {
     /**
      * Tests that {@link InputUtility#oneOfThese(String...)} returns the expected value.
      */
-    @Theory()
+    @Theory
     public void oneOfThese_validatesCorrectly() throws IOException {
 
     }
@@ -116,14 +116,14 @@ public class InputUtilityTest {
     /**
      * Tests that {@link InputUtility#intRange(int, int)} returns the expected value.
      */
-    @Theory()
+    @Theory
     public void intRange_validatesCorrectly() throws IOException {
     }
 
     /**
      * Tests that {@link InputUtility#doubleRange(double, double)} returns the expected value.
      */
-    @Theory()
+    @Theory
     public void doubleRange_validatesCorrectly() throws IOException {
     }
 
