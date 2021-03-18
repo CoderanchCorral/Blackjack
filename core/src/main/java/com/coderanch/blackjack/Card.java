@@ -35,7 +35,14 @@ final class Card implements Comparable<Card> {
         SPADES, HEARTS, CLUBS, DIAMONDS
     }
 
+    /**
+     * The rank of this card.
+     */
     private final Rank rank;
+
+    /**
+     * The suit of this card.
+     */
     private final Suit suit;
 
     /**
@@ -57,7 +64,7 @@ final class Card implements Comparable<Card> {
      * @return the rank of this card; never {@code null}.
      */
     Rank rank() {
-        return this.rank;
+      return this.rank;
     }
 
     /**

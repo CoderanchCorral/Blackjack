@@ -19,6 +19,7 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -26,7 +27,7 @@ import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assume.assumeThat;
 
 /**
@@ -40,7 +41,10 @@ public final class CardTest extends ConsistentComparableTest {
      */
     @DataPoints
     public static final Set<Rank> RANKS = Cards.getAllRanks();
-  
+
+    /**
+     * The {@code null} rank.
+     */
     @DataPoint
     public static final Rank NULL_RANK = null;
 
@@ -50,6 +54,9 @@ public final class CardTest extends ConsistentComparableTest {
     @DataPoints
     public static final Set<Suit> SUITS = Cards.getAllSuits();
 
+    /**
+     * The {@code null} suit.
+     */
     @DataPoint
     public static final Suit NULL_SUIT = null;
 
@@ -58,7 +65,10 @@ public final class CardTest extends ConsistentComparableTest {
      */
     @DataPoints("objects")
     public static final Set<Card> CARDS = Cards.getStandardDeck();
-    
+
+    /**
+     * The {@code null} card.
+     */
     @DataPoint("objects")
     public static final Card NULL_CARD = null;
 
@@ -68,10 +78,9 @@ public final class CardTest extends ConsistentComparableTest {
      * @param suit the suit to construct the card with.
      */
     @Theory(nullsAccepted = false)
+    @SuppressWarnings("checkstyle:methodname")
     public void newCard_withNullRank_throwsException(Suit suit) {
-        thrown.expect(IllegalArgumentException.class);
-
-        new Card(null, suit);
+        assertThrows(IllegalArgumentException.class, () -> new Card(null, suit));
     }
 
     /**
@@ -80,10 +89,9 @@ public final class CardTest extends ConsistentComparableTest {
      * @param rank the rank to construct the card with.
      */
     @Theory(nullsAccepted = false)
+    @SuppressWarnings("checkstyle:methodname")
     public void newCard_withNullSuit_throwsException(Rank rank) {
-        thrown.expect(IllegalArgumentException.class);
-
-        new Card(rank, null);
+        assertThrows(IllegalArgumentException.class, () -> new Card(rank, null));
     }
 
     /**
@@ -94,6 +102,7 @@ public final class CardTest extends ConsistentComparableTest {
      * @param suit the suit to construct the card with.
      */
     @Theory(nullsAccepted = false)
+    @SuppressWarnings("checkstyle:methodname")
     public void newCard_withRankAndSuit_isConsistent(Rank rank, Suit suit) {
         Card card = new Card(rank, suit);
 
@@ -108,6 +117,7 @@ public final class CardTest extends ConsistentComparableTest {
      * @param suit the suit to construct both cards with.
      */
     @Theory(nullsAccepted = false)
+    @SuppressWarnings("checkstyle:methodname")
     public void cards_withSameRankAndSuit_areEqual(Rank rank, Suit suit) {
         Card firstCard  = new Card(rank, suit);
         Card secondCard = new Card(rank, suit);
@@ -123,6 +133,7 @@ public final class CardTest extends ConsistentComparableTest {
      * @param suit       the suit to construct both cards with.
      */
     @Theory(nullsAccepted = false)
+    @SuppressWarnings("checkstyle:methodname")
     public void cards_withDifferentRanks_areNotEqual(Rank firstRank, Rank secondRank, Suit suit) {
         assumeThat(firstRank, is(not(equalTo(secondRank))));
 
@@ -140,6 +151,7 @@ public final class CardTest extends ConsistentComparableTest {
      * @param secondSuit the suit to construct the second card with.
      */
     @Theory(nullsAccepted = false)
+    @SuppressWarnings("checkstyle:methodname")
     public void cards_withDifferentSuits_areNotEqual(Rank rank, Suit firstSuit, Suit secondSuit) {
         assumeThat(firstSuit, is(not(equalTo(secondSuit))));
 
@@ -155,6 +167,7 @@ public final class CardTest extends ConsistentComparableTest {
      * @param card the card to test.
      */
     @Theory(nullsAccepted = false)
+    @SuppressWarnings("checkstyle:methodname")
     public void toString_containsRankAndSuit(Card card) {
         assertThat(card, hasToString(both(
           containsString(card.rank().toString())).and(
