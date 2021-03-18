@@ -39,7 +39,7 @@ final class Card implements Comparable<Card> {
         QUEEN (10),
         KING  (10);
 
-        private int points;
+        private final int points;
 
         Rank(int points){
             this.points = points;
