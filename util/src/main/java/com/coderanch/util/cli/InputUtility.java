@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2018 Coderanch.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 package com.coderanch.util.cli;
 
 import java.io.BufferedReader;
@@ -145,13 +152,13 @@ public final class InputUtility {
 
     /**
      * Calls nextString{@link InputUtility#nextString(String, Predicate)}.
-     * Uses prompt entered and waits for the user to press ".".
+     * Uses prompt entered and waits for the user to press <enter>.
      *
      * @param prompt the prompt to display to the user.
      * @throws IOException when there's a problem with {@link InputStream}
      */
     public void pause(String prompt) throws IOException {
-        this.nextString(prompt, s -> s.trim().equals("."));
+        this.nextString(prompt, String::isBlank);
     }
 
     /**

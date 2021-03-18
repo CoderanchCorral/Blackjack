@@ -1,16 +1,24 @@
+/*
+ * Copyright (C) 2018 Coderanch.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 package com.coderanch.util.cli;
 
+import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.function.Predicate;
 
 /**
@@ -19,6 +27,32 @@ import java.util.function.Predicate;
 @RunWith(Theories.class)
 public class InputUtilityTest {
 
+    /**
+     * Inputs to test for yes and no.
+     */
+    @DataPoints
+    public static final List<String> YES_NO = List.of("   YEs ", "no", " n", "  y ");
+
+    /**
+     * Inputs to test for one of these.
+     */
+    @DataPoints
+    public static final List<List<String>> ONE_OF_THESE
+            = List.of(List.of("in1", "in2", "in3"), List.of("in1a", "in2a", "in3a"));
+
+    /**
+     * Inputs to test for intRange
+     */
+    @DataPoints
+    public static final int[][] INT_RANGE
+            = new int[][]{{1, 5}, {5, 7}};
+
+    /**
+     * Inputs to test for doubleRange
+     */
+    @DataPoints
+    public static final double[][] DOUBLE_RANGE
+            = new double[][]{{1.2, 5.2}, {2.3, 6.7}};
 
     /**
      * Tests that {@link InputUtility#nextString(String, Predicate)} returns the expected value.
@@ -80,51 +114,45 @@ public class InputUtilityTest {
      */
     @Theory
     public void pause_validatesCorrectly() throws IOException {
-        var testCase = ".";
-        try (var s = new ByteArrayInputStream(testCase.getBytes())) {
-            var iu = new InputUtility(s, StandardCharsets.UTF_8);
-            iu.pause();
-        }
+        withInput(" ", inputUtility -> {
+            inputUtility.pause();
+        });
     }
 
     /**
      * Tests that {@link InputUtility#yesOrNo()} returns the expected value.
      */
     @Theory
-    public void yesOrNo_validatesCorrectly() throws IOException {
-        var result = InputUtility.yesOrNo().test("   YEs ");
-        assertThat("Matches correctly", true, is(equalTo(result)));
-
-        var result2 = InputUtility.yesOrNo().test("no");
-        assertThat("Matches correctly", true, is(equalTo(result2)));
-
-        var result3 = InputUtility.yesOrNo().test(" n");
-        assertThat("Matches correctly", true, is(equalTo(result3)));
-
-        var result4 = InputUtility.yesOrNo().test("  y ");
-        assertThat("Matches correctly", true, is(equalTo(result4)));
+    public void yesOrNo_validatesCorrectly(String input) {
+        var result = InputUtility.yesOrNo().test(input);
+        assertThat("Predicate must match expected value.", result, is(true));
     }
 
     /**
      * Tests that {@link InputUtility#oneOfThese(String...)} returns the expected value.
      */
     @Theory
-    public void oneOfThese_validatesCorrectly() throws IOException {
-
+    public void oneOfThese_validatesCorrectly(List<String> values) {
+        var result = InputUtility.oneOfThese(values.toArray(String[]::new)).test(values.get(0));
+        assertThat("Predicate must match expected value.", result, is(true));
     }
 
     /**
      * Tests that {@link InputUtility#intRange(int, int)} returns the expected value.
      */
     @Theory
-    public void intRange_validatesCorrectly() throws IOException {
+    public void intRange_validatesCorrectly(int[] values) throws IOException {
+        var result = InputUtility.intRange(values[0], values[1]).test(values[0] + 1);
+        assertThat("Predicate must match expected value.", result, is(true));
     }
 
     /**
      * Tests that {@link InputUtility#doubleRange(double, double)} returns the expected value.
      */
     @Theory
-    public void doubleRange_validatesCorrectly() throws IOException {
+    public void doubleRange_validatesCorrectly(double[] values) throws IOException {
+        var result = InputUtility.doubleRange(values[0], values[1]).test(values[0] + 1);
+        assertThat("Predicate must match expected value.", result, is(true));
     }
 
     private static <X extends Throwable> void withInput(
