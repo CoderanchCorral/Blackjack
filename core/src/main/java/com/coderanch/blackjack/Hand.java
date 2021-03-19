@@ -125,13 +125,17 @@ final class Hand {
             }
             else {
                 System.out.println("You hit.");
-                hand = hand.withAdditionalCard(deck.removeLast());
+                var newCard = deck.removeLast();
+                hand = hand.withAdditionalCard(newCard);
+                System.out.println();
+                System.out.println(String.format("Your card was: %s", newCard));
                 if (hand.bestScore() == Hand.MAX_LEGAL_SCORE) {
                     System.out.println("You win. Game over.");
                     break;
                 }
                 else if (hand.bestScore() == 0) {
                     System.out.println("You lose. Game over.");
+                    break;
                 }
             }
         }
