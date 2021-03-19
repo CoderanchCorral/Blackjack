@@ -58,7 +58,7 @@ final class Hand {
         return new Hand(newCards);
     }
 
-    private List<Integer> calculateScores() {
+    private static List<Integer> calculateScores(List<Card> cards) {
         var startingScore = cards.stream()
                 .filter(c -> c.rank() != Card.Rank.ACE)
                 .mapToInt(Card::points)
@@ -82,7 +82,7 @@ final class Hand {
         return scores;
     }
 
-    private int calculateBestScore(List<Integer> possibleScores) {
+    private static int calculateBestScore(List<Integer> possibleScores) {
         return possibleScores.stream()
                 .sorted((o1, o2) -> Integer.compare(o2, o1))
                 .filter(i -> i <= MAX_LEGAL_SCORE)
@@ -96,7 +96,7 @@ final class Hand {
      * @return the best score.
      */
     public int bestScore() {
-        var scores = calculateScores();
+        var scores = calculateScores(this.cards);
         return calculateBestScore(scores);
     }
 }
