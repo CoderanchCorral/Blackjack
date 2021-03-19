@@ -127,6 +127,7 @@ public class InputUtilityTest {
 
     /**
      * Tests that {@link InputUtility#yesOrNo()} returns the expected value.
+     *
      * @param input user input to check.
      */
     @Theory
@@ -138,6 +139,7 @@ public class InputUtilityTest {
 
     /**
      * Tests that {@link InputUtility#oneOfThese(String...)} returns the expected value.
+     *
      * @param values the strings to check against in the predicate.
      */
     @Theory
@@ -149,6 +151,7 @@ public class InputUtilityTest {
 
     /**
      * Tests that {@link InputUtility#intRange(int, int)} returns the expected value.
+     *
      * @param values the number range check against in the predicate.
      */
     @Theory
@@ -160,6 +163,7 @@ public class InputUtilityTest {
 
     /**
      * Tests that {@link InputUtility#doubleRange(double, double)} returns the expected value.
+     *
      * @param values the number range check against in the predicate.
      */
     @Theory
@@ -173,8 +177,10 @@ public class InputUtilityTest {
             String input,
             ExceptionalConsumer<? super InputUtility, X> action
     ) throws IOException, X {
-        try (var stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8))) {
-            var inputUtility = new InputUtility(stream, StandardCharsets.UTF_8);
+        try (
+                var stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+                var inputUtility = new InputUtility(stream, StandardCharsets.UTF_8);
+        ) {
             action.accept(inputUtility);
         }
     }

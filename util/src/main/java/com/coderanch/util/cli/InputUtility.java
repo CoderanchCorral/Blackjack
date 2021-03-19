@@ -7,10 +7,7 @@
  */
 package com.coderanch.util.cli;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -23,27 +20,22 @@ import java.util.function.Predicate;
  * The user can pass a prompt and optional validation.
  * The utility will read the provided input stream and return a possibly validated String or primitive.
  */
-public final class InputUtility {
+public final class InputUtility implements Closeable, AutoCloseable {
 
     /**
-     *
+     * Possible inputs for yes.
      */
     private static final List<String> YES = Collections.unmodifiableList(List.of("y", "yes"));
 
     /**
-     *
+     * Possible inputs for no.
      */
     private static final List<String> NO = Collections.unmodifiableList(List.of("n", "no"));
 
     /**
-     *
+     * The reader to read user responses with.
      */
-    private final InputStream inputStream;
-
-    /**
-     *
-     */
-    private final Charset charset;
+    private final BufferedReader reader;
 
     /**
      * If no input stream is provided, System.in will be used.
@@ -52,7 +44,6 @@ public final class InputUtility {
         this(System.in, StandardCharsets.UTF_8);
     }
 
-
     /**
      * Constructor that takes an input stream to be used.
      *
@@ -60,8 +51,7 @@ public final class InputUtility {
      * @param charset     charset to be used.
      */
     public InputUtility(InputStream inputStream, Charset charset) {
-        this.inputStream = inputStream;
-        this.charset = charset;
+        reader = new BufferedReader(new InputStreamReader(inputStream, charset));
     }
 
     /**
@@ -74,15 +64,13 @@ public final class InputUtility {
      */
     public String nextString(String prompt, Predicate<? super String> stringPredicate) throws IOException {
         System.out.println(prompt);
-        try (var br = new BufferedReader(new InputStreamReader(inputStream, charset))) {
-            while (true) {
-                var line = br.readLine();
-                if (stringPredicate.test(line)) {
-                    return line;
-                }
-                else {
-                    System.out.println("Invalid input.");
-                }
+        while (true) {
+            var line = reader.readLine();
+            if (stringPredicate.test(line)) {
+                return line;
+            }
+            else {
+                System.out.println("Invalid input.");
             }
         }
     }
@@ -97,21 +85,19 @@ public final class InputUtility {
      */
     public int nextInt(String prompt, Predicate<Integer> intPredicate) throws IOException {
         System.out.println(prompt);
-        try (var br = new BufferedReader(new InputStreamReader(inputStream, charset))) {
-            while (true) {
-                var line = br.readLine();
-                try {
-                    var num = Integer.parseInt(line);
-                    if (intPredicate.test(num)) {
-                        return num;
-                    }
-                    else {
-                        System.out.println("Invalid input.");
-                    }
+        while (true) {
+            var line = reader.readLine();
+            try {
+                var num = Integer.parseInt(line);
+                if (intPredicate.test(num)) {
+                    return num;
                 }
-                catch (Exception e) {
-                    System.out.println("Must be integer.");
+                else {
+                    System.out.println("Invalid input.");
                 }
+            }
+            catch (Exception e) {
+                System.out.println("Must be integer.");
             }
         }
     }
@@ -126,21 +112,19 @@ public final class InputUtility {
      */
     public double nextDouble(String prompt, Predicate<Double> doublePredicate) throws IOException {
         System.out.println(prompt);
-        try (var br = new BufferedReader(new InputStreamReader(inputStream, charset))) {
-            while (true) {
-                var line = br.readLine();
-                try {
-                    var num = Double.parseDouble(line);
-                    if (doublePredicate.test(num)) {
-                        return num;
-                    }
-                    else {
-                        System.out.println("Invalid input.");
-                    }
+        while (true) {
+            var line = reader.readLine();
+            try {
+                var num = Double.parseDouble(line);
+                if (doublePredicate.test(num)) {
+                    return num;
                 }
-                catch (Exception e) {
-                    System.out.println("Must be double.");
+                else {
+                    System.out.println("Invalid input.");
                 }
+            }
+            catch (Exception e) {
+                System.out.println("Must be double.");
             }
         }
     }
@@ -247,5 +231,15 @@ public final class InputUtility {
             }
             return !(d < lower);
         };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void close() throws IOException {
+        if (this.reader != null) {
+            this.reader.close();
+        }
     }
 }
