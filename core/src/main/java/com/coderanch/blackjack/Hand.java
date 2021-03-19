@@ -24,8 +24,6 @@ final class Hand {
     private static final int MAX_LEGAL_SCORE = 21;
 
     private final List<Card> cards;
-    private List<Integer> possibleScores;
-    private int bestScore;
 
     /**
      * Creates a new hand.
@@ -40,8 +38,6 @@ final class Hand {
 
     private Hand(List<Card> cards) {
         this.cards = cards;
-        this.possibleScores = calculateScores();
-        this.bestScore = calculateBestScore();
     }
 
     /**
@@ -83,8 +79,8 @@ final class Hand {
         return scores;
     }
 
-    private int calculateBestScore() {
-        return this.possibleScores.stream()
+    private int calculateBestScore(List<Integer> possibleScores) {
+        return possibleScores.stream()
                 .sorted((o1, o2) -> Integer.compare(o2, o1))
                 .filter(i -> i <= MAX_LEGAL_SCORE)
                 .findFirst()
@@ -97,6 +93,7 @@ final class Hand {
      * @return the best score.
      */
     public int bestScore() {
-        return this.bestScore;
+        var scores = calculateScores();
+        return calculateBestScore(scores);
     }
 }
