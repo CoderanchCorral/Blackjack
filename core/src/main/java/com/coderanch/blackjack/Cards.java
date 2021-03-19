@@ -70,4 +70,18 @@ final class Cards {
     static Set<Card> getStandardDeck() {
         return STANDARD_DECK;
     }
+
+    /**
+     * Gets a shuffled standard deck of cards.
+     *
+     * @param generator a random number generator that is used to shuffle the cards.
+     * @return an unmodifiable set containing all distinct cards that can be made
+     *         using a combination of a {@link Rank} and a {@link Suit}.
+     *         The cards will be shuffled with a distribution that depends on the properties of {@code generator}.
+     */
+    static Set<Card> getShuffledStandardDeck(Random generator) {
+        var cards = new ArrayList<>(getStandardDeck());
+        Collections.shuffle(cards, generator);
+        return unmodifiableSet(new LinkedHashSet<>(cards));
+    }
 }
