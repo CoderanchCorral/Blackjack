@@ -7,18 +7,16 @@
  */
 package com.coderanch.test;
 
-import org.junit.Rule;
 import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theory;
-import org.junit.rules.ExpectedException;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 
-import static org.junit.Assert.assertThat;
 import static org.junit.Assume.assumeThat;
 
 /**
@@ -27,17 +25,12 @@ import static org.junit.Assume.assumeThat;
 public class ObjectTest {
 
     /**
-     * A rule that states the kind of exception that is expected to be thrown by a test.
-     */
-    @Rule
-    public final ExpectedException thrown = ExpectedException.none();
-
-    /**
      * Tests that an object is never equal to null.
      *
      * @param x the object under test.
      */
     @Theory(nullsAccepted = false)
+    @SuppressWarnings("checkstyle:methodname")
     public final void equals_withNull_returnsFalse(
         @FromDataPoints("objects") Object x
     ) {
@@ -50,6 +43,7 @@ public class ObjectTest {
      * @param x the object under test.
      */
     @Theory
+    @SuppressWarnings("checkstyle:methodname")
     public final void equals_isReflexive(
         @FromDataPoints("objects") Object x
     ) {
@@ -63,6 +57,7 @@ public class ObjectTest {
      * @param y the object to compare to {@code x}.
      */
     @Theory(nullsAccepted = false)
+    @SuppressWarnings("checkstyle:methodname")
     public final void equals_isSymmetric(
         @FromDataPoints("objects") Object x,
         @FromDataPoints("objects") Object y
@@ -78,6 +73,7 @@ public class ObjectTest {
      * @param z the object to compare to {@code x} and {@code y}.
      */
     @Theory(nullsAccepted = false)
+    @SuppressWarnings("checkstyle:methodname")
     public final void equals_isTransitive(
         @FromDataPoints("objects") Object x,
         @FromDataPoints("objects") Object y,
@@ -95,6 +91,7 @@ public class ObjectTest {
      * @param y the object to compare to {@code x}.
      */
     @Theory(nullsAccepted = false)
+    @SuppressWarnings("checkstyle:methodname")
     public final void hashCode_withEqualObjects_returnsEqualResult(
         @FromDataPoints("objects") Object x,
         @FromDataPoints("objects") Object y
@@ -109,6 +106,7 @@ public class ObjectTest {
      * @param x the object under test.
      */
     @Theory(nullsAccepted = false)
+    @SuppressWarnings("checkstyle:methodname")
     public final void toString_neverReturnsNull(
         @FromDataPoints("objects") Object x
     ) {

@@ -29,6 +29,7 @@
     </licenses>
 
     <modules>
+        <module>checkstyle</module>
         <module>core</module>
         <module>coverage</module>
         <module>test</module>
@@ -40,11 +41,15 @@
         
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
+        <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
         
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
         <sonar.organization>coderanch-corral</sonar.organization>
         <sonar.projectKey>com.coderanch:blackjack-parent</sonar.projectKey>
+        <sonar.pullrequest.provider>GitHub</sonar.pullrequest.provider>
+        <sonar.pullrequest.github.repository>CoderanchCorral/Blackjack</sonar.pullrequest.github.repository>
     </properties>
 
     <dependencyManagement>
@@ -77,7 +82,44 @@
         </dependencies>
     </dependencyManagement>
     
-    <build>        
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.1.2</version>
+                
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                
+                <configuration>
+                    <configLocation>com/coderanch/checkstyle/checkstyle.xml</configLocation>
+                    <headerLocation>com/coderanch/checkstyle/license-header.txt</headerLocation>
+                    <includeTestResources>true</includeTestResources>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                </configuration>
+                
+                <dependencies>
+                    <dependency>
+                        <groupId>com.coderanch</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>0.1.0-SNAPSHOT</version>
+                    </dependency>
+                    
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>8.41</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+        
         <pluginManagement>
             <plugins>
                 <plugin>

@@ -20,10 +20,19 @@ import static java.util.stream.Collectors.toCollection;
  */
 final class Cards {
 
+    /**
+     * An unmodifiable set containing all card ranks.
+     */
     private static final Set<Rank> RANKS = unmodifiableSet(EnumSet.allOf(Rank.class));
 
+    /**
+     * An unmodifiable set containing all card suits.
+     */
     private static final Set<Suit> SUITS = unmodifiableSet(EnumSet.allOf(Suit.class));
 
+    /**
+     * An unmodifiable set containing all distinct cards.
+     */
     private static final Set<Card> STANDARD_DECK = unmodifiableSet(
         RANKS.stream().flatMap(
             rank -> SUITS.stream().map(
@@ -32,21 +41,21 @@ final class Cards {
         ).collect(toCollection(() -> new LinkedHashSet<>(RANKS.size() * SUITS.size())))
     );
 
-    private Cards() {}
+    private Cards() { }
 
     /**
-     * Gets all possible ranks a card can have.
+     * Gets all ranks a card can consist of.
      *
-     * @return an unmodifiable set containing all {@link Rank#values()}.
+     * @return an unmodifiable set containing all {@linkplain Rank#values() card ranks}.
      */
     static Set<Rank> getAllRanks() {
         return RANKS;
     }
 
     /**
-     * Gets all possible suits a card can be of.
+     * Gets all suits a card can consist of.
      *
-     * @return an unmodifiable set containing all {@link Suit#values()}.
+     * @return an unmodifiable set containing all {@linkplain Suit#values() card suits}.
      */
     static Set<Suit> getAllSuits() {
         return SUITS;
