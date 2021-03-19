@@ -123,7 +123,7 @@ public final class HandTest {
     @Theory(nullsAccepted = false)
     @SuppressWarnings("checkstyle:methodname")
     public void newHand_withNullCard1_throwsException(Card card) {
-        assertThrows(NullPointerException.class, () -> {
+        assertThrows("Hand must throw exception", NullPointerException.class, () -> {
             new Hand(null, card);
         });
     }
@@ -136,7 +136,7 @@ public final class HandTest {
     @Theory(nullsAccepted = false)
     @SuppressWarnings("checkstyle:methodname")
     public void newHand_withNullCard2_throwsException(Card card) {
-        assertThrows(NullPointerException.class, () -> {
+        assertThrows("Hand must throw exception", NullPointerException.class, () -> {
             new Hand(card, null);
         });
     }
@@ -148,7 +148,7 @@ public final class HandTest {
     @SuppressWarnings("checkstyle:methodname")
     public void addCard_withNullCard_throwsException() {
         var hand = new Hand(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.CLUBS));
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows("Hand must throw exception", IllegalArgumentException.class, () -> {
             hand.withAdditionalCard(null);
         });
     }
