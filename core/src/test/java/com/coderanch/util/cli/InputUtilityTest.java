@@ -19,7 +19,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * Tests the {@link InputUtility} class.
@@ -41,14 +40,14 @@ public class InputUtilityTest {
             = List.of(List.of("in1", "in2", "in3"), List.of("in1a", "in2a", "in3a"));
 
     /**
-     * Inputs to test for intRange
+     * Inputs to test for intRange.
      */
     @DataPoints
     public static final int[][] INT_RANGE
             = new int[][]{{1, 5}, {5, 7}};
 
     /**
-     * Inputs to test for doubleRange
+     * Inputs to test for doubleRange.
      */
     @DataPoints
     public static final double[][] DOUBLE_RANGE
@@ -58,6 +57,7 @@ public class InputUtilityTest {
      * Tests that {@link InputUtility#nextString(String, Predicate)} returns the expected value.
      */
     @Theory
+    @SuppressWarnings("checkstyle:methodname")
     public void nextString_validatesCorrectInput() throws IOException {
         withInput("input", inputUtility -> {
             var string = inputUtility.nextString("prompt", s -> true);
@@ -69,6 +69,7 @@ public class InputUtilityTest {
      * Tests that {@link InputUtility#nextInt(String, Predicate)} returns the expected value.
      */
     @Theory
+    @SuppressWarnings("checkstyle:methodname")
     public void nextInt_validatesCorrectInput() throws IOException {
         withInput("1", inputUtility -> {
             var integer = inputUtility.nextInt("prompt", i -> true);
@@ -80,6 +81,7 @@ public class InputUtilityTest {
      * Tests that {@link InputUtility#nextDouble(String, Predicate)} returns the expected value.
      */
     @Theory
+    @SuppressWarnings({"checkstyle:methodname", "checkstyle:magicnumber"})
     public void nextDouble_validatesCorrectInput() throws IOException {
         withInput("2.2", inputUtility -> {
             var dble = inputUtility.nextDouble("prompt", d -> true);
@@ -91,6 +93,7 @@ public class InputUtilityTest {
      * Tests that {@link InputUtility#nextYesNo(String, Predicate)} returns the expected value.
      */
     @Theory
+    @SuppressWarnings("checkstyle:methodname")
     public void nextYesNo_validatesYesCorrectly() throws IOException {
         withInput(" yEs ", inputUtility -> {
             var bool = inputUtility.nextYesNo("prompt", InputUtility.yesOrNo());
@@ -102,6 +105,7 @@ public class InputUtilityTest {
      * Tests that {@link InputUtility#nextYesNo(String, Predicate)} returns the expected value.
      */
     @Theory
+    @SuppressWarnings("checkstyle:methodname")
     public void nextYesNo_validatesNoCorrectly() throws IOException {
         withInput("NO", inputUtility -> {
             var bool = inputUtility.nextYesNo("prompt", InputUtility.yesOrNo());
@@ -113,16 +117,20 @@ public class InputUtilityTest {
      * Tests that {@link InputUtility#pause()} works.
      */
     @Theory
+    @SuppressWarnings("checkstyle:methodname")
     public void pause_validatesCorrectly() throws IOException {
         withInput(" ", inputUtility -> {
             inputUtility.pause();
         });
     }
 
+
     /**
      * Tests that {@link InputUtility#yesOrNo()} returns the expected value.
+     * @param input user input to check.
      */
     @Theory
+    @SuppressWarnings("checkstyle:methodname")
     public void yesOrNo_validatesCorrectly(String input) {
         var result = InputUtility.yesOrNo().test(input);
         assertThat("Predicate must match expected value.", result, is(true));
@@ -130,8 +138,10 @@ public class InputUtilityTest {
 
     /**
      * Tests that {@link InputUtility#oneOfThese(String...)} returns the expected value.
+     * @param values the strings to check against in the predicate.
      */
     @Theory
+    @SuppressWarnings("checkstyle:methodname")
     public void oneOfThese_validatesCorrectly(List<String> values) {
         var result = InputUtility.oneOfThese(values.toArray(String[]::new)).test(values.get(0));
         assertThat("Predicate must match expected value.", result, is(true));
@@ -139,8 +149,10 @@ public class InputUtilityTest {
 
     /**
      * Tests that {@link InputUtility#intRange(int, int)} returns the expected value.
+     * @param values the number range check against in the predicate.
      */
     @Theory
+    @SuppressWarnings("checkstyle:methodname")
     public void intRange_validatesCorrectly(int[] values) throws IOException {
         var result = InputUtility.intRange(values[0], values[1]).test(values[0] + 1);
         assertThat("Predicate must match expected value.", result, is(true));
@@ -148,8 +160,10 @@ public class InputUtilityTest {
 
     /**
      * Tests that {@link InputUtility#doubleRange(double, double)} returns the expected value.
+     * @param values the number range check against in the predicate.
      */
     @Theory
+    @SuppressWarnings("checkstyle:methodname")
     public void doubleRange_validatesCorrectly(double[] values) throws IOException {
         var result = InputUtility.doubleRange(values[0], values[1]).test(values[0] + 1);
         assertThat("Predicate must match expected value.", result, is(true));
@@ -166,7 +180,7 @@ public class InputUtilityTest {
     }
 
     @FunctionalInterface
-    private static interface ExceptionalConsumer<T, X extends Throwable> {
+    private interface ExceptionalConsumer<T, X extends Throwable> {
 
         void accept(T argument) throws X;
 

@@ -13,12 +13,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collector;
 
 /**
  * Multipurpose input utility for use with a command line interface.
@@ -27,10 +25,24 @@ import java.util.stream.Collector;
  */
 public final class InputUtility {
 
+    /**
+     *
+     */
     private static final List<String> YES = Collections.unmodifiableList(List.of("y", "yes"));
+
+    /**
+     *
+     */
     private static final List<String> NO = Collections.unmodifiableList(List.of("n", "no"));
 
+    /**
+     *
+     */
     private final InputStream inputStream;
+
+    /**
+     *
+     */
     private final Charset charset;
 
     /**
@@ -40,10 +52,12 @@ public final class InputUtility {
         this(System.in, StandardCharsets.UTF_8);
     }
 
+
     /**
      * Constructor that takes an input stream to be used.
      *
      * @param inputStream input stream to be used.
+     * @param charset     charset to be used.
      */
     public InputUtility(InputStream inputStream, Charset charset) {
         this.inputStream = inputStream;
@@ -65,7 +79,8 @@ public final class InputUtility {
                 var line = br.readLine();
                 if (stringPredicate.test(line)) {
                     return line;
-                } else {
+                }
+                else {
                     System.out.println("Invalid input.");
                 }
             }
@@ -89,10 +104,12 @@ public final class InputUtility {
                     var num = Integer.parseInt(line);
                     if (intPredicate.test(num)) {
                         return num;
-                    } else {
+                    }
+                    else {
                         System.out.println("Invalid input.");
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     System.out.println("Must be integer.");
                 }
             }
@@ -116,10 +133,12 @@ public final class InputUtility {
                     var num = Double.parseDouble(line);
                     if (doublePredicate.test(num)) {
                         return num;
-                    } else {
+                    }
+                    else {
                         System.out.println("Invalid input.");
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     System.out.println("Must be double.");
                 }
             }
@@ -171,7 +190,10 @@ public final class InputUtility {
             var cleanedString = s.trim().toLowerCase();
             if (YES.contains(cleanedString)) {
                 return true;
-            } else return NO.contains(cleanedString);
+            }
+            else {
+                return NO.contains(cleanedString);
+            }
         };
     }
 
