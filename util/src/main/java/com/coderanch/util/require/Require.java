@@ -18,7 +18,7 @@ import org.hamcrest.StringDescription;
  */
 public final class Require {
 
-    private Require() {}
+    private Require() { }
 
     /**
      * Requires that the specified argument that was passed to a method matches a certain condition.

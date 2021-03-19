@@ -53,7 +53,14 @@ final class Card implements Comparable<Card> {
         SPADES, HEARTS, CLUBS, DIAMONDS
     }
 
+    /**
+     * The rank of this card.
+     */
     private final Rank rank;
+
+    /**
+     * The suit of this card.
+     */
     private final Suit suit;
 
     /**
