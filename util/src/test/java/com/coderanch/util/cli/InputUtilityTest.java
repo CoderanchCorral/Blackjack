@@ -7,18 +7,17 @@
  */
 package com.coderanch.util.cli;
 
+import java.io.*;
+import java.nio.charset.*;
+import java.util.*;
+
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
+import static org.hamcrest.Matchers.is;
 
 /**
  * Tests the {@link InputUtility} class.
