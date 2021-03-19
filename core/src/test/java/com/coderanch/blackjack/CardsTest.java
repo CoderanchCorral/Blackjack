@@ -14,6 +14,9 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
+import java.util.List;
+import java.util.Random;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -136,6 +139,7 @@ public final class CardsTest {
      * contains all possible distinct cards that can be made using a combination of a {@link Rank} and a {@link Suit}.
      */
     @Theory
+    @SuppressWarnings({"checkstyle:methodname", "checkstyle:magicnumber"})
     public void getShuffledStandardDeck_returnsAllCombinationsOfRankAndSuit() {
         var random = new FixedRandom(List.of(5, 4, 2, 1, 3));
         assertThat(
@@ -147,11 +151,22 @@ public final class CardsTest {
 
     private static class FixedRandom extends Random {
 
+        /**
+         * Fixed numbers used to make the random numbers.
+         */
         private final List<Integer> numbers;
+
+        /**
+         * The layer of random generation.
+         */
         private int layer = 1;
+
+        /**
+         * The layer of random generation.
+         */
         private int place = 0;
 
-        public FixedRandom(List<Integer> numbers) {
+        FixedRandom(List<Integer> numbers) {
             this.numbers = numbers;
         }
 
