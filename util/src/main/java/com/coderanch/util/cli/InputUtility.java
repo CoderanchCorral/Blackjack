@@ -192,7 +192,7 @@ public final class InputUtility implements Closeable, AutoCloseable {
             throw new IllegalArgumentException("Must be two or more Strings.");
         }
         return s -> Arrays.stream(these)
-                .anyMatch(s::equalsIgnoreCase);
+                .anyMatch(choice -> choice.equalsIgnoreCase(s.trim()));
     }
 
     /**
