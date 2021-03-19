@@ -25,23 +25,26 @@ final class Card implements Comparable<Card> {
      * The rank of a card.
      */
     enum Rank {
-        ACE   (11),
-        TWO   ( 2),
-        THREE ( 3),
-        FOUR  ( 4),
-        FIVE  ( 5),
-        SIX   ( 6),
-        SEVEN ( 7),
-        EIGHT ( 8),
-        NINE  ( 9),
-        TEN   (10),
-        JACK  (10),
-        QUEEN (10),
-        KING  (10);
+        ACE(11),
+        TWO(2),
+        THREE(3),
+        FOUR(4),
+        FIVE(5),
+        SIX(6),
+        SEVEN(7),
+        EIGHT(8),
+        NINE(9),
+        TEN(10),
+        JACK(10),
+        QUEEN(10),
+        KING(10);
 
+        /**
+         * The points value of the rank.
+         */
         private final int points;
 
-        Rank(int points){
+        Rank(int points) {
             this.points = points;
         }
     }
@@ -68,7 +71,6 @@ final class Card implements Comparable<Card> {
      *
      * @param rank the rank of the new card.
      * @param suit the suit of the new card.
-     *
      * @throws IllegalArgumentException if either {@code rank} or {@code suit} is {@code null}.
      */
     Card(Rank rank, Suit suit) {
@@ -100,11 +102,10 @@ final class Card implements Comparable<Card> {
 
     /**
      * Compares this card to another card.
-     *
+     * <p>
      * Cards are first compared by rank, then by suit.
      *
      * @param other {@inheritDoc}
-     *
      * @return {@inheritDoc}
      */
     @Override
@@ -114,11 +115,10 @@ final class Card implements Comparable<Card> {
 
     /**
      * Compares this card to another object for equality.
-     *
+     * <p>
      * Cards are considered equal if they have the same rank and suit.
      *
      * @param object {@inheritDoc}
-     *
      * @return {@inheritDoc}
      */
     @Override

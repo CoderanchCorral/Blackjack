@@ -23,6 +23,9 @@ final class Hand {
      */
     private static final int MAX_LEGAL_SCORE = 21;
 
+    /**
+     * The cards in the hand.
+     */
     private final List<Card> cards;
 
     /**
@@ -32,7 +35,7 @@ final class Hand {
      * @param card2 second card dealt
      * @throws NullPointerException if either {@code card} or {@code card2} is {@code null}.
      */
-    public Hand(Card card, Card card2) {
+    Hand(Card card, Card card2) {
         this(List.of(card, card2));
     }
 
