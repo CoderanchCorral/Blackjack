@@ -7,11 +7,13 @@
  */
 package com.coderanch.blackjack;
 
+import com.coderanch.util.cli.InputUtility;
+
+import java.io.IOException;
 import java.util.*;
 
 import static com.coderanch.util.require.Require.requireThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 /**
  * A hand in a game of Blackjack.
@@ -98,5 +100,40 @@ final class Hand {
     public int bestScore() {
         var scores = calculateScores(this.cards);
         return calculateBestScore(scores);
+    }
+
+    /**
+     * Issue #25.
+     *
+     * @param args main arguments
+     * @throws IOException from {@link InputUtility#nextString(String, Predicate)}
+     */
+    public static void main(String[] args) throws IOException {
+        var iu = new InputUtility();
+        var playPredicate = InputUtility.oneOfThese("hit", "pass");
+        var deck = new ArrayDeque<>(Cards.getShuffledStandardDeck(new Random()));
+        var hand = new Hand(deck.removeLast(), deck.removeLast());
+        while (true) {
+            System.out.println("Your cards are: ");
+            hand.cards.forEach(c -> System.out.println(c));
+            System.out.println(String.format("Your score is: %d", hand.bestScore()));
+
+            var answer = iu.nextString("hit or pass?", playPredicate);
+            if (answer.trim().equalsIgnoreCase("pass")) {
+                System.out.println("You passed.  Game over.");
+                break;
+            }
+            else {
+                System.out.println("You hit.");
+                hand = hand.withAdditionalCard(deck.removeLast());
+                if (hand.bestScore() == Hand.MAX_LEGAL_SCORE) {
+                    System.out.println("You win. Game over.");
+                    break;
+                }
+                else if (hand.bestScore() == 0) {
+                    System.out.println("You lose. Game over.");
+                }
+            }
+        }
     }
 }
