@@ -31,12 +31,15 @@ final class Hand {
     /**
      * Creates a new hand.
      *
-     * @param card  first card dealt.
-     * @param card2 second card dealt
-     * @throws NullPointerException if either {@code card} or {@code card2} is {@code null}.
+     * @param firstCard  first card dealt.
+     * @param secondCard second card dealt
+     * @throws IllegalArgumentException if either {@code firstCard} or {@code secondCard} is {@code null}.
      */
-    Hand(Card card, Card card2) {
-        this(List.of(card, card2));
+    Hand(Card firstCard, Card secondCard) {
+        this(List.of(
+                requireThat("firstCard",  firstCard,  is(notNullValue())),
+                requireThat("secondCard", secondCard, is(notNullValue()))
+        ));
     }
 
     private Hand(List<Card> cards) {
