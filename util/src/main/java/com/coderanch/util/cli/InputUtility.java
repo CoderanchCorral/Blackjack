@@ -11,26 +11,29 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
+
+import static com.coderanch.util.require.Require.requireThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 /**
  * Multipurpose input utility for use with a command line interface.
  * The user can pass a prompt and optional validation.
  * The utility will read the provided input stream and return a possibly validated String or primitive.
  */
-public final class InputUtility implements Closeable, AutoCloseable {
+public final class InputUtility implements AutoCloseable {
 
     /**
-     * Possible inputs for yes.
+     * Allowed user inputs that are considered synonymous with "yes".
      */
-    private static final List<String> YES = Collections.unmodifiableList(List.of("y", "yes"));
+    private static final List<String> YES_SYNONYMS = List.of("y", "yes");
 
     /**
-     * Possible inputs for no.
+     * Allowed user inputs that are considered synonymous with "no".
      */
-    private static final List<String> NO = Collections.unmodifiableList(List.of("n", "no"));
+    private static final List<String> NO_SYNONYMS = List.of("n", "no");
 
     /**
      * The reader to read user responses with.
@@ -38,7 +41,9 @@ public final class InputUtility implements Closeable, AutoCloseable {
     private final BufferedReader reader;
 
     /**
-     * If no input stream is provided, System.in will be used.
+     * Constructs a new input utility that reads from {@link System#in} using the UTF-8 encoding.
+     * This constructor will buffer the {@link InputStream}.
+     * You cannot use the same stream in a different utility.
      */
     public InputUtility() {
         this(System.in, StandardCharsets.UTF_8);
@@ -46,37 +51,42 @@ public final class InputUtility implements Closeable, AutoCloseable {
 
     /**
      * Constructor that takes an input stream to be used.
+     * This constructor will buffer the {@code inputStream}.
+     * You cannot use the same stream in a different utility.
      *
      * @param inputStream input stream to be used.
      * @param charset     charset to be used.
      */
     public InputUtility(InputStream inputStream, Charset charset) {
+        requireThat("inputStream", inputStream, is(notNullValue()));
+        requireThat("charset", charset, is(notNullValue()));
         reader = new BufferedReader(new InputStreamReader(inputStream, charset));
     }
 
     /**
-     * Displays the prompt and reads the input stream, returning a possibly validated String.
+     * Displays the prompt and reads the input stream, returning a validated String.
      *
      * @param prompt          the prompt to display to the user.
      * @param stringPredicate the predicate to use for validation.
      * @return a possibly validated String.
-     * @throws IOException when there's a problem with {@link InputStream}
+     * @throws IOException when there's a problem with the underlying {@link BufferedReader}.
      */
     public String nextString(String prompt, Predicate<? super String> stringPredicate) throws IOException {
         System.out.println(prompt);
-        while (true) {
-            var line = reader.readLine();
-            if (stringPredicate.test(line)) {
-                return line;
-            }
-            else {
-                System.out.println("Invalid input.");
-            }
+        String line;
+        for (
+                line = reader.readLine();
+                !stringPredicate.test(line);
+                line = reader.readLine()
+        ) {
+            System.out.println("Invalid input.");
         }
+
+        return line;
     }
 
     /**
-     * Displays the prompt and reads the input stream, returning a possibly validated integer.
+     * Displays the prompt and reads the input stream, returning a validated integer.
      *
      * @param prompt       the prompt to display to the user.
      * @param intPredicate the predicate to use for validation.
@@ -85,25 +95,36 @@ public final class InputUtility implements Closeable, AutoCloseable {
      */
     public int nextInt(String prompt, Predicate<Integer> intPredicate) throws IOException {
         System.out.println(prompt);
-        while (true) {
-            var line = reader.readLine();
-            try {
-                var num = Integer.parseInt(line);
-                if (intPredicate.test(num)) {
-                    return num;
-                }
-                else {
-                    System.out.println("Invalid input.");
-                }
+        String line;
+        Integer num;
+        for (
+                line = reader.readLine();
+                (num = this.tryIntParse(line, intPredicate)) == null;
+                line = reader.readLine()
+        ) {
+            System.out.println("Invalid input.");
+        }
+
+        return num;
+    }
+
+    private Integer tryIntParse(String line, Predicate<Integer> intPredicate) {
+        try {
+            var num = Integer.parseInt(line);
+            if (intPredicate.test(num)) {
+                return num;
             }
-            catch (Exception e) {
-                System.out.println("Must be integer.");
+            else {
+                return null;
             }
+        }
+        catch (Exception e) {
+            return null;
         }
     }
 
     /**
-     * Displays the prompt and reads the input stream, returning a possibly validated real number.
+     * Displays the prompt and reads the input stream, returning a validated real number.
      *
      * @param prompt          the prompt to display to the user.
      * @param doublePredicate the predicate to use for validation.
@@ -112,20 +133,31 @@ public final class InputUtility implements Closeable, AutoCloseable {
      */
     public double nextDouble(String prompt, Predicate<Double> doublePredicate) throws IOException {
         System.out.println(prompt);
-        while (true) {
-            var line = reader.readLine();
-            try {
-                var num = Double.parseDouble(line);
-                if (doublePredicate.test(num)) {
-                    return num;
-                }
-                else {
-                    System.out.println("Invalid input.");
-                }
+        String line;
+        Double num;
+        for (
+                line = reader.readLine();
+                (num = this.tryDoubleParse(line, doublePredicate)) == null;
+                line = reader.readLine()
+        ) {
+            System.out.println("Invalid input.");
+        }
+
+        return num;
+    }
+
+    private Double tryDoubleParse(String line, Predicate<Double> doublePredicate) {
+        try {
+            var num = Double.parseDouble(line);
+            if (doublePredicate.test(num)) {
+                return num;
             }
-            catch (Exception e) {
-                System.out.println("Must be double.");
+            else {
+                return null;
             }
+        }
+        catch (Exception e) {
+            return null;
         }
     }
 
@@ -140,7 +172,7 @@ public final class InputUtility implements Closeable, AutoCloseable {
      */
     public boolean nextYesNo(String prompt, Predicate<? super String> stringPredicate) throws IOException {
         var result = this.nextString(prompt, stringPredicate).trim().toLowerCase();
-        return YES.contains(result);
+        return YES_SYNONYMS.contains(result);
     }
 
     /**
@@ -172,11 +204,11 @@ public final class InputUtility implements Closeable, AutoCloseable {
     public static Predicate<? super String> yesOrNo() {
         return s -> {
             var cleanedString = s.trim().toLowerCase();
-            if (YES.contains(cleanedString)) {
+            if (YES_SYNONYMS.contains(cleanedString)) {
                 return true;
             }
             else {
-                return NO.contains(cleanedString);
+                return NO_SYNONYMS.contains(cleanedString);
             }
         };
     }

@@ -7,6 +7,6 @@
  */
 
 /**
- * Utilities for a cli.
+ * Utilities to interact with the command line interface.
  */
 package com.coderanch.util.cli;
