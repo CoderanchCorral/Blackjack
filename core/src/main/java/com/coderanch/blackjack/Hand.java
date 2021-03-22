@@ -16,7 +16,9 @@ import java.util.function.Predicate;
 
 import static com.coderanch.blackjack.Card.Rank.ACE;
 import static com.coderanch.util.require.Require.requireThat;
-import static org.hamcrest.Matchers.*;
+import static java.util.function.Predicate.not;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 /**
  * A hand in a game of Blackjack.
