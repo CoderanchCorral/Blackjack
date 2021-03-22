@@ -64,6 +64,22 @@ public final class HandTest {
                                     new Card(Rank.KING, Suit.CLUBS),
                                     new Card(Rank.KING, Suit.CLUBS)),
                             0
+                    ),
+
+                    new HandTestArgument(
+                            List.of(new Card(Rank.ACE, Suit.CLUBS),
+                                    new Card(Rank.ACE, Suit.CLUBS),
+                                    new Card(Rank.ACE, Suit.CLUBS),
+                                    new Card(Rank.KING, Suit.CLUBS),
+                                    new Card(Rank.KING, Suit.CLUBS)),
+                            0
+                    ),
+
+                    new HandTestArgument(
+                            List.of(new Card(Rank.ACE, Suit.CLUBS),
+                                    new Card(Rank.ACE, Suit.CLUBS),
+                                    new Card(Rank.NINE, Suit.CLUBS)),
+                            21
                     )
             );
 
@@ -123,7 +139,7 @@ public final class HandTest {
     @Theory(nullsAccepted = false)
     @SuppressWarnings("checkstyle:methodname")
     public void newHand_withNullCard1_throwsException(Card card) {
-        assertThrows("Hand must throw exception", NullPointerException.class, () -> {
+        assertThrows("Hand must throw exception", IllegalArgumentException.class, () -> {
             new Hand(null, card);
         });
     }
@@ -136,7 +152,7 @@ public final class HandTest {
     @Theory(nullsAccepted = false)
     @SuppressWarnings("checkstyle:methodname")
     public void newHand_withNullCard2_throwsException(Card card) {
-        assertThrows("Hand must throw exception", NullPointerException.class, () -> {
+        assertThrows("Hand must throw exception", IllegalArgumentException.class, () -> {
             new Hand(card, null);
         });
     }

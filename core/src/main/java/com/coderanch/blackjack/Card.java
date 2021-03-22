@@ -47,6 +47,10 @@ final class Card implements Comparable<Card> {
         Rank(int points) {
             this.points = points;
         }
+
+        public int getPoints() {
+            return points;
+        }
     }
 
     /**
@@ -102,7 +106,6 @@ final class Card implements Comparable<Card> {
 
     /**
      * Compares this card to another card.
-     * <p>
      * Cards are first compared by rank, then by suit.
      *
      * @param other {@inheritDoc}
@@ -115,7 +118,6 @@ final class Card implements Comparable<Card> {
 
     /**
      * Compares this card to another object for equality.
-     * <p>
      * Cards are considered equal if they have the same rank and suit.
      *
      * @param object {@inheritDoc}
