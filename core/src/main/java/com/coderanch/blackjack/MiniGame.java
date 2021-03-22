@@ -25,19 +25,19 @@ import static org.hamcrest.Matchers.notNullValue;
  */
 public final class MiniGame {
 
-    private enum CHOICE {
-        HIT, PASS
-    }
-
-    /**
-     * The player's current hand.
-     */
-    private Hand hand;
-
     /**
      * The predicate used for validating user input.
      */
     private static final Predicate<? super String> PLAY_PREDICATE = InputUtility.oneOfThese("hit", "pass");
+
+    private enum CHOICE {
+        HIT, PASS
+
+    }
+    /**
+     * The player's current hand.
+     */
+    private Hand hand;
 
     /**
      * The deck of cards used in the game.
@@ -59,7 +59,13 @@ public final class MiniGame {
      */
     private boolean isPassed;
 
-    private MiniGame(InputUtility inputUtility, PrintStream printStream) {
+    /**
+     * Constructs new mini game of Blackjack.
+     *
+     * @param inputUtility used for user input.
+     * @param printStream used for printing text output.
+     */
+    public MiniGame(InputUtility inputUtility, PrintStream printStream) {
         requireThat("inputUtility", inputUtility, is(notNullValue()));
         requireThat("printStream", printStream, is(notNullValue()));
         this.inputUtility = inputUtility;
@@ -73,7 +79,7 @@ public final class MiniGame {
      *
      * @throws IOException if an I/O exception occurred while prompting the user for an action.
      */
-    private void run() throws IOException {
+    public void run() throws IOException {
         hand = new Hand(deck.removeLast(), deck.removeLast());
         displayStatus();
 
