@@ -7,12 +7,7 @@
  */
 package com.coderanch.blackjack;
 
-import com.coderanch.util.cli.InputUtility;
-
-import java.io.IOException;
-import java.security.SecureRandom;
 import java.util.*;
-import java.util.function.Predicate;
 
 import static com.coderanch.blackjack.Card.Rank.ACE;
 import static com.coderanch.util.require.Require.requireThat;
@@ -28,7 +23,7 @@ final class Hand {
     /**
      * Highest score in Blackjack.
      */
-    private static final int MAX_LEGAL_SCORE = 21;
+    public static final int MAX_LEGAL_SCORE = 21;
 
     /**
      * The cards in the hand.
@@ -108,96 +103,7 @@ final class Hand {
         }
     }
 
-    /**
-     * Issue #25.
-     *
-     * @param args main arguments
-     */
-    public static void main(String[] args) {
-        try (var iu = new InputUtility()) {
-            var miniGame = new MiniGame(iu);
-            miniGame.start();
-        }
-        catch (IOException e) {
-            System.out.println(e);
-            System.exit(1);
-        }
-    }
-
-    /**
-     * Mini game of Blackjack for issue #25.
-     */
-    private static final class MiniGame {
-
-        /**
-         * The player's current hand.
-         */
-        private Hand hand;
-
-        /**
-         * The predicate used for validating user input.
-         */
-        private Predicate<? super String> playPredicate = InputUtility.oneOfThese("hit", "pass");
-
-        /**
-         * The deck of cards used in the game.
-         */
-        private Deque<Card> deck = new ArrayDeque<>(Cards.getShuffledStandardDeck(new SecureRandom()));
-
-        /**
-         * The input utility used for getting answers.
-         */
-        private InputUtility inputUtility;
-
-        private MiniGame(InputUtility inputUtility) {
-            this.inputUtility = inputUtility;
-        }
-
-        /**
-         * Start the mini game.
-         *
-         * @throws IOException from inputUtility.
-         */
-        private void start() throws IOException {
-            hand = new Hand(deck.removeLast(), deck.removeLast());
-            while (true) {
-                displayStatus();
-                if (isGameOver()) {
-                    break;
-                }
-                var answer = inputUtility.nextString("hit or pass?", playPredicate);
-                if ("pass".equalsIgnoreCase(answer.trim())) {
-                    System.out.println("You passed.  Game over.");
-                    break;
-                }
-                dealCard();
-            }
-        }
-
-        private void displayStatus() {
-            System.out.println("Your cards are: ");
-            hand.cards.forEach(System.out::println);
-            System.out.println(String.format("Your score is: %d", hand.bestScore()));
-        }
-
-        private boolean isGameOver() {
-            if (hand.bestScore() == Hand.MAX_LEGAL_SCORE) {
-                System.out.println("You win. Game over.");
-                return true;
-            }
-            if (hand.bestScore() == 0) {
-                System.out.println("You lose. Game over.");
-                return true;
-            }
-            return false;
-        }
-
-        private void dealCard() {
-            System.out.println("You hit.");
-            var newCard = deck.removeLast();
-            hand = hand.withAdditionalCard(newCard);
-            System.out.println();
-            System.out.println(String.format("Your card was: %s", newCard));
-        }
+    public List<Card> getCards() {
+        return cards;
     }
 }
