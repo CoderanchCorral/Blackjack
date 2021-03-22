@@ -47,6 +47,10 @@ final class Card implements Comparable<Card> {
         Rank(int points) {
             this.points = points;
         }
+
+        public int getPoints() {
+            return points;
+        }
     }
 
     /**

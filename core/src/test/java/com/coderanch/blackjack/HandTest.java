@@ -64,6 +64,22 @@ public final class HandTest {
                                     new Card(Rank.KING, Suit.CLUBS),
                                     new Card(Rank.KING, Suit.CLUBS)),
                             0
+                    ),
+
+                    new HandTestArgument(
+                            List.of(new Card(Rank.ACE, Suit.CLUBS),
+                                    new Card(Rank.ACE, Suit.CLUBS),
+                                    new Card(Rank.ACE, Suit.CLUBS),
+                                    new Card(Rank.KING, Suit.CLUBS),
+                                    new Card(Rank.KING, Suit.CLUBS)),
+                            0
+                    ),
+
+                    new HandTestArgument(
+                            List.of(new Card(Rank.ACE, Suit.CLUBS),
+                                    new Card(Rank.ACE, Suit.CLUBS),
+                                    new Card(Rank.NINE, Suit.CLUBS)),
+                            21
                     )
             );
 

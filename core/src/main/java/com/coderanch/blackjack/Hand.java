@@ -9,7 +9,9 @@ package com.coderanch.blackjack;
 
 import java.util.*;
 
+import static com.coderanch.blackjack.Card.Rank.ACE;
 import static com.coderanch.util.require.Require.requireThat;
+import static java.util.function.Predicate.not;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
@@ -37,7 +39,7 @@ final class Hand {
      */
     Hand(Card firstCard, Card secondCard) {
         this(List.of(
-                requireThat("firstCard",  firstCard,  is(notNullValue())),
+                requireThat("firstCard", firstCard, is(notNullValue())),
                 requireThat("secondCard", secondCard, is(notNullValue()))
         ));
     }
@@ -61,45 +63,43 @@ final class Hand {
         return new Hand(newCards);
     }
 
-    private static List<Integer> calculateScores(List<Card> cards) {
-        var startingScore = cards.stream()
-                .filter(c -> c.rank() != Card.Rank.ACE)
-                .mapToInt(Card::points)
-                .sum();
-
-        var scores = new ArrayList<Integer>(Card.Suit.values().length);
-        scores.add(startingScore);
-
-        cards.stream()
-                .filter(c -> c.rank() == Card.Rank.ACE)
-                .forEach((Card c) -> {
-                    var initialSize = scores.size();
-                    for (int i = 0; i < initialSize; i++) {
-                        var score = scores.get(i);
-                        scores.set(i, score + 1);
-                        if (i + 1 == initialSize) {
-                            scores.add(score + c.points());
-                        }
-                    }
-                });
-        return scores;
-    }
-
-    private static int calculateBestScore(List<Integer> possibleScores) {
-        return possibleScores.stream()
-                .sorted((o1, o2) -> Integer.compare(o2, o1))
-                .filter(i -> i <= MAX_LEGAL_SCORE)
-                .findFirst()
-                .orElse(0);
-    }
-
     /**
      * Gets the best score.
      *
      * @return the best score.
      */
     public int bestScore() {
-        var scores = calculateScores(this.cards);
-        return calculateBestScore(scores);
+        var minimumScore = cards.stream()
+                .map(Card::rank)
+                .filter(not(ACE::equals))
+                .mapToInt(Card.Rank::getPoints)
+                .sum();
+
+        var numberOfFreeAces = (int) cards.stream()
+                .map(Card::rank)
+                .filter(ACE::equals)
+                .count();
+
+        var bestScore = calculateBestScore(minimumScore, numberOfFreeAces);
+        if (bestScore > MAX_LEGAL_SCORE) {
+            return 0;
+        }
+        else {
+            return bestScore;
+        }
+    }
+
+    private static int calculateBestScore(int minimumScore, int numberOfFreeAces) {
+        if (numberOfFreeAces <= 0) {
+            return minimumScore;
+        }
+        var bestScoreWithBigAce = calculateBestScore(minimumScore + ACE.getPoints(), numberOfFreeAces - 1);
+
+        if (bestScoreWithBigAce > MAX_LEGAL_SCORE) {
+            return calculateBestScore(minimumScore + 1, numberOfFreeAces - 1);
+        }
+        else {
+            return bestScoreWithBigAce;
+        }
     }
 }
