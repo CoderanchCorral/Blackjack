@@ -95,7 +95,7 @@ public class InputUtilityTest {
     @SuppressWarnings("checkstyle:methodname")
     public void nextYesNo_validatesYesCorrectly() throws IOException {
         withInput(" yEs ", inputUtility -> {
-            var bool = inputUtility.nextYesNo("prompt", InputUtility.yesOrNo());
+            var bool = inputUtility.nextYesNo("prompt");
             assertThat("Next yesNo must match expected value.", bool, is(true));
         });
     }
@@ -107,7 +107,7 @@ public class InputUtilityTest {
     @SuppressWarnings("checkstyle:methodname")
     public void nextYesNo_validatesNoCorrectly() throws IOException {
         withInput("NO", inputUtility -> {
-            var bool = inputUtility.nextYesNo("prompt", InputUtility.yesOrNo());
+            var bool = inputUtility.nextYesNo("prompt");
             assertThat("Next yesNo must match expected value.", bool, is(false));
         });
     }

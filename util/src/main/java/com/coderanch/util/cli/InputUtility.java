@@ -166,12 +166,11 @@ public final class InputUtility implements AutoCloseable {
      * Passes the prompt and a predicate that validates "y", "n", "yes", "no".
      *
      * @param prompt          the prompt to display to the user.
-     * @param stringPredicate the predicate to use for validation.
      * @return true for yes and false for no.
      * @throws IOException when there's a problem with {@link InputStream}
      */
-    public boolean nextYesNo(String prompt, Predicate<? super String> stringPredicate) throws IOException {
-        var result = this.nextString(prompt, stringPredicate).trim().toLowerCase();
+    public boolean nextYesNo(String prompt) throws IOException {
+        var result = this.nextString(prompt, yesOrNo()).trim().toLowerCase();
         return YES_SYNONYMS.contains(result);
     }
 
