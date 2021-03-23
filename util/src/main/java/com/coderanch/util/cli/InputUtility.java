@@ -69,7 +69,7 @@ public final class InputUtility implements AutoCloseable {
      * @param prompt          the prompt to display to the user.
      * @param stringPredicate the predicate to use for validation.
      * @return a validated string.
-     * @throws IOException when there's a problem with the underlying {@link BufferedReader}.
+     * @throws IOException if there's a problem while reading from the underlying stream.
      */
     public String nextString(String prompt, Predicate<? super String> stringPredicate) throws IOException {
         System.out.println(prompt);
