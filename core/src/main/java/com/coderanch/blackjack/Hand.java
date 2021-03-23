@@ -104,9 +104,11 @@ final class Hand {
     }
 
     /**
-     * Get whether the hand is bust or not.
+     * Gets whether the hand is bust or not.
+     * A bust hand has a higher score than the legal maximum.
      *
-     * @return whether the hand is bust or not.
+     * @return {@code true} if {@link #bestScore()} is greater than the maximum legal score;
+     *         {@code false} otherwise.
      */
     boolean isBust() {
         return bestScore() > MAX_LEGAL_SCORE;
