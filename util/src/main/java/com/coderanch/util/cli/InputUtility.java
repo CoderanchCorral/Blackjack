@@ -52,7 +52,7 @@ public final class InputUtility implements AutoCloseable {
     /**
      * Constructor that takes an input stream to be used.
      * This constructor will buffer the {@code inputStream}.
-     * You cannot use the same stream in a different utility.
+     * Do not use the same stream in a different utility.
      *
      * @param inputStream input stream to be used.
      * @param charset     charset to be used.
