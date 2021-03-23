@@ -12,6 +12,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
 import java.util.function.Predicate;
 
 import static com.coderanch.util.require.Require.requireThat;
@@ -23,7 +25,7 @@ import static org.hamcrest.Matchers.notNullValue;
  * The user can pass a prompt and optional validation.
  * The utility will read the provided input stream and return a possibly validated String or primitive.
  */
-public final class InputUtility implements AutoCloseable {
+public final class InputUtility implements Closeable {
 
     /**
      * Allowed user inputs that are considered synonymous with "yes".
@@ -75,9 +77,9 @@ public final class InputUtility implements AutoCloseable {
         System.out.println(prompt);
         String line;
         for (
-                line = reader.readLine();
-                !stringPredicate.test(line);
-                line = reader.readLine()
+            line = reader.readLine();
+            !stringPredicate.test(line);
+            line = reader.readLine()
         ) {
             System.out.println("Invalid input.");
         }
@@ -90,36 +92,40 @@ public final class InputUtility implements AutoCloseable {
      *
      * @param prompt       the prompt to display to the user.
      * @param intPredicate the predicate to use for validation.
-     * @return a possibly validated integer.
+     * @return a validated integer.
      * @throws IOException when there's a problem with {@link InputStream}
      */
     public int nextInt(String prompt, Predicate<Integer> intPredicate) throws IOException {
         System.out.println(prompt);
         String line;
-        Integer num;
+        OptionalInt num;
         for (
-                line = reader.readLine();
-                (num = this.tryIntParse(line, intPredicate)) == null;
-                line = reader.readLine()
+            line = reader.readLine(), num = OptionalInt.empty();
+            num.isEmpty();
+            line = reader.readLine()
         ) {
-            System.out.println("Invalid input.");
+            num = tryIntParse(line, intPredicate);
+            if (num.isEmpty()) {
+                System.out.println("Invalid input.");
+            }
         }
-
-        return num;
+        return num.getAsInt();
     }
 
-    private Integer tryIntParse(String line, Predicate<Integer> intPredicate) {
+    /**
+     * Tries to parse an Integer from the string and validate it.
+     *
+     * @param line         the string to parse.
+     * @param intPredicate the predicate used to validate the Integer.
+     * @return a validated Integer or nothing.
+     */
+    private OptionalInt tryIntParse(String line, Predicate<Integer> intPredicate) {
         try {
             var num = Integer.parseInt(line);
-            if (intPredicate.test(num)) {
-                return num;
-            }
-            else {
-                return null;
-            }
+            return intPredicate.test(num) ? OptionalInt.of(num) : OptionalInt.empty();
         }
-        catch (Exception e) {
-            return null;
+        catch (NumberFormatException e) {
+            return OptionalInt.empty();
         }
     }
 
@@ -128,44 +134,49 @@ public final class InputUtility implements AutoCloseable {
      *
      * @param prompt          the prompt to display to the user.
      * @param doublePredicate the predicate to use for validation.
-     * @return a possibly validated real number.
+     * @return a validated floating point number.
      * @throws IOException when there's a problem with {@link InputStream}
      */
     public double nextDouble(String prompt, Predicate<Double> doublePredicate) throws IOException {
         System.out.println(prompt);
         String line;
-        Double num;
+        OptionalDouble num;
         for (
-                line = reader.readLine();
-                (num = this.tryDoubleParse(line, doublePredicate)) == null;
-                line = reader.readLine()
+            line = reader.readLine(), num = OptionalDouble.empty();
+            num.isEmpty();
+            line = reader.readLine()
         ) {
-            System.out.println("Invalid input.");
+            num = tryDoubleParse(line, doublePredicate);
+            if (num.isEmpty()) {
+                System.out.println("Invalid input.");
+            }
         }
-
-        return num;
+        return num.getAsDouble();
     }
 
-    private Double tryDoubleParse(String line, Predicate<Double> doublePredicate) {
+    /**
+     * Tries to parse a Double from the string and validate it.
+     *
+     * @param line            the string to parse.
+     * @param doublePredicate the predicate used to validate the Integer.
+     * @return a validated Double or nothing.
+     */
+    private OptionalDouble tryDoubleParse(String line, Predicate<Double> doublePredicate) {
         try {
             var num = Double.parseDouble(line);
-            if (doublePredicate.test(num)) {
-                return num;
-            }
-            else {
-                return null;
-            }
+            return doublePredicate.test(num) ? OptionalDouble.of(num) : OptionalDouble.empty();
         }
-        catch (Exception e) {
-            return null;
+        catch (NumberFormatException e) {
+            return OptionalDouble.empty();
         }
     }
 
     /**
+     * Gets the next yes or no answer.
      * Calls {@link InputUtility#nextString(String, Predicate)}.
      * Passes the prompt and a predicate that validates "y", "n", "yes", "no".
      *
-     * @param prompt          the prompt to display to the user.
+     * @param prompt the prompt to display to the user.
      * @return true for yes and false for no.
      * @throws IOException when there's a problem with {@link InputStream}
      */
@@ -200,7 +211,7 @@ public final class InputUtility implements AutoCloseable {
      *
      * @return a String predicate that tests for (case insensitive) "y", "n", "yes", "no".
      */
-    public static Predicate<? super String> yesOrNo() {
+    public static Predicate<String> yesOrNo() {
         return s -> {
             var cleanedString = s.trim().toLowerCase();
             if (YES_SYNONYMS.contains(cleanedString)) {
@@ -218,12 +229,12 @@ public final class InputUtility implements AutoCloseable {
      * @param these the strings for the input to match to.
      * @return a String predicate that takes two or more Strings and tests whether any one of them match the input.
      */
-    public static Predicate<? super String> oneOfThese(String... these) {
+    public static Predicate<String> oneOfThese(String... these) {
         if (these.length < 2) {
             throw new IllegalArgumentException("Must be two or more Strings.");
         }
         return s -> Arrays.stream(these)
-                .anyMatch(choice -> choice.equalsIgnoreCase(s.trim()));
+            .anyMatch(choice -> choice.equalsIgnoreCase(s.trim()));
     }
 
     /**
