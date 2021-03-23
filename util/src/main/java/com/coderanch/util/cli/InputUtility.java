@@ -51,7 +51,7 @@ public final class InputUtility implements AutoCloseable {
 
     /**
      * Constructor that takes an input stream to be used.
-     * This constructor will buffer the {@code inputStream}.
+     * Data from the underlying stream will be buffered.
      * Do not use the same stream in a different utility.
      *
      * @param inputStream input stream to be used.
