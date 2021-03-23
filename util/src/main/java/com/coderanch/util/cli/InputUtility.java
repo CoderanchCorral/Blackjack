@@ -42,7 +42,7 @@ public final class InputUtility implements AutoCloseable {
 
     /**
      * Constructs a new input utility that reads from {@link System#in} using the UTF-8 encoding.
-     * This constructor will buffer the {@link InputStream}.
+     * Data from the underlying stream will be buffered.
      * Do not use the same stream in a different utility.
      */
     public InputUtility() {
