@@ -48,7 +48,7 @@ final class Card implements Comparable<Card> {
             this.points = points;
         }
 
-        public int getPoints() {
+        int points() {
             return points;
         }
     }

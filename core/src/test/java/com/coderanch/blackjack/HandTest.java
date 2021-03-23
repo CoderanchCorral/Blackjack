@@ -7,21 +7,22 @@
  */
 package com.coderanch.blackjack;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
 import com.coderanch.blackjack.Card.Rank;
 import com.coderanch.blackjack.Card.Suit;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
+import static org.junit.Assert.assertThrows;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertThrows;
 
 
 /**
@@ -35,65 +36,65 @@ public final class HandTest {
      */
     @DataPoints
     public static final List<HandTestArgument> HANDS =
-            List.of(
-                    new HandTestArgument(
-                            List.of(new Card(Rank.ACE, Suit.CLUBS),
-                                    new Card(Rank.ACE, Suit.CLUBS),
-                                    new Card(Rank.KING, Suit.CLUBS),
-                                    new Card(Rank.EIGHT, Suit.CLUBS),
-                                    new Card(Rank.ACE, Suit.CLUBS)),
-                            21
-                    ),
+        List.of(
+            new HandTestArgument(
+                List.of(new Card(Rank.ACE, Suit.CLUBS),
+                    new Card(Rank.ACE, Suit.CLUBS),
+                    new Card(Rank.KING, Suit.CLUBS),
+                    new Card(Rank.EIGHT, Suit.CLUBS),
+                    new Card(Rank.ACE, Suit.CLUBS)),
+                21
+            ),
 
-                    new HandTestArgument(
-                            List.of(new Card(Rank.QUEEN, Suit.CLUBS),
-                                    new Card(Rank.EIGHT, Suit.CLUBS)),
-                            18
-                    ),
+            new HandTestArgument(
+                List.of(new Card(Rank.QUEEN, Suit.CLUBS),
+                    new Card(Rank.EIGHT, Suit.CLUBS)),
+                18
+            ),
 
-                    new HandTestArgument(
-                            List.of(new Card(Rank.QUEEN, Suit.CLUBS),
-                                    new Card(Rank.ACE, Suit.CLUBS)),
-                            21
-                    ),
+            new HandTestArgument(
+                List.of(new Card(Rank.QUEEN, Suit.CLUBS),
+                    new Card(Rank.ACE, Suit.CLUBS)),
+                21
+            ),
 
-                    new HandTestArgument(
-                            List.of(new Card(Rank.KING, Suit.CLUBS),
-                                    new Card(Rank.KING, Suit.CLUBS),
-                                    new Card(Rank.KING, Suit.CLUBS),
-                                    new Card(Rank.KING, Suit.CLUBS),
-                                    new Card(Rank.KING, Suit.CLUBS)),
-                            0
-                    ),
+            new HandTestArgument(
+                List.of(new Card(Rank.KING, Suit.CLUBS),
+                    new Card(Rank.KING, Suit.CLUBS),
+                    new Card(Rank.KING, Suit.CLUBS),
+                    new Card(Rank.KING, Suit.CLUBS),
+                    new Card(Rank.KING, Suit.CLUBS)),
+                0
+            ),
 
-                    new HandTestArgument(
-                            List.of(new Card(Rank.ACE, Suit.CLUBS),
-                                    new Card(Rank.ACE, Suit.CLUBS),
-                                    new Card(Rank.ACE, Suit.CLUBS),
-                                    new Card(Rank.KING, Suit.CLUBS),
-                                    new Card(Rank.KING, Suit.CLUBS)),
-                            0
-                    ),
+            new HandTestArgument(
+                List.of(new Card(Rank.ACE, Suit.CLUBS),
+                    new Card(Rank.ACE, Suit.CLUBS),
+                    new Card(Rank.ACE, Suit.CLUBS),
+                    new Card(Rank.KING, Suit.CLUBS),
+                    new Card(Rank.KING, Suit.CLUBS)),
+                0
+            ),
 
-                    new HandTestArgument(
-                            List.of(new Card(Rank.ACE, Suit.CLUBS),
-                                    new Card(Rank.ACE, Suit.CLUBS),
-                                    new Card(Rank.NINE, Suit.CLUBS)),
-                            21
-                    )
-            );
+            new HandTestArgument(
+                List.of(new Card(Rank.ACE, Suit.CLUBS),
+                    new Card(Rank.ACE, Suit.CLUBS),
+                    new Card(Rank.NINE, Suit.CLUBS)),
+                21
+            )
+        );
 
     /**
      * Cards to test.
      */
-    @DataPoints("objects")
+    @DataPoints
     public static final Set<Card> CARDS = Cards.getStandardDeck();
 
 
     /**
      * Tests that {@link Hand#withAdditionalCard(Card)} maintains the correct score.
      *
-     * @param handTest
+     * @param handTest contains the cards to add to the hand, and the target score.
      */
     @Theory
     @SuppressWarnings("checkstyle:methodname")
@@ -105,6 +106,50 @@ public final class HandTest {
         assertThat("The best score must match the target", hand.bestScore(), is(handTest.getTargetScore()));
     }
 
+    /**
+     * Tests that passing {@code null} for the first {@code card}
+     * when constructing a new hand causes an exception to be thrown.
+     *
+     * @param card the card to construct the hand with.
+     */
+    @Theory(nullsAccepted = false)
+    @SuppressWarnings("checkstyle:methodname")
+    public void newHand_withNullFirstCard_throwsException(Card card) {
+        assertThrows("Hand must throw exception", IllegalArgumentException.class, () -> {
+            new Hand(null, card);
+        });
+    }
+
+    /**
+     * Tests that passing {@code null} for the second {@code card}
+     * when constructing a new hand causes an exception to be thrown.
+     *
+     * @param card the card to construct the hand with.
+     */
+    @Theory(nullsAccepted = false)
+    @SuppressWarnings("checkstyle:methodname")
+    public void newHand_withNullSecondCard_throwsException(Card card) {
+        assertThrows("Hand must throw exception", IllegalArgumentException.class, () -> {
+            new Hand(card, null);
+        });
+    }
+
+    /**
+     * Tests that passing {@code null} for {@code card} when adding a new card causes an exception to be thrown.
+     */
+    @Theory
+    @SuppressWarnings("checkstyle:methodname")
+    public void addCard_withNullCard_throwsException() {
+        var hand = new Hand(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.CLUBS));
+        assertThrows("Hand must throw exception", IllegalArgumentException.class, () -> {
+            hand.withAdditionalCard(null);
+        });
+    }
+
+
+    /**
+     * Helper class for testing hand scores.
+     */
     private static final class HandTestArgument {
 
         /**
@@ -130,44 +175,4 @@ public final class HandTest {
             return targetScore;
         }
     }
-
-    /**
-     * Tests that passing {@code null} for {@code card} when constructing a new hand causes an exception to be thrown.
-     *
-     * @param card the card to construct the hand with.
-     */
-    @Theory(nullsAccepted = false)
-    @SuppressWarnings("checkstyle:methodname")
-    public void newHand_withNullCard1_throwsException(Card card) {
-        assertThrows("Hand must throw exception", IllegalArgumentException.class, () -> {
-            new Hand(null, card);
-        });
-    }
-
-    /**
-     * Tests that passing {@code null} for {@code card} when constructing a new hand causes an exception to be thrown.
-     *
-     * @param card the card to construct the hand with.
-     */
-    @Theory(nullsAccepted = false)
-    @SuppressWarnings("checkstyle:methodname")
-    public void newHand_withNullCard2_throwsException(Card card) {
-        assertThrows("Hand must throw exception", IllegalArgumentException.class, () -> {
-            new Hand(card, null);
-        });
-    }
-
-    /**
-     * Tests that passing {@code null} for {@code card} when adding a new card causes an exception to be thrown.
-     */
-    @Theory
-    @SuppressWarnings("checkstyle:methodname")
-    public void addCard_withNullCard_throwsException() {
-        var hand = new Hand(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.CLUBS));
-        assertThrows("Hand must throw exception", IllegalArgumentException.class, () -> {
-            hand.withAdditionalCard(null);
-        });
-    }
-
-
 }
