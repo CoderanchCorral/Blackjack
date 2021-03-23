@@ -251,12 +251,7 @@ public final class InputUtility implements AutoCloseable {
         if (lower > upper) {
             throw new IllegalArgumentException("Lower must be less than upper.");
         }
-        return d -> {
-            if (d >= upper) {
-                return false;
-            }
-            return !(d < lower);
-        };
+        return d -> lower <= d && d < upper;
     }
 
     /**
