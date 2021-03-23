@@ -9,6 +9,7 @@ package com.coderanch.blackjack;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static java.util.function.Predicate.not;
 
 import static com.coderanch.blackjack.Card.Rank.ACE;
@@ -25,7 +26,7 @@ final class Hand {
     /**
      * Highest score in Blackjack.
      */
-    private static final int MAX_LEGAL_SCORE = 21;
+    static final int MAX_LEGAL_SCORE = 21;
 
     /**
      * The cards in the hand.
@@ -87,26 +88,26 @@ final class Hand {
             .filter(ACE::equals)
             .count();
 
-        var bestScore = calculateBestScore(minimumScore, numberOfFreeAces);
-        if (bestScore > MAX_LEGAL_SCORE) {
-            return 0;
-        }
-        else {
-            return bestScore;
-        }
+        return calculateBestScore(minimumScore, numberOfFreeAces);
     }
 
     private static int calculateBestScore(int minimumScore, int numberOfFreeAces) {
-        if (numberOfFreeAces <= 0) {
+        if (numberOfFreeAces == 0) {
             return minimumScore;
         }
         var bestScoreWithBigAce = calculateBestScore(minimumScore + ACE.points(), numberOfFreeAces - 1);
 
-        if (bestScoreWithBigAce > MAX_LEGAL_SCORE) {
-            return calculateBestScore(minimumScore + 1, numberOfFreeAces - 1);
-        }
-        else {
-            return bestScoreWithBigAce;
-        }
+        return bestScoreWithBigAce > MAX_LEGAL_SCORE
+            ? calculateBestScore(minimumScore + 1, numberOfFreeAces - 1)
+            : bestScoreWithBigAce;
+    }
+
+    /**
+     * Get whether the hand is bust or not.
+     *
+     * @return whether the hand is bust or not.
+     */
+    boolean isBust() {
+        return bestScore() > MAX_LEGAL_SCORE;
     }
 }

@@ -15,6 +15,7 @@ import com.coderanch.blackjack.Card.Rank;
 import com.coderanch.blackjack.Card.Suit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 import static org.junit.Assert.assertThrows;
@@ -22,7 +23,6 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-
 
 
 /**
@@ -64,7 +64,7 @@ public final class HandTest {
                     new Card(Rank.KING, Suit.CLUBS),
                     new Card(Rank.KING, Suit.CLUBS),
                     new Card(Rank.KING, Suit.CLUBS)),
-                0
+                50
             ),
 
             new HandTestArgument(
@@ -73,7 +73,7 @@ public final class HandTest {
                     new Card(Rank.ACE, Suit.CLUBS),
                     new Card(Rank.KING, Suit.CLUBS),
                     new Card(Rank.KING, Suit.CLUBS)),
-                0
+                23
             ),
 
             new HandTestArgument(
@@ -94,16 +94,16 @@ public final class HandTest {
     /**
      * Tests that {@link Hand#withAdditionalCard(Card)} maintains the correct score.
      *
-     * @param handTest contains the cards to add to the hand, and the target score.
+     * @param handTest contains the test hand, and the target score.
      */
     @Theory
     @SuppressWarnings("checkstyle:methodname")
     public void addCard_maintainsCorrectScore(HandTestArgument handTest) {
-        var hand = new Hand(handTest.getCards().get(0), handTest.getCards().get(1));
-        for (int i = 2; i < handTest.getCards().size(); i++) {
-            hand = hand.withAdditionalCard(handTest.getCards().get(i));
-        }
-        assertThat("The best score must match the target", hand.bestScore(), is(handTest.getTargetScore()));
+        assertThat(
+            "The best score must match the target",
+            handTest.getHand().bestScore(),
+            is(handTest.getTargetScore())
+        );
     }
 
     /**
@@ -148,6 +148,20 @@ public final class HandTest {
 
 
     /**
+     * Tests that hands that {@link Hand#isBust()} returns the correct answer.
+     *
+     * @param handTest contains the test hand, and the target score.
+     */
+    @Theory
+    public void isBust(HandTestArgument handTest) {
+        assertThat(
+            "The hands over the legal limit must be bust.",
+            handTest.getHand().isBust(),
+            is(equalTo(handTest.getHand().bestScore() > Hand.MAX_LEGAL_SCORE))
+        );
+    }
+
+    /**
      * Helper class for testing hand scores.
      */
     private static final class HandTestArgument {
@@ -173,6 +187,14 @@ public final class HandTest {
 
         int getTargetScore() {
             return targetScore;
+        }
+
+        Hand getHand() {
+            var hand = new Hand(this.cards.get(0), this.cards.get(1));
+            for (int i = 2; i < this.cards.size(); i++) {
+                hand = hand.withAdditionalCard(this.cards.get(i));
+            }
+            return hand;
         }
     }
 }
