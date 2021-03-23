@@ -74,7 +74,8 @@ final class Hand {
     /**
      * Gets the best score.
      *
-     * @return the best score.
+     * @return the highest score that can be made by using a large point value for aces
+     *         without the hand going bust, or the lowest score if the hand is bust.
      */
     int bestScore() {
         var minimumScore = cards.stream()
