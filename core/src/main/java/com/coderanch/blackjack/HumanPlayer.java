@@ -17,7 +17,17 @@ public final class HumanPlayer implements Player {
     }
 
     @Override
+    public void hand(Hand hand) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public boolean isFixed() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void isFixed(boolean isFixed) {
         throw new UnsupportedOperationException();
     }
 

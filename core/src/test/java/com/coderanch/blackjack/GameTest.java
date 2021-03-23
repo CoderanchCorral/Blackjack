@@ -17,7 +17,10 @@ import static org.hamcrest.Matchers.*;
 
 public final class GameTest {
 
-    private static final int LOWEST_POSSIBLE_START_SCORE = 3;
+    /**
+     * The minimum value for a Blackjack hand. (2 {@link com.coderanch.blackjack.Card.Rank#TWO})
+     */
+    private static final int LOWEST_POSSIBLE_START_SCORE = 4;
 
     /**
      * Tests whether the players get a hand of cards.
@@ -31,7 +34,7 @@ public final class GameTest {
             assertThat(
                     "The player must have cards in the hand.",
                     p.hand().bestScore(),
-                    is(greaterThan(LOWEST_POSSIBLE_START_SCORE)));
+                    is(greaterThanOrEqualTo(LOWEST_POSSIBLE_START_SCORE)));
         });
     }
 
@@ -83,9 +86,25 @@ public final class GameTest {
          */
         private int choiceCount;
 
+        /**
+         * The hand of the player.
+         */
+        private Hand hand;
+
+        /**
+         * Represents whether the player is fixed or not.
+         */
+        private boolean isFixed;
+
         @Override
         public Hand hand() {
             return null;
+        }
+
+        @Override
+        @SuppressWarnings("checkstyle:hiddenfield")
+        public void hand(Hand hand) {
+            this.hand = hand;
         }
 
         @Override
@@ -97,6 +116,12 @@ public final class GameTest {
         public Game.CHOICE askChoice() {
             choiceCount++;
             return Game.CHOICE.HIT;
+        }
+
+        @Override
+        @SuppressWarnings("checkstyle:hiddenfield")
+        public void isFixed(boolean isFixed) {
+            this.isFixed = isFixed;
         }
     }
 }
