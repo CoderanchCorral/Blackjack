@@ -36,21 +36,21 @@ public class InputUtilityTest {
      */
     @DataPoints
     public static final List<List<String>> ONE_OF_THESE
-            = List.of(List.of("in1", "in2", "in3"), List.of("in1a", "in2a", "in3a"));
+        = List.of(List.of("in1", "in2", "in3"), List.of("in1a", "in2a", "in3a"));
 
     /**
      * Inputs to test for intRange.
      */
     @DataPoints
     public static final int[][] INT_RANGE
-            = new int[][]{{1, 5}, {5, 7}};
+        = new int[][]{{1, 5}, {5, 7}};
 
     /**
      * Inputs to test for doubleRange.
      */
     @DataPoints
     public static final double[][] DOUBLE_RANGE
-            = new double[][]{{1.2, 5.2}, {2.3, 6.7}};
+        = new double[][]{{1.2, 5.2}, {2.3, 6.7}};
 
     /**
      * Tests that {@link InputUtility#nextString(String, Predicate)} returns the expected value.
@@ -144,7 +144,9 @@ public class InputUtilityTest {
     @Theory
     @SuppressWarnings("checkstyle:methodname")
     public void oneOfThese_validatesCorrectly(List<String> values) {
-        var result = InputUtility.oneOfThese(values.toArray(String[]::new)).test(values.get(0));
+        var result = InputUtility.oneOfThese(values.get(0), values.subList(1, values.size())
+            .toArray(String[]::new))
+            .test(values.get(0));
         assertThat("Predicate must match expected value.", result, is(true));
     }
 
@@ -173,12 +175,12 @@ public class InputUtilityTest {
     }
 
     private static <X extends Throwable> void withInput(
-            String input,
-            ExceptionalConsumer<? super InputUtility, X> action
+        String input,
+        ExceptionalConsumer<? super InputUtility, X> action
     ) throws IOException, X {
         try (
-                var stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
-                var inputUtility = new InputUtility(stream, StandardCharsets.UTF_8);
+            var stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+            var inputUtility = new InputUtility(stream, StandardCharsets.UTF_8);
         ) {
             action.accept(inputUtility);
         }

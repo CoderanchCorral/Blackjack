@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import static com.coderanch.util.require.Require.requireThat;
 import static org.hamcrest.Matchers.is;
@@ -220,17 +221,16 @@ public final class InputUtility implements Closeable {
         };
     }
 
+
     /**
      * Get a String predicate that takes two or more Strings and tests whether any one of them match the input.
      *
-     * @param these the strings for the input to match to.
+     * @param firstOption the first of the strings to match to.
+     * @param otherOptions the strings for the input to match to.
      * @return a String predicate that takes two or more Strings and tests whether any one of them match the input.
      */
-    public static Predicate<String> oneOfThese(String... these) {
-        if (these.length < 2) {
-            throw new IllegalArgumentException("Must be two or more Strings.");
-        }
-        return s -> Arrays.stream(these)
+    public static Predicate<String> oneOfThese(String firstOption, String... otherOptions) {
+        return s -> Stream.concat(Arrays.stream(otherOptions), Stream.of(firstOption))
             .anyMatch(choice -> choice.equalsIgnoreCase(s.trim()));
     }
 
@@ -242,7 +242,7 @@ public final class InputUtility implements Closeable {
      * @return an int predicate that tests whether the input is between the two limits.
      */
     public static Predicate<Integer> intRange(int lower, int upper) {
-        if (lower > upper) {
+        if (lower >= upper) {
             throw new IllegalArgumentException("Lower must be less than upper.");
         }
         return i -> lower <= i && i < upper;
@@ -256,7 +256,7 @@ public final class InputUtility implements Closeable {
      * @return a double predicate that tests whether the input is between the two limits.
      */
     public static Predicate<Double> doubleRange(double lower, double upper) {
-        if (lower > upper) {
+        if (lower >= upper) {
             throw new IllegalArgumentException("Lower must be less than upper.");
         }
         return d -> lower <= d && d < upper;
@@ -267,8 +267,6 @@ public final class InputUtility implements Closeable {
      */
     @Override
     public void close() throws IOException {
-        if (this.reader != null) {
-            this.reader.close();
-        }
+        this.reader.close();
     }
 }
