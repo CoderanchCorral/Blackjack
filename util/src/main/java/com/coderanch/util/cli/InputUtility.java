@@ -100,14 +100,11 @@ public final class InputUtility implements Closeable {
         String line;
         OptionalInt num;
         for (
-            line = reader.readLine(), num = OptionalInt.empty();
+            line = reader.readLine(), num = tryIntParse(line, intPredicate);
             num.isEmpty();
-            line = reader.readLine()
+            line = reader.readLine(), num = tryIntParse(line, intPredicate)
         ) {
-            num = tryIntParse(line, intPredicate);
-            if (num.isEmpty()) {
-                System.out.println("Invalid input.");
-            }
+            System.out.println("Invalid input.");
         }
         return num.getAsInt();
     }
