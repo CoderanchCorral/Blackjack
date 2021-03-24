@@ -96,7 +96,7 @@ public final class InputUtility implements Closeable {
      * @return a validated integer.
      * @throws IOException when there's a problem with {@link InputStream}
      */
-    public int nextInt(String prompt, Predicate<Integer> intPredicate) throws IOException {
+    public int nextInt(String prompt, Predicate<? super Integer> intPredicate) throws IOException {
         System.out.println(prompt);
         String line;
         OptionalInt num;
@@ -117,7 +117,7 @@ public final class InputUtility implements Closeable {
      * @param intPredicate the predicate used to validate the Integer.
      * @return a validated Integer or nothing.
      */
-    private OptionalInt tryIntParse(String line, Predicate<Integer> intPredicate) {
+    private OptionalInt tryIntParse(String line, Predicate<? super Integer> intPredicate) {
         try {
             var num = Integer.parseInt(line);
             return intPredicate.test(num) ? OptionalInt.of(num) : OptionalInt.empty();
@@ -135,7 +135,7 @@ public final class InputUtility implements Closeable {
      * @return a validated floating point number.
      * @throws IOException when there's a problem with {@link InputStream}
      */
-    public double nextDouble(String prompt, Predicate<Double> doublePredicate) throws IOException {
+    public double nextDouble(String prompt, Predicate<? super Double> doublePredicate) throws IOException {
         System.out.println(prompt);
         String line;
         OptionalDouble num;
@@ -159,7 +159,7 @@ public final class InputUtility implements Closeable {
      * @param doublePredicate the predicate used to validate the Integer.
      * @return a validated Double or nothing.
      */
-    private OptionalDouble tryDoubleParse(String line, Predicate<Double> doublePredicate) {
+    private OptionalDouble tryDoubleParse(String line, Predicate<? super Double> doublePredicate) {
         try {
             var num = Double.parseDouble(line);
             return doublePredicate.test(num) ? OptionalDouble.of(num) : OptionalDouble.empty();
@@ -212,12 +212,7 @@ public final class InputUtility implements Closeable {
     public static Predicate<String> yesOrNo() {
         return s -> {
             var cleanedString = s.trim().toLowerCase();
-            if (YES_SYNONYMS.contains(cleanedString)) {
-                return true;
-            }
-            else {
-                return NO_SYNONYMS.contains(cleanedString);
-            }
+            return YES_SYNONYMS.contains(cleanedString) || NO_SYNONYMS.contains(cleanedString);
         };
     }
 
