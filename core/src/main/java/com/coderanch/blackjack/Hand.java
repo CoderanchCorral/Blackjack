@@ -26,7 +26,7 @@ final class Hand {
     /**
      * Highest score in Blackjack.
      */
-    static final int MAX_LEGAL_SCORE = 21;
+    private static final int MAX_LEGAL_SCORE = 21;
 
     /**
      * The cards in the hand.

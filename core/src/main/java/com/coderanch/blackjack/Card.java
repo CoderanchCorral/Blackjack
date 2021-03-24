@@ -100,10 +100,6 @@ final class Card implements Comparable<Card> {
         return this.suit;
     }
 
-    int points() {
-        return this.rank.points;
-    }
-
     /**
      * Compares this card to another card.
      * Cards are first compared by rank, then by suit.
