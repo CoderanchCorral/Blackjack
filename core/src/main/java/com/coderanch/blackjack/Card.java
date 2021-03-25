@@ -44,10 +44,20 @@ final class Card implements Comparable<Card> {
          */
         private final int points;
 
+        /**
+         * Contructs a Rank enum with the given value.
+         *
+         * @param points the points the rank is worth.
+         */
         Rank(int points) {
             this.points = points;
         }
 
+        /**
+         * Get the point value of the rank.
+         *
+         * @return the point value of the rank.
+         */
         int points() {
             return points;
         }

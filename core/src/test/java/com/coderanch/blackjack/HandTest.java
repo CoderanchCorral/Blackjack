@@ -15,6 +15,7 @@ import com.coderanch.blackjack.Card.Rank;
 import com.coderanch.blackjack.Card.Suit;
 
 import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -88,62 +89,62 @@ public final class HandTest {
     /**
      * Busted hands to check.
      */
-    @DataPoints
-    public static final List<BustHand> BUST_HANDS = List.of(
-        new BustHand(createHand(List.of(
+    @DataPoints("Bust Hands")
+    public static final List<Hand> BUST_HANDS = List.of(
+        createHand(List.of(
             new Card(Rank.ACE, Suit.CLUBS),
             new Card(Rank.ACE, Suit.CLUBS),
             new Card(Rank.KING, Suit.CLUBS),
             new Card(Rank.KING, Suit.CLUBS)
-        ))),
-        new BustHand(createHand(List.of(
+        )),
+        createHand(List.of(
             new Card(Rank.QUEEN, Suit.CLUBS),
             new Card(Rank.EIGHT, Suit.CLUBS),
             new Card(Rank.FOUR, Suit.CLUBS)
-        ))),
-        new BustHand(createHand(List.of(
+        )),
+        createHand(List.of(
             new Card(Rank.FIVE, Suit.CLUBS),
             new Card(Rank.FIVE, Suit.CLUBS),
             new Card(Rank.FIVE, Suit.CLUBS),
             new Card(Rank.FIVE, Suit.CLUBS),
             new Card(Rank.THREE, Suit.CLUBS)
-        ))),
-        new BustHand(createHand(List.of(
+        )),
+        createHand(List.of(
             new Card(Rank.JACK, Suit.CLUBS),
             new Card(Rank.QUEEN, Suit.CLUBS),
             new Card(Rank.KING, Suit.CLUBS)
-        )))
+        ))
     );
 
     /**
      * Non-busted hands to check.
      */
-    @DataPoints
-    public static final List<NonBustHand> NON_BUST_HANDS = List.of(
-        new NonBustHand(createHand(List.of(
+    @DataPoints("Non Bust Hands")
+    public static final List<Hand> NON_BUST_HANDS = List.of(
+        createHand(List.of(
             new Card(Rank.ACE, Suit.CLUBS),
             new Card(Rank.KING, Suit.CLUBS),
             new Card(Rank.KING, Suit.CLUBS)
-        ))),
-        new NonBustHand(createHand(List.of(
+        )),
+        createHand(List.of(
             new Card(Rank.QUEEN, Suit.CLUBS),
             new Card(Rank.EIGHT, Suit.CLUBS),
             new Card(Rank.THREE, Suit.CLUBS)
-        ))),
-        new NonBustHand(createHand(List.of(
+        )),
+        createHand(List.of(
             new Card(Rank.FIVE, Suit.CLUBS),
             new Card(Rank.FIVE, Suit.CLUBS)
-        ))),
-        new NonBustHand(createHand(List.of(
+        )),
+        createHand(List.of(
             new Card(Rank.JACK, Suit.CLUBS),
             new Card(Rank.QUEEN, Suit.CLUBS)
-        )))
+        ))
     );
 
     /**
      * Hands to add to.
      */
-    @DataPoints
+    @DataPoints("Add card hands")
     public static final List<Hand> HANDS = List.of(
         createHand(List.of(
             new Card(Rank.KING, Suit.CLUBS),
@@ -164,6 +165,11 @@ public final class HandTest {
         ))
     );
 
+    /**
+     * Cards to test.
+     */
+    @DataPoints
+    public static final Set<Card> CARDS = Cards.getStandardDeck();
 
     /**
      * Get a hand with the given cards.
@@ -178,12 +184,6 @@ public final class HandTest {
         }
         return hand;
     }
-
-    /**
-     * Cards to test.
-     */
-    @DataPoints
-    public static final Set<Card> CARDS = Cards.getStandardDeck();
 
     /**
      * Tests that {@link Hand#bestScore()} calculates the correct score.
@@ -209,7 +209,7 @@ public final class HandTest {
      */
     @Theory
     @SuppressWarnings("checkstyle:methodname")
-    public void withAdditionalCard_hasCorrectScore(Hand hand, Card card) {
+    public void withAdditionalCard_hasCorrectScore(@FromDataPoints("Add card hands") Hand hand, Card card) {
         if (card.rank() == Rank.ACE) {
             return;
         }
@@ -264,58 +264,33 @@ public final class HandTest {
     /**
      * Tests that hands that {@link Hand#isBust()} returns the correct answer.
      *
-     * @param bustHand the hand to check if bust.
+     * @param hand the hand to check if bust.
      */
     @Theory
-    public void isBust(BustHand bustHand) {
+    @SuppressWarnings("checkstyle:methodname")
+    public void isBust_withBustHand_returnsTrue(@FromDataPoints("Bust Hands") Hand hand) {
         assertThat(
             "The hand must be bust.",
-            bustHand.hand.isBust(),
-            is(equalTo(true))
+            hand.isBust(),
+            is(true)
         );
     }
 
     /**
      * Tests that hands that {@link Hand#isBust()} returns the correct answer.
      *
-     * @param nonBustHand the hand to check if not bust.
+     * @param hand the hand to check if not bust.
      */
     @Theory
-    public void isNotBust(NonBustHand nonBustHand) {
+    @SuppressWarnings("checkstyle:methodname")
+    public void isBust_withNonBustHand_returnsFalse(@FromDataPoints("Non Bust Hands") Hand hand) {
         assertThat(
             "The hand must not be bust.",
-            nonBustHand.hand.isBust(),
-            is(equalTo(false))
+            hand.isBust(),
+            is(false)
         );
     }
 
-    /**
-     * Helper class for testing hands.
-     */
-    private static final class BustHand {
-        /**
-         * The hand to test.
-         */
-        private final Hand hand;
-
-        private BustHand(Hand hand) {
-            this.hand = hand;
-        }
-    }
-
-    /**
-     * Helper class for testing hands.
-     */
-    private static final class NonBustHand {
-        /**
-         * The hand to test.
-         */
-        private final Hand hand;
-
-        private NonBustHand(Hand hand) {
-            this.hand = hand;
-        }
-    }
 
     /**
      * Helper class for testing hand scores.
