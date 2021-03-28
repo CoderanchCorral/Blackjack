@@ -21,9 +21,11 @@ import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.equalTo;
 
+import static org.junit.Assume.assumeThat;
 import static org.junit.Assert.assertThrows;
 
 
@@ -210,9 +212,7 @@ public final class HandTest {
     @Theory
     @SuppressWarnings("checkstyle:methodname")
     public void withAdditionalCard_hasCorrectScore(@FromDataPoints("Add card hands") Hand hand, Card card) {
-        if (card.rank() == Rank.ACE) {
-            return;
-        }
+        assumeThat(card.rank(), is(not(Rank.ACE)));
         var newHand = hand.withAdditionalCard(card);
         assertThat(
             "The difference must be correct",
