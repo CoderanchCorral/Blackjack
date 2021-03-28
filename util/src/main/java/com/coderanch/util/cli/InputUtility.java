@@ -111,7 +111,7 @@ public final class InputUtility implements Closeable {
     }
 
     /**
-     * Tries to parse an Integer from the string and validate it.
+     * Tries to parse an integer from the specified line and validates it.
      *
      * @param line         the string to parse.
      * @param intPredicate the predicate used to validate the Integer.
