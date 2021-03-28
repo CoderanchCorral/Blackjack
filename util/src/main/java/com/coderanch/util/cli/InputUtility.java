@@ -128,7 +128,7 @@ public final class InputUtility implements Closeable {
     }
 
     /**
-     * Displays the prompt and reads the input stream, returning a validated real number.
+     * Displays the prompt and reads the input stream, returning a validated floating point number.
      *
      * @param prompt          the prompt to display to the user.
      * @param doublePredicate the predicate to use for validation.
