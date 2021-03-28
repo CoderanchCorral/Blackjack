@@ -93,7 +93,7 @@ public final class InputUtility implements Closeable {
      *
      * @param prompt       the prompt to display to the user.
      * @param intPredicate the predicate to use for validation.
-     * @return a validated integer.
+     * @return an integer that's valid according to {@code intPredicate}.
      * @throws IOException when there's a problem with {@link InputStream}
      */
     public int nextInt(String prompt, Predicate<? super Integer> intPredicate) throws IOException {
