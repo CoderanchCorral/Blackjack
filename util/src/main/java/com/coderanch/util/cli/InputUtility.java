@@ -18,8 +18,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import static com.coderanch.util.require.Require.requireThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 /**
  * Multipurpose input utility for use with a command line interface.
@@ -94,7 +93,7 @@ public final class InputUtility implements Closeable {
      * @param prompt       the prompt to display to the user.
      * @param intPredicate the predicate to use for validation.
      * @return an integer that's valid according to {@code intPredicate}.
-     * @throws IOException when there's a problem with {@link InputStream}
+     * @throws IOException if there's a problem while reading from the underlying stream.
      */
     public int nextInt(String prompt, Predicate<? super Integer> intPredicate) throws IOException {
         System.out.println(prompt);
@@ -134,7 +133,7 @@ public final class InputUtility implements Closeable {
      * @param prompt          the prompt to display to the user.
      * @param doublePredicate the predicate to use for validation.
      * @return a validated floating point number.
-     * @throws IOException when there's a problem with {@link InputStream}
+     * @throws IOException if there's a problem while reading from the underlying stream.
      */
     public double nextDouble(String prompt, Predicate<? super Double> doublePredicate) throws IOException {
         System.out.println(prompt);
@@ -157,7 +156,7 @@ public final class InputUtility implements Closeable {
      * Tries to parse a Double from the string and validate it.
      *
      * @param line            the string to parse.
-     * @param doublePredicate the predicate used to validate the Integer.
+     * @param doublePredicate the predicate used to validate the double.
      * @return a validated Double or nothing.
      */
     private OptionalDouble tryDoubleParse(String line, Predicate<? super Double> doublePredicate) {
@@ -177,7 +176,7 @@ public final class InputUtility implements Closeable {
      *
      * @param prompt the prompt to display to the user.
      * @return true for yes and false for no.
-     * @throws IOException when there's a problem with {@link InputStream}
+     * @throws IOException if there's a problem while reading from the underlying stream.
      */
     public boolean nextYesNo(String prompt) throws IOException {
         var result = this.nextString(prompt, yesOrNo()).trim().toLowerCase();
@@ -185,21 +184,22 @@ public final class InputUtility implements Closeable {
     }
 
     /**
-     * Calls {@link InputUtility#pause(String)}.
+     * Waits for the user to press &lt;enter&gt;.
      * The prompt defaults to "Press when ready".
+     * Calls {@link InputUtility#pause(String)}.
      *
-     * @throws IOException when there's a problem with {@link InputStream}
+     * @throws IOException if there's a problem while reading from the underlying stream.
      */
     public void pause() throws IOException {
-        pause("Press when ready");
+        pause("Press enter when ready");
     }
 
     /**
-     * Calls nextString{@link InputUtility#nextString(String, Predicate)}.
      * Uses prompt entered and waits for the user to press &lt;enter&gt;.
+     * Calls nextString{@link InputUtility#nextString(String, Predicate)}.
      *
      * @param prompt the prompt to display to the user.
-     * @throws IOException when there's a problem with {@link InputStream}
+     * @throws IOException if there's a problem while reading from the underlying stream.
      */
     public void pause(String prompt) throws IOException {
         this.nextString(prompt, String::isBlank);
@@ -223,7 +223,7 @@ public final class InputUtility implements Closeable {
      *
      * @param firstOption the first of the strings to match to.
      * @param otherOptions the strings for the input to match to.
-     * @return a String predicate that takes two or more Strings and tests whether any one of them match the input.
+     * @return a String predicate that takes one or more Strings and tests whether any one of them match the input.
      */
     public static Predicate<String> oneOfThese(String firstOption, String... otherOptions) {
         return s -> Stream.concat(Arrays.stream(otherOptions), Stream.of(firstOption))
@@ -238,9 +238,7 @@ public final class InputUtility implements Closeable {
      * @return an int predicate that tests whether the input is between the two limits.
      */
     public static Predicate<Integer> intRange(int lower, int upper) {
-        if (lower >= upper) {
-            throw new IllegalArgumentException("Lower must be less than upper.");
-        }
+        requireThat("lower", lower, is(lessThan(upper)));
         return i -> lower <= i && i < upper;
     }
 
@@ -252,9 +250,7 @@ public final class InputUtility implements Closeable {
      * @return a double predicate that tests whether the input is between the two limits.
      */
     public static Predicate<Double> doubleRange(double lower, double upper) {
-        if (lower >= upper) {
-            throw new IllegalArgumentException("Lower must be less than upper.");
-        }
+        requireThat("lower", lower, is(lessThan(upper)));
         return d -> lower <= d && d < upper;
     }
 
