@@ -196,7 +196,7 @@ public final class InputUtility implements Closeable {
 
     /**
      * Calls nextString{@link InputUtility#nextString(String, Predicate)}.
-     * Uses prompt entered and waits for the user to press <enter>.
+     * Uses prompt entered and waits for the user to press &lt;enter&gt;.
      *
      * @param prompt the prompt to display to the user.
      * @throws IOException when there's a problem with {@link InputStream}
