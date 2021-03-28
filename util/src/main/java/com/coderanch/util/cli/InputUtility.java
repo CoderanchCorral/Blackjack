@@ -71,7 +71,7 @@ public final class InputUtility implements Closeable {
      *
      * @param prompt          the prompt to display to the user.
      * @param stringPredicate the predicate to use for validation.
-     * @return a validated string.
+     * @return a string that's valid according to {@code stringPredicate}.
      * @throws IOException if there's a problem while reading from the underlying stream.
      */
     public String nextString(String prompt, Predicate<? super String> stringPredicate) throws IOException {
