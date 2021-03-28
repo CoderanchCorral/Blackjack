@@ -115,7 +115,8 @@ public final class InputUtility implements Closeable {
      *
      * @param line         the string to parse.
      * @param intPredicate the predicate used to validate the integer.
-     * @return a validated Integer or nothing.
+     * @return an integer parsed from {@code line} if it's valid according to {@code intPredicate};
+     *         {@code Optional.empty()} otherwise.
      */
     private OptionalInt tryIntParse(String line, Predicate<? super Integer> intPredicate) {
         try {
