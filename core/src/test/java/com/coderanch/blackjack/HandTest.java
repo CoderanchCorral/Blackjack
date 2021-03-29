@@ -21,12 +21,12 @@ import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.equalTo;
 
-import static org.junit.Assume.assumeThat;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assume.assumeThat;
 
 
 /**
