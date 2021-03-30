@@ -18,7 +18,9 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import static com.coderanch.util.require.Require.requireThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.notNullValue;
 
 /**
  * Multipurpose input utility for use with a command line interface.
@@ -157,7 +159,8 @@ public final class InputUtility implements Closeable {
      *
      * @param line            the string to parse.
      * @param doublePredicate the predicate used to validate the double.
-     * @return a validated Double or nothing.
+     * @return a double parsed from {@code line} if it's valid according to {@code doublePredicate};
+     *         {@code Optional.empty()} otherwise.
      */
     private OptionalDouble tryDoubleParse(String line, Predicate<? super Double> doublePredicate) {
         try {
@@ -171,7 +174,6 @@ public final class InputUtility implements Closeable {
 
     /**
      * Gets the next yes or no answer.
-     * Calls {@link InputUtility#nextString(String, Predicate)}.
      * Passes the prompt and a predicate that validates "y", "n", "yes", "no".
      *
      * @param prompt the prompt to display to the user.
@@ -179,14 +181,13 @@ public final class InputUtility implements Closeable {
      * @throws IOException if there's a problem while reading from the underlying stream.
      */
     public boolean nextYesNo(String prompt) throws IOException {
-        var result = this.nextString(prompt, yesOrNo()).trim().toLowerCase();
+        var result = this.nextString(prompt, yesOrNo()).strip().toLowerCase();
         return YES_SYNONYMS.contains(result);
     }
 
     /**
      * Waits for the user to press &lt;enter&gt;.
-     * The prompt defaults to "Press when ready".
-     * Calls {@link InputUtility#pause(String)}.
+     * The prompt defaults to "Press enter when ready".
      *
      * @throws IOException if there's a problem while reading from the underlying stream.
      */
@@ -196,38 +197,37 @@ public final class InputUtility implements Closeable {
 
     /**
      * Uses prompt entered and waits for the user to press &lt;enter&gt;.
-     * Calls nextString{@link InputUtility#nextString(String, Predicate)}.
      *
      * @param prompt the prompt to display to the user.
      * @throws IOException if there's a problem while reading from the underlying stream.
      */
     public void pause(String prompt) throws IOException {
-        this.nextString(prompt, String::isBlank);
+        this.nextString(prompt, s -> true);
     }
 
     /**
-     * Get a String predicate that tests for (case insensitive) "y", "n", "yes", "no".
+     * Get a string predicate that tests for (case insensitive) "y", "n", "yes", "no".
      *
-     * @return a String predicate that tests for (case insensitive) "y", "n", "yes", "no".
+     * @return a string predicate that tests for (case insensitive) "y", "n", "yes", "no".
      */
     public static Predicate<String> yesOrNo() {
         return s -> {
-            var cleanedString = s.trim().toLowerCase();
+            var cleanedString = s.strip().toLowerCase();
             return YES_SYNONYMS.contains(cleanedString) || NO_SYNONYMS.contains(cleanedString);
         };
     }
 
 
     /**
-     * Get a String predicate that takes two or more Strings and tests whether any one of them match the input.
+     * Get a string predicate that takes one or more strings and tests whether any one of them match the input.
      *
      * @param firstOption the first of the strings to match to.
-     * @param otherOptions the strings for the input to match to.
-     * @return a String predicate that takes one or more Strings and tests whether any one of them match the input.
+     * @param otherOptions the other strings for the input to match to.
+     * @return a string predicate that takes one or more strings and tests whether any one of them match the input.
      */
     public static Predicate<String> oneOfThese(String firstOption, String... otherOptions) {
-        return s -> Stream.concat(Arrays.stream(otherOptions), Stream.of(firstOption))
-            .anyMatch(choice -> choice.equalsIgnoreCase(s.trim()));
+        return s -> Stream.concat(Stream.of(firstOption), Arrays.stream(otherOptions))
+            .anyMatch(choice -> choice.equalsIgnoreCase(s.strip()));
     }
 
     /**
@@ -238,7 +238,7 @@ public final class InputUtility implements Closeable {
      * @return an int predicate that tests whether the input is between the two limits.
      */
     public static Predicate<Integer> intRange(int lower, int upper) {
-        requireThat("lower", lower, is(lessThan(upper)));
+        requireThat("upper", upper, is(greaterThan(lower)));
         return i -> lower <= i && i < upper;
     }
 
@@ -250,7 +250,7 @@ public final class InputUtility implements Closeable {
      * @return a double predicate that tests whether the input is between the two limits.
      */
     public static Predicate<Double> doubleRange(double lower, double upper) {
-        requireThat("lower", lower, is(lessThan(upper)));
+        requireThat("upper", upper, is(greaterThan(lower)));
         return d -> lower <= d && d < upper;
     }
 
