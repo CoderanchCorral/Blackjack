@@ -231,7 +231,7 @@ public final class InputUtility implements Closeable {
     }
 
     /**
-     * Get an int predicate that tests whether the input is between the two limits.
+     * Gets an int predicate that tests whether the input is between the two limits.
      *
      * @param lower the lower bound
      * @param upper the exclusive upper bound
