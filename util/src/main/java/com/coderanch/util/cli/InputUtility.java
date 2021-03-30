@@ -10,10 +10,7 @@ package com.coderanch.util.cli;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -181,7 +178,7 @@ public final class InputUtility implements Closeable {
      * @throws IOException if there's a problem while reading from the underlying stream.
      */
     public boolean nextYesNo(String prompt) throws IOException {
-        var result = this.nextString(prompt, yesOrNo()).strip().toLowerCase();
+        var result = this.nextString(prompt, yesOrNo()).trim().toLowerCase(Locale.ENGLISH);
         return YES_SYNONYMS.contains(result);
     }
 
@@ -212,7 +209,7 @@ public final class InputUtility implements Closeable {
      */
     public static Predicate<String> yesOrNo() {
         return s -> {
-            var cleanedString = s.strip().toLowerCase();
+            var cleanedString = s.strip().toLowerCase(Locale.ENGLISH);
             return YES_SYNONYMS.contains(cleanedString) || NO_SYNONYMS.contains(cleanedString);
         };
     }
