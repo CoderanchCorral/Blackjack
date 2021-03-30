@@ -11,6 +11,8 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.function.DoublePredicate;
+import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -94,7 +96,7 @@ public final class InputUtility implements Closeable {
      * @return an integer that's valid according to {@code intPredicate}.
      * @throws IOException if there's a problem while reading from the underlying stream.
      */
-    public int nextInt(String prompt, Predicate<? super Integer> intPredicate) throws IOException {
+    public int nextInt(String prompt, IntPredicate intPredicate) throws IOException {
         System.out.println(prompt);
         String line;
         OptionalInt num;
@@ -116,7 +118,7 @@ public final class InputUtility implements Closeable {
      * @return an integer parsed from {@code line} if it's valid according to {@code intPredicate};
      *         {@code Optional.empty()} otherwise.
      */
-    private OptionalInt tryIntParse(String line, Predicate<? super Integer> intPredicate) {
+    private OptionalInt tryIntParse(String line, IntPredicate intPredicate) {
         try {
             var num = Integer.parseInt(line);
             return intPredicate.test(num) ? OptionalInt.of(num) : OptionalInt.empty();
@@ -134,7 +136,7 @@ public final class InputUtility implements Closeable {
      * @return a validated floating point number.
      * @throws IOException if there's a problem while reading from the underlying stream.
      */
-    public double nextDouble(String prompt, Predicate<? super Double> doublePredicate) throws IOException {
+    public double nextDouble(String prompt, DoublePredicate doublePredicate) throws IOException {
         System.out.println(prompt);
         String line;
         OptionalDouble num;
@@ -159,7 +161,7 @@ public final class InputUtility implements Closeable {
      * @return a double parsed from {@code line} if it's valid according to {@code doublePredicate};
      *         {@code Optional.empty()} otherwise.
      */
-    private OptionalDouble tryDoubleParse(String line, Predicate<? super Double> doublePredicate) {
+    private OptionalDouble tryDoubleParse(String line, DoublePredicate doublePredicate) {
         try {
             var num = Double.parseDouble(line);
             return doublePredicate.test(num) ? OptionalDouble.of(num) : OptionalDouble.empty();
@@ -172,6 +174,7 @@ public final class InputUtility implements Closeable {
     /**
      * Gets the next yes or no answer.
      * Passes the prompt and a predicate that validates "y", "n", "yes", "no".
+     * Is case insensitive.
      *
      * @param prompt the prompt to display to the user.
      * @return true for yes and false for no.
