@@ -153,7 +153,7 @@ public final class InputUtility implements Closeable {
     }
 
     /**
-     * Tries to parse a Double from the string and validate it.
+     * Tries to parse a floating point number from the string and validates it.
      *
      * @param line            the string to parse.
      * @param doublePredicate the predicate used to validate the double.
