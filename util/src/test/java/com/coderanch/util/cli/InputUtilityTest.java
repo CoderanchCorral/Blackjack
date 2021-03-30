@@ -137,14 +137,14 @@ public class InputUtilityTest {
     }
 
     /**
-     * Tests that {@link InputUtility#oneOfThese(String...)} returns the expected value.
+     * Tests that {@link InputUtility#oneOfTheseIgnoringCase(String, String...)}  returns the expected value.
      *
      * @param values the strings to check against in the predicate.
      */
     @Theory
     @SuppressWarnings("checkstyle:methodname")
     public void oneOfThese_validatesCorrectly(List<String> values) {
-        var result = InputUtility.oneOfThese(values.get(0), values.subList(1, values.size())
+        var result = InputUtility.oneOfTheseIgnoringCase(values.get(0), values.subList(1, values.size())
             .toArray(String[]::new))
             .test(values.get(0));
         assertThat("Predicate must match expected value.", result, is(true));

@@ -203,7 +203,7 @@ public final class InputUtility implements Closeable {
     }
 
     /**
-     * Get a string predicate that tests for (case insensitive) "y", "n", "yes", "no".
+     * Gets a string predicate that tests for (case insensitive) "y", "n", "yes", "no".
      *
      * @return a string predicate that tests for (case insensitive) "y", "n", "yes", "no".
      */
@@ -216,13 +216,14 @@ public final class InputUtility implements Closeable {
 
 
     /**
-     * Get a string predicate that takes one or more strings and tests whether any one of them match the input.
+     * Gets a string predicate that takes one or more strings and tests whether any one of them match the input.
+     * Ignores the case of the input.
      *
      * @param firstOption the first of the strings to match to.
      * @param otherOptions the other strings for the input to match to.
      * @return a string predicate that takes one or more strings and tests whether any one of them match the input.
      */
-    public static Predicate<String> oneOfThese(String firstOption, String... otherOptions) {
+    public static Predicate<String> oneOfTheseIgnoringCase(String firstOption, String... otherOptions) {
         return s -> Stream.concat(Stream.of(firstOption), Arrays.stream(otherOptions))
             .anyMatch(choice -> choice.equalsIgnoreCase(s.strip()));
     }
@@ -240,7 +241,7 @@ public final class InputUtility implements Closeable {
     }
 
     /**
-     * Get a double predicate that tests whether the input is between the two limits.
+     * Gets a double predicate that tests whether the input is between the two limits.
      *
      * @param lower the lower bound
      * @param upper the exclusive upper bound
