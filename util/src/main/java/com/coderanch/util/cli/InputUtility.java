@@ -8,13 +8,10 @@
 package com.coderanch.util.cli;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.*;
 import java.util.*;
-import java.util.function.DoublePredicate;
-import java.util.function.IntPredicate;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
+import java.util.function.*;
+import java.util.stream.*;
 
 import static com.coderanch.util.require.Require.requireThat;
 import static org.hamcrest.Matchers.is;
