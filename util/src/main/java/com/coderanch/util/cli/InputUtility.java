@@ -174,7 +174,7 @@ public final class InputUtility implements Closeable {
     /**
      * Gets the next yes or no answer.
      * Passes the prompt and a predicate that validates "y", "n", "yes", "no".
-     * Is case insensitive.
+     * This method is case insensitive.
      *
      * @param prompt the prompt to display to the user.
      * @return true for yes and false for no.
