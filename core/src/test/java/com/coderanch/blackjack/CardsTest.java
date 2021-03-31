@@ -14,6 +14,9 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
+import java.util.List;
+import java.util.Random;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -129,5 +132,52 @@ public final class CardsTest {
             Cards.getStandardDeck().size(),
             is(equalTo(Rank.values().length * Suit.values().length))
         );
+    }
+
+    /**
+     * Tests that {@link Cards#getShuffledStandardDeck(Random)} returns a set that
+     * contains all possible distinct cards that can be made using a combination of a {@link Rank} and a {@link Suit}.
+     */
+    @Theory
+    @SuppressWarnings({"checkstyle:methodname", "checkstyle:magicnumber"})
+    public void getShuffledStandardDeck_returnsAllCombinationsOfRankAndSuit() {
+        var random = new FixedRandom(List.of(5, 4, 2, 1, 3));
+        assertThat(
+                "Standard deck must contain expected number of distinct cards.",
+                Cards.getShuffledStandardDeck(random).size(),
+                is(equalTo(Rank.values().length * Suit.values().length))
+        );
+    }
+
+    private static class FixedRandom extends Random {
+
+        /**
+         * Fixed numbers used to make the random numbers.
+         */
+        private final List<Integer> numbers;
+
+        /**
+         * The layer of random generation.
+         */
+        private int layer = 1;
+
+        /**
+         * The layer of random generation.
+         */
+        private int place = 0;
+
+        FixedRandom(List<Integer> numbers) {
+            this.numbers = numbers;
+        }
+
+        @Override
+        public int nextInt(int bound) {
+            var next = numbers.get(place++) * layer;
+            if (place > numbers.size() - 1) {
+                layer++;
+                place = 0;
+            }
+            return next % bound;
+        }
     }
 }
