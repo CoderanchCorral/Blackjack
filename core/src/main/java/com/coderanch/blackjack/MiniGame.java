@@ -26,14 +26,23 @@ import static org.hamcrest.Matchers.notNullValue;
 public final class MiniGame {
 
     /**
+     * Highest score in Blackjack.
+     */
+    private static final int MAX_LEGAL_SCORE = 21;
+
+    /**
      * The predicate used for validating user input.
      */
-    private static final Predicate<? super String> PLAY_PREDICATE = InputUtility.oneOfThese("hit", "pass");
+    private static final Predicate<? super String> PLAY_PREDICATE = InputUtility.oneOfTheseIgnoringCase("hit", "pass");
 
+    /**
+     * The possible choices the user can make.
+     */
     private enum CHOICE {
         HIT, PASS
 
     }
+
     /**
      * The player's current hand.
      */
@@ -99,27 +108,44 @@ public final class MiniGame {
         }
     }
 
+    /**
+     * Get the user's next choice.
+     *
+     * @return the user's choice.
+     * @throws IOException if there's a problem with the underlying stream.
+     */
     private CHOICE getUserChoice() throws IOException {
         var result = inputUtility.nextString("hit or pass?", PLAY_PREDICATE);
         return Enum.valueOf(CHOICE.class, result.trim().toUpperCase());
     }
 
+    /**
+     * Remember that the user has passed.
+     */
     private void pass() {
         isPassed = true;
     }
 
+    /**
+     * Display the status of the game.
+     */
     private void displayStatus() {
         printStream.println("Your cards are: ");
-        hand.getCards().forEach(printStream::println);
+        hand.cards().forEach(printStream::println);
         printStream.println(String.format("Your score is: %d", hand.bestScore()));
     }
 
+    /**
+     * Checks to see if the game is over.
+     *
+     * @return if the game is over or not.
+     */
     private boolean isGameOver() {
-        if (hand.bestScore() == Hand.MAX_LEGAL_SCORE) {
+        if (hand.bestScore() == MAX_LEGAL_SCORE) {
             printStream.println("You win. Game over.");
             return true;
         }
-        if (hand.bestScore() == 0) {
+        if (hand.isBust()) {
             printStream.println("You lose. Game over.");
             return true;
         }
@@ -127,10 +153,12 @@ public final class MiniGame {
             printStream.println("You passed. Game over.");
             return true;
         }
-
         return false;
     }
 
+    /**
+     * Deals another card to the user.
+     */
     private void dealCard() {
         printStream.println("You hit.");
         var newCard = deck.removeLast();

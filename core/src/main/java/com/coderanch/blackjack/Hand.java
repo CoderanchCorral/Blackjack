@@ -8,6 +8,7 @@
 package com.coderanch.blackjack;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.function.Predicate.not;
@@ -112,5 +113,14 @@ final class Hand {
      */
     boolean isBust() {
         return bestScore() > MAX_LEGAL_SCORE;
+    }
+
+    /**
+     * Gets the cards of the hand.
+     *
+     * @return an {@code unmodifiableList} of cards.
+     */
+    List<Card> cards() {
+        return Collections.unmodifiableList(cards);
     }
 }
