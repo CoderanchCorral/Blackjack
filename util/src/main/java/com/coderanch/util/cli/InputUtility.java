@@ -81,7 +81,6 @@ public final class InputUtility implements Closeable {
         ) {
             System.out.println("Invalid input.");
         }
-
         return line;
     }
 
@@ -138,14 +137,11 @@ public final class InputUtility implements Closeable {
         String line;
         OptionalDouble num;
         for (
-            line = reader.readLine(), num = OptionalDouble.empty();
+            line = reader.readLine(), num = tryDoubleParse(line, doublePredicate);
             num.isEmpty();
-            line = reader.readLine()
+            line = reader.readLine(), num = tryDoubleParse(line, doublePredicate)
         ) {
-            num = tryDoubleParse(line, doublePredicate);
-            if (num.isEmpty()) {
-                System.out.println("Invalid input.");
-            }
+            System.out.println("Invalid input.");
         }
         return num.getAsDouble();
     }
