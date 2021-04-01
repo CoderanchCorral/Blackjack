@@ -8,14 +8,14 @@
 package com.coderanch.util.cli;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Predicate;
+import java.nio.charset.*;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
 
 import static com.coderanch.util.require.Require.requireThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.notNullValue;
 
 /**
@@ -23,7 +23,7 @@ import static org.hamcrest.Matchers.notNullValue;
  * The user can pass a prompt and optional validation.
  * The utility will read the provided input stream and return a possibly validated String or primitive.
  */
-public final class InputUtility implements AutoCloseable {
+public final class InputUtility implements Closeable {
 
     /**
      * Allowed user inputs that are considered synonymous with "yes".
@@ -42,8 +42,8 @@ public final class InputUtility implements AutoCloseable {
 
     /**
      * Constructs a new input utility that reads from {@link System#in} using the UTF-8 encoding.
-     * This constructor will buffer the {@link InputStream}.
-     * You cannot use the same stream in a different utility.
+     * Data from the underlying stream will be buffered.
+     * Do not use the same stream in a different utility.
      */
     public InputUtility() {
         this(System.in, StandardCharsets.UTF_8);
@@ -51,8 +51,8 @@ public final class InputUtility implements AutoCloseable {
 
     /**
      * Constructor that takes an input stream to be used.
-     * This constructor will buffer the {@code inputStream}.
-     * You cannot use the same stream in a different utility.
+     * Data from the underlying stream will be buffered.
+     * Do not use the same stream in a different utility.
      *
      * @param inputStream input stream to be used.
      * @param charset     charset to be used.
@@ -68,20 +68,19 @@ public final class InputUtility implements AutoCloseable {
      *
      * @param prompt          the prompt to display to the user.
      * @param stringPredicate the predicate to use for validation.
-     * @return a possibly validated String.
-     * @throws IOException when there's a problem with the underlying {@link BufferedReader}.
+     * @return a string that's valid according to {@code stringPredicate}.
+     * @throws IOException if there's a problem while reading from the underlying stream.
      */
     public String nextString(String prompt, Predicate<? super String> stringPredicate) throws IOException {
         System.out.println(prompt);
         String line;
         for (
-                line = reader.readLine();
-                !stringPredicate.test(line);
-                line = reader.readLine()
+            line = reader.readLine();
+            !stringPredicate.test(line);
+            line = reader.readLine()
         ) {
             System.out.println("Invalid input.");
         }
-
         return line;
     }
 
@@ -90,179 +89,163 @@ public final class InputUtility implements AutoCloseable {
      *
      * @param prompt       the prompt to display to the user.
      * @param intPredicate the predicate to use for validation.
-     * @return a possibly validated integer.
-     * @throws IOException when there's a problem with {@link InputStream}
+     * @return an integer that's valid according to {@code intPredicate}.
+     * @throws IOException if there's a problem while reading from the underlying stream.
      */
-    public int nextInt(String prompt, Predicate<Integer> intPredicate) throws IOException {
+    public int nextInt(String prompt, IntPredicate intPredicate) throws IOException {
         System.out.println(prompt);
         String line;
-        Integer num;
+        OptionalInt num;
         for (
-                line = reader.readLine();
-                (num = this.tryIntParse(line, intPredicate)) == null;
-                line = reader.readLine()
+            line = reader.readLine(), num = tryIntParse(line, intPredicate);
+            num.isEmpty();
+            line = reader.readLine(), num = tryIntParse(line, intPredicate)
         ) {
             System.out.println("Invalid input.");
         }
-
-        return num;
+        return num.getAsInt();
     }
 
-    private Integer tryIntParse(String line, Predicate<Integer> intPredicate) {
+    /**
+     * Tries to parse an integer from the specified line and validates it.
+     *
+     * @param line         the string to parse.
+     * @param intPredicate the predicate used to validate the integer.
+     * @return an integer parsed from {@code line} if it's valid according to {@code intPredicate};
+     *         {@code Optional.empty()} otherwise.
+     */
+    private OptionalInt tryIntParse(String line, IntPredicate intPredicate) {
         try {
             var num = Integer.parseInt(line);
-            if (intPredicate.test(num)) {
-                return num;
-            }
-            else {
-                return null;
-            }
+            return intPredicate.test(num) ? OptionalInt.of(num) : OptionalInt.empty();
         }
-        catch (Exception e) {
-            return null;
+        catch (NumberFormatException e) {
+            return OptionalInt.empty();
         }
     }
 
     /**
-     * Displays the prompt and reads the input stream, returning a validated real number.
+     * Displays the prompt and reads the input stream, returning a validated floating point number.
      *
      * @param prompt          the prompt to display to the user.
      * @param doublePredicate the predicate to use for validation.
-     * @return a possibly validated real number.
-     * @throws IOException when there's a problem with {@link InputStream}
+     * @return a validated floating point number.
+     * @throws IOException if there's a problem while reading from the underlying stream.
      */
-    public double nextDouble(String prompt, Predicate<Double> doublePredicate) throws IOException {
+    public double nextDouble(String prompt, DoublePredicate doublePredicate) throws IOException {
         System.out.println(prompt);
         String line;
-        Double num;
+        OptionalDouble num;
         for (
-                line = reader.readLine();
-                (num = this.tryDoubleParse(line, doublePredicate)) == null;
-                line = reader.readLine()
+            line = reader.readLine(), num = tryDoubleParse(line, doublePredicate);
+            num.isEmpty();
+            line = reader.readLine(), num = tryDoubleParse(line, doublePredicate)
         ) {
             System.out.println("Invalid input.");
         }
-
-        return num;
+        return num.getAsDouble();
     }
 
-    private Double tryDoubleParse(String line, Predicate<Double> doublePredicate) {
+    /**
+     * Tries to parse a floating point number from the string and validates it.
+     *
+     * @param line            the string to parse.
+     * @param doublePredicate the predicate used to validate the double.
+     * @return a double parsed from {@code line} if it's valid according to {@code doublePredicate};
+     *         {@code Optional.empty()} otherwise.
+     */
+    private OptionalDouble tryDoubleParse(String line, DoublePredicate doublePredicate) {
         try {
             var num = Double.parseDouble(line);
-            if (doublePredicate.test(num)) {
-                return num;
-            }
-            else {
-                return null;
-            }
+            return doublePredicate.test(num) ? OptionalDouble.of(num) : OptionalDouble.empty();
         }
-        catch (Exception e) {
-            return null;
+        catch (NumberFormatException e) {
+            return OptionalDouble.empty();
         }
     }
 
     /**
-     * Calls {@link InputUtility#nextString(String, Predicate)}.
+     * Gets the next yes or no answer.
      * Passes the prompt and a predicate that validates "y", "n", "yes", "no".
+     * This method is case insensitive.
      *
-     * @param prompt          the prompt to display to the user.
-     * @param stringPredicate the predicate to use for validation.
+     * @param prompt the prompt to display to the user.
      * @return true for yes and false for no.
-     * @throws IOException when there's a problem with {@link InputStream}
+     * @throws IOException if there's a problem while reading from the underlying stream.
      */
-    public boolean nextYesNo(String prompt, Predicate<? super String> stringPredicate) throws IOException {
-        var result = this.nextString(prompt, stringPredicate).trim().toLowerCase();
+    public boolean nextYesNo(String prompt) throws IOException {
+        var result = this.nextString(prompt, yesOrNo()).trim().toLowerCase(Locale.ENGLISH);
         return YES_SYNONYMS.contains(result);
     }
 
     /**
-     * Calls {@link InputUtility#pause(String)}.
-     * The prompt defaults to "Press when ready".
+     * Waits for the user to press &lt;enter&gt;.
+     * The prompt defaults to "Press enter when ready".
      *
-     * @throws IOException when there's a problem with {@link InputStream}
+     * @throws IOException if there's a problem while reading from the underlying stream.
      */
     public void pause() throws IOException {
-        pause("Press when ready");
+        pause("Press enter when ready");
     }
 
     /**
-     * Calls nextString{@link InputUtility#nextString(String, Predicate)}.
-     * Uses prompt entered and waits for the user to press <enter>.
+     * Uses prompt entered and waits for the user to press &lt;enter&gt;.
      *
      * @param prompt the prompt to display to the user.
-     * @throws IOException when there's a problem with {@link InputStream}
+     * @throws IOException if there's a problem while reading from the underlying stream.
      */
     public void pause(String prompt) throws IOException {
-        this.nextString(prompt, String::isBlank);
+        this.nextString(prompt, s -> true);
     }
 
     /**
-     * Get a String predicate that tests for (case insensitive) "y", "n", "yes", "no".
+     * Gets a string predicate that tests for (case insensitive) "y", "n", "yes", "no".
      *
-     * @return a String predicate that tests for (case insensitive) "y", "n", "yes", "no".
+     * @return a string predicate that tests for (case insensitive) "y", "n", "yes", "no".
      */
-    public static Predicate<? super String> yesOrNo() {
+    public static Predicate<String> yesOrNo() {
         return s -> {
-            var cleanedString = s.trim().toLowerCase();
-            if (YES_SYNONYMS.contains(cleanedString)) {
-                return true;
-            }
-            else {
-                return NO_SYNONYMS.contains(cleanedString);
-            }
+            var cleanedString = s.strip().toLowerCase(Locale.ENGLISH);
+            return YES_SYNONYMS.contains(cleanedString) || NO_SYNONYMS.contains(cleanedString);
         };
     }
 
+
     /**
-     * Get a String predicate that takes two or more Strings and tests whether any one of them match the input.
+     * Gets a string predicate that takes one or more strings and tests whether any one of them match the input.
+     * Ignores the case of the input.
      *
-     * @param these the strings for the input to match to.
-     * @return a String predicate that takes two or more Strings and tests whether any one of them match the input.
+     * @param firstOption the first of the strings to match to.
+     * @param otherOptions the other strings for the input to match to.
+     * @return a string predicate that takes one or more strings and tests whether any one of them match the input.
      */
-    public static Predicate<? super String> oneOfThese(String... these) {
-        if (these.length < 2) {
-            throw new IllegalArgumentException("Must be two or more Strings.");
-        }
-        return s -> Arrays.stream(these)
-                .anyMatch(choice -> choice.equalsIgnoreCase(s.trim()));
+    public static Predicate<String> oneOfTheseIgnoringCase(String firstOption, String... otherOptions) {
+        return s -> Stream.concat(Stream.of(firstOption), Arrays.stream(otherOptions))
+            .anyMatch(choice -> choice.equalsIgnoreCase(s.strip()));
     }
 
     /**
-     * Get an int predicate that tests whether the input is between the two limits.
+     * Gets an int predicate that tests whether the input is between the two limits.
      *
      * @param lower the lower bound
      * @param upper the exclusive upper bound
      * @return an int predicate that tests whether the input is between the two limits.
      */
     public static Predicate<Integer> intRange(int lower, int upper) {
-        if (lower > upper) {
-            throw new IllegalArgumentException("Lower must be less than upper.");
-        }
-        return i -> {
-            if (i >= upper) {
-                return false;
-            }
-            return i >= lower;
-        };
+        requireThat("upper", upper, is(greaterThan(lower)));
+        return i -> lower <= i && i < upper;
     }
 
     /**
-     * Get a double predicate that tests whether the input is between the two limits.
+     * Gets a double predicate that tests whether the input is between the two limits.
      *
      * @param lower the lower bound
      * @param upper the exclusive upper bound
      * @return a double predicate that tests whether the input is between the two limits.
      */
     public static Predicate<Double> doubleRange(double lower, double upper) {
-        if (lower > upper) {
-            throw new IllegalArgumentException("Lower must be less than upper.");
-        }
-        return d -> {
-            if (d >= upper) {
-                return false;
-            }
-            return !(d < lower);
-        };
+        requireThat("upper", upper, is(greaterThan(lower)));
+        return d -> lower <= d && d < upper;
     }
 
     /**
@@ -270,8 +253,6 @@ public final class InputUtility implements AutoCloseable {
      */
     @Override
     public void close() throws IOException {
-        if (this.reader != null) {
-            this.reader.close();
-        }
+        this.reader.close();
     }
 }
