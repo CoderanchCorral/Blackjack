@@ -67,6 +67,4 @@ public class MiniGameTest {
             assertThat("Must say the user lost or won.", result, containsString("Game over."));
         }
     }
-
-
 }

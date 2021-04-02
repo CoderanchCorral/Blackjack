@@ -14,6 +14,7 @@ import java.io.PrintStream;
 import java.security.SecureRandom;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Locale;
 import java.util.function.Predicate;
 
 import static com.coderanch.util.require.Require.requireThat;
@@ -40,7 +41,6 @@ public final class MiniGame {
      */
     private enum CHOICE {
         HIT, PASS
-
     }
 
     /**
@@ -116,7 +116,7 @@ public final class MiniGame {
      */
     private CHOICE getUserChoice() throws IOException {
         var result = inputUtility.nextString("hit or pass?", PLAY_PREDICATE);
-        return Enum.valueOf(CHOICE.class, result.trim().toUpperCase());
+        return Enum.valueOf(CHOICE.class, result.trim().toUpperCase(Locale.ENGLISH));
     }
 
     /**
