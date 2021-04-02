@@ -7,11 +7,14 @@
  */
 package com.coderanch.blackjack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.function.Predicate.not;
 
 import static com.coderanch.blackjack.Card.Rank.ACE;
 import static com.coderanch.util.require.Require.requireThat;
-import static java.util.function.Predicate.not;
+
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
@@ -39,11 +42,16 @@ final class Hand {
      */
     Hand(Card firstCard, Card secondCard) {
         this(List.of(
-                requireThat("firstCard", firstCard, is(notNullValue())),
-                requireThat("secondCard", secondCard, is(notNullValue()))
+            requireThat("firstCard", firstCard, is(notNullValue())),
+            requireThat("secondCard", secondCard, is(notNullValue()))
         ));
     }
 
+    /**
+     * Constructs a new hand with the given cards.
+     *
+     * @param cards the cards in the hand.
+     */
     private Hand(List<Card> cards) {
         this.cards = cards;
     }
@@ -55,7 +63,7 @@ final class Hand {
      * @return a new hand with the extra card.
      * @throws IllegalArgumentException if {@code card} is {@code null}.
      */
-    public Hand withAdditionalCard(Card card) {
+    Hand withAdditionalCard(Card card) {
         requireThat("card", card, is(notNullValue()));
 
         var newCards = new ArrayList<Card>(this.cards);
@@ -66,40 +74,43 @@ final class Hand {
     /**
      * Gets the best score.
      *
-     * @return the best score.
+     * @return the highest score that can be made by using a large point value for aces
+     *         without the hand going bust, or the lowest score if the hand is bust.
      */
-    public int bestScore() {
+    int bestScore() {
         var minimumScore = cards.stream()
-                .map(Card::rank)
-                .filter(not(ACE::equals))
-                .mapToInt(Card.Rank::getPoints)
-                .sum();
+            .map(Card::rank)
+            .filter(not(ACE::equals))
+            .mapToInt(Card.Rank::points)
+            .sum();
 
         var numberOfFreeAces = (int) cards.stream()
-                .map(Card::rank)
-                .filter(ACE::equals)
-                .count();
+            .map(Card::rank)
+            .filter(ACE::equals)
+            .count();
 
-        var bestScore = calculateBestScore(minimumScore, numberOfFreeAces);
-        if (bestScore > MAX_LEGAL_SCORE) {
-            return 0;
-        }
-        else {
-            return bestScore;
-        }
+        return calculateBestScore(minimumScore, numberOfFreeAces);
     }
 
     private static int calculateBestScore(int minimumScore, int numberOfFreeAces) {
-        if (numberOfFreeAces <= 0) {
+        if (numberOfFreeAces == 0) {
             return minimumScore;
         }
-        var bestScoreWithBigAce = calculateBestScore(minimumScore + ACE.getPoints(), numberOfFreeAces - 1);
+        var bestScoreWithBigAce = calculateBestScore(minimumScore + ACE.points(), numberOfFreeAces - 1);
 
-        if (bestScoreWithBigAce > MAX_LEGAL_SCORE) {
-            return calculateBestScore(minimumScore + 1, numberOfFreeAces - 1);
-        }
-        else {
-            return bestScoreWithBigAce;
-        }
+        return bestScoreWithBigAce > MAX_LEGAL_SCORE
+            ? calculateBestScore(minimumScore + 1, numberOfFreeAces - 1)
+            : bestScoreWithBigAce;
+    }
+
+    /**
+     * Gets whether the hand is bust or not.
+     * A bust hand has a higher score than the legal maximum.
+     *
+     * @return {@code true} if {@link #bestScore()} is greater than the maximum legal score;
+     *         {@code false} otherwise.
+     */
+    boolean isBust() {
+        return bestScore() > MAX_LEGAL_SCORE;
     }
 }
