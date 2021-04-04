@@ -22,6 +22,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 
+/**
+ * Tests the {@link MiniGame} class.
+ */
 public class MiniGameTest {
 
     /**
