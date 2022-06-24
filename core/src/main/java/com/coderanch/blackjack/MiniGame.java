@@ -86,7 +86,7 @@ final class MiniGame {
         displayStatus();
 
         while (!isGameOver()) {
-            var choice = getplayerChoice();
+            var choice = getPlayerChoice();
             switch (choice) {
                 case HIT:
                     dealCard();
@@ -108,7 +108,7 @@ final class MiniGame {
      * @return the player's choice.
      * @throws IOException if there's a problem with the underlying stream.
      */
-    private Choice getplayerChoice() throws IOException {
+    private Choice getPlayerChoice() throws IOException {
         var result = inputUtility.nextString("hit or pass?", oneOfTheseIgnoringCase("hit", "pass"));
         return Choice.valueOf(result.trim().toUpperCase(Locale.ENGLISH));
     }
