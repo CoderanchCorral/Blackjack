@@ -40,9 +40,12 @@ public class MiniGameTest {
         try (
             var stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
             var inputUtility = new InputUtility(stream, StandardCharsets.UTF_8);
-            var output = new ByteArrayOutputStream();
+            var output = new ByteArrayOutputStream()
         ) {
-            var miniGame = new MiniGame(inputUtility, new PrintWriter(output), new Random());
+            var miniGame = new MiniGame(
+                inputUtility,
+                new PrintWriter(output, true, StandardCharsets.UTF_8),
+                new Random());
             miniGame.run();
             var result = output.toString();
             assertThat("Must say the user passed.", result, containsString("You passed."));
@@ -60,9 +63,12 @@ public class MiniGameTest {
         try (
             var stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
             var inputUtility = new InputUtility(stream, StandardCharsets.UTF_8);
-            var output = new ByteArrayOutputStream();
+            var output = new ByteArrayOutputStream()
         ) {
-            var miniGame = new MiniGame(inputUtility, new PrintWriter(output), new Random());
+            var miniGame = new MiniGame(
+                inputUtility,
+                new PrintWriter(output, true, StandardCharsets.UTF_8),
+                new Random());
             miniGame.run();
             var result = output.toString();
             assertThat("Must say the user lost or won.", result, containsString("Game over."));
