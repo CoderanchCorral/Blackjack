@@ -76,7 +76,7 @@ final class Hand {
      * Gets the best score.
      *
      * @return the highest score that can be made by using a large point value for aces
-     *         without the hand going bust, or the lowest score if the hand is bust.
+     *     without the hand going bust, or the lowest score if the hand is bust.
      */
     int bestScore() {
         var minimumScore = cards.stream()
@@ -109,16 +109,28 @@ final class Hand {
      * A bust hand has a higher score than the legal maximum.
      *
      * @return {@code true} if {@link #bestScore()} is greater than the maximum legal score;
-     *         {@code false} otherwise.
+     *     {@code false} otherwise.
      */
     boolean isBust() {
         return bestScore() > MAX_LEGAL_SCORE;
     }
 
     /**
+     * Gets whether the hand is blackjack or not.
+     * A blackjack hand has a score equal to the legal maximum.
+     *
+     * @return {@code true} if {@link #bestScore()} is equal to the maximum legal score;
+     *     {@code false} otherwise.
+     */
+    boolean isBlackjack() {
+        return bestScore() == MAX_LEGAL_SCORE;
+    }
+
+
+    /**
      * Gets the cards of the hand.
      *
-     * @return an {@code unmodifiableList} of cards.
+     * @return an unmodifiable list of cards.
      */
     List<Card> cards() {
         return Collections.unmodifiableList(cards);

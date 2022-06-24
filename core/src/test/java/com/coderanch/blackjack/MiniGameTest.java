@@ -10,11 +10,9 @@ package com.coderanch.blackjack;
 import com.coderanch.util.cli.InputUtility;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -40,11 +38,11 @@ public class MiniGameTest {
     public void testPass() throws IOException {
         var input = "pass";
         try (
-                var stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
-                var inputUtility = new InputUtility(stream, StandardCharsets.UTF_8);
-                var output = new ByteArrayOutputStream();
+            var stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+            var inputUtility = new InputUtility(stream, StandardCharsets.UTF_8);
+            var output = new ByteArrayOutputStream();
         ) {
-            var miniGame = new MiniGame(inputUtility, new PrintStream(output));
+            var miniGame = new MiniGame(inputUtility, new PrintWriter(output), new Random());
             miniGame.run();
             var result = output.toString();
             assertThat("Must say the user passed.", result, containsString("You passed."));
@@ -57,14 +55,14 @@ public class MiniGameTest {
     @Test
     public void testHit() throws IOException {
         var input = IntStream.range(0, HIT_TO_FAILURE)
-                .mapToObj(i -> "hit")
-                .collect(Collectors.joining(System.lineSeparator()));
+            .mapToObj(i -> "hit")
+            .collect(Collectors.joining(System.lineSeparator()));
         try (
-                var stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
-                var inputUtility = new InputUtility(stream, StandardCharsets.UTF_8);
-                var output = new ByteArrayOutputStream();
+            var stream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+            var inputUtility = new InputUtility(stream, StandardCharsets.UTF_8);
+            var output = new ByteArrayOutputStream();
         ) {
-            var miniGame = new MiniGame(inputUtility, new PrintStream(output));
+            var miniGame = new MiniGame(inputUtility, new PrintWriter(output), new Random());
             miniGame.run();
             var result = output.toString();
             assertThat("Must say the user lost or won.", result, containsString("Game over."));
