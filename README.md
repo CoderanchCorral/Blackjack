@@ -1,4 +1,5 @@
 # Blackjack
+[![Build](https://github.com/CoderanchCorral/Blackjack/actions/workflows/build.yml/badge.svg)](https://github.com/CoderanchCorral/Blackjack/actions/workflows/build.yml)
 [![Build Status](https://sonarcloud.io/api/project_badges/measure?project=com.coderanch%3Ablackjack-parent&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.coderanch%3Ablackjack-parent)
 
 This is an educational project with the goal of learning how to write professional code in a team.
