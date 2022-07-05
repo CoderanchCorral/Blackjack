@@ -94,10 +94,12 @@ final class MiniGame {
                     break;
 
                 case PASS:
-                default:
                     pass();
                     printWriter.println("You passed. Game over.");
                     break;
+
+                default:
+                    throw new AssertionError("Unexpected choice.");
             }
         }
     }
@@ -126,7 +128,7 @@ final class MiniGame {
     private void displayStatus() {
         printWriter.println("Your cards are: ");
         hand.cards().forEach(printWriter::println);
-        printWriter.println(String.format("Your score is: %d", hand.bestScore()));
+        printWriter.printf("Your score is: %d", hand.bestScore());
 
         if (hand.isBlackjack()) {
             printWriter.println("You win. Game over.");
@@ -153,7 +155,7 @@ final class MiniGame {
         var newCard = deck.removeLast();
         hand = hand.withAdditionalCard(newCard);
         printWriter.println();
-        printWriter.println(String.format("Your card was: %s", newCard));
+        printWriter.printf("Your card was: %s", newCard);
     }
 
 
